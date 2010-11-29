@@ -1,0 +1,135 @@
+%function [VL, deltaL] = calcVisibilityLevelFromContrast(Lb, contrast, alpha, age, t, k)
+function deltaL = calcVisibilityLevelFromContrast(Lb, contrast, alpha, age, t, k)
+%author Jan Winter TU Berlin
+%email j.winter@tu-berlin.de
+%%%%%%
+% DEPRECATED: use calcDeltaL instead...
+%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+% function VL = calcVisibilityLevelFromContrast(Lb, contrast, alpha, age, t, k)
+%	This function calculates the visibility level as published in Adrian89.
+%	Lb: background luminance in cd/m^2
+%	contrast: contrast between background and target object; (Lt - Lb) / Lb; + = positive, - = negative contrast
+%	alpha: object size as percepted by a test person in minutes '
+%	age: age of test person
+%	t: presentation time of object in s
+%	k: correction factor
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % calculate contrast threshold for circumstances
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %calculate Ricco part
+    phi = calcRiccoPhi(Lb);	%phi is sqrt(phi)
+    %calculate Weber part
+    L = calcWeberL(Lb);		%L is sqrt(L)
+    
+    %delta L uncorrected
+    deltaL = k .* (phi ./ alpha  + L).^2;
+
+    %correct for negative contrast
+    deltaLpos = 0.1046;
+    Fcp = calcNegativeContrastFcp(alpha, Lb, deltaLpos); 
+    deltaLneg = deltaL * Fcp;
+    
+    %correct time factor
+    timeFactor = calcTimeFactor(alpha, Lb, t);
+    
+    %correct age factor
+    AF = calcAgeFactor(age) ;   
+    
+    deltaL = deltaLneg;
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % calculate actual delta L
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    deltaLactual = Lb .* abs(contrast);
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % calculate visibility level
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    disp('contrast threshold')
+    deltaL
+    disp('actual contrast');
+    deltaLactual
+    VL = deltaLactual / deltaL;
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% helper functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function sqrt_phi = calcRiccoPhi(Lb)
+% calculates the Ricco part
+    %Lb >= 0.6cd/m^2
+if(Lb >= 0.6)
+    sqrt_phi = log(4.1925 * Lb^(0.1556)) + 0.1684 * Lb^(0.5867)
+    elseif(Lb <= 0.00418)
+log_sqrt_phi = 0.028 + 0.173 * log(Lb);
+sqrt_phi = 10^log_sqrt_phi;
+else
+log_sqrt_phi = -0.072 + 0.3372 * log(Lb) + 0.0866 * (log(Lb))^2;
+sqrt_phi = 10^log_sqrt_phi;
+end
+end
+
+function sqrt_L = calcWeberL(Lb)
+% calculates the Weber part
+    
+    if(Lb >= 0.6)
+    sqrt_L = 0.05946 * Lb^(0.466)
+    elseif(Lb <= 0.00418)
+log_sqrt_L = -0.891 + 0.5275 * log(Lb) + 0.0227 * (log(Lb))^2;
+sqrt_L = 10^log_sqrt_L;
+else
+log_sqrt_L = -1.256 + 0.319 * log(Lb);
+sqrt_L = 10^log_sqrt_L;
+end
+end
+
+function Fcp = calcNegativeContrastFcp (alpha, Lb, deltaLpos)
+% calculates the negative to positive contrast conversion factor
+
+assert(Lb > 0.004)
+if(Lb >= 0.1)
+    factor = 0.125;     %Lb >= 0.1 cd/m^2
+elseif(Lb > 0.004)
+    factor = 0.075;    %Lb > 0.004 cd/m^2
+end
+    m = 10.^(- (factor .* (log(Lb) + 1).^2 + 0.0245));
+    m = 10.^(-m)    
+    beta = 0.6 .* Lb.^(-0.1488)    
+    Fcp = 1 - (m * alpha^(-beta) / (2.4 * deltaLpos));
+end
+
+function timeFactor = calcTimeFactor (alpha, Lb, t)
+% calculates the time factor
+
+assert(alpha < 60);
+
+    logAlpha = log(alpha) + 0523;
+    aAlpha = 0.36 - 0.0972 * logAlpha^2 / (logAlpha^2 - 2.513 * logAlpha + 2.7895)
+    
+    logLb = log(Lb) + 6;
+    aLb = 0.355 - 0.1217 * logLb^2 / (logLb^2 - 10.4 * logLb + 52.28)
+
+    %for alpha < 60'
+    aAlphaLb = sqrt(aAlpha^2 + aLb^2) / 2.1
+    
+    timeFactor = (aAlphaLb + t) / t;
+
+
+
+end
+
+function AF = calcAgeFactor(age)
+% calculates the age factor
+
+assert((age > 23) && (age < 75))
+
+if(age < 64)
+%23 < age < 64
+    AF = (age - 19)^2 / 2160 + 0.99;
+else
+%64 <= age < 75
+    AF = (age - 56.6)^2 / 116.3 + 1.43;
+end
+end
