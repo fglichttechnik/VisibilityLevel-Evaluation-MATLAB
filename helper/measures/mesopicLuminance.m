@@ -13,7 +13,7 @@ Ls = Ls(1:end-2,1:end-2);
 %preferences
 STARTWERT = 0.5;
 STOP_CRITERION = 0.01;  %deprecated
-NUMBER_OF_ITERATIONS = 10;  %10 looks to be a good value, as it converges fast
+NUMBER_OF_ITERATIONS = 3;  %10 looks to be a good value, as it converges fast
 UPPER_VALUE_FOR_MESOPIC = 5;        %values above will be photopic luminances
 LOWER_VALUE_FOR_MESOPIC = 0.005;    %values below will be scotopic luminances
 
@@ -73,7 +73,7 @@ for i = 1 : NUMBER_OF_ITERATIONS
     valuesBelow = (Lmes_n <= LOWER_VALUE_FOR_MESOPIC);
     m_2n_1(valuesBelow) = 0;
     
-    sum(sum(imag(m_2n)))
+    sum(sum(imag(m_2n)));
     
     %     disp('max m2n')
     %     max(max(m_2n))
