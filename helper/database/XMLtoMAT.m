@@ -148,9 +148,10 @@ for i = 1 : childSize
                     greatgrandMatch4 = strmatch('position', str.Children(1,i).Children(1,j).Children(1,l).Name);
                     if greatgrandMatch4 == 1
                         rectPosition = str2num(str.Children(1,i).Children(1,j).Children(1,l).Attributes(1,1).Value);
-                    else
-                        rectPosition = [];
-                    end
+                        %jan: what was that for?
+%                     else
+%                         rectPosition = [];
+%                     end
                 end
             end
         end % end of browsing children

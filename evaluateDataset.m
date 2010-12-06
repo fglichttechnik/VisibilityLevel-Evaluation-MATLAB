@@ -2,7 +2,7 @@
 %author Sandy Buschmann, Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 
-clear all;
+%clear all; %this will clear all breakpoints as well
 
 PATH = 'database/6,5/lmkXML.xml';
 RADIUS = 100;
@@ -89,45 +89,45 @@ for i = 1 : lengthOfSet
     
     
     
-    %     meanTargetPhotopic(i) = meanTarget;
-    %     %VLPhotopic(i) = calcVisibilityLevelFromContrast(meanBackground, weberContrastPhotopic(i),alphaMinutes,AGE,T,K);
-    %     VLPhotopic(i) = currentDeltaLPhotopic(i) / abs(meanTargetPhotopic(i) - meanBackgroundPhotopic(i));
-    %
-    %     %calc values for scotopic image
-    %     currentScotopic_LMK_Image_Statistics = statisticsOfCircleAndRect(currentLMK_Image_Metadata, RADIUS, savePath, 'SCOTOPIC');
-    %     c = currentScotopic_LMK_Image_Statistics;
-    %     if(strmatch(BACKGROUND_LUMINANCE_MODE,'STREET'))
-    %         weberContrastScotopic(i) = (meanTarget - streetSurfaceLuminance) / streetSurfaceLuminance;
-    %         meanBackgroundScotopic(i) = streetSurfaceLuminance;
-    %         currentDeltaLScotopic(i) = calcDeltaL(streetSurfaceLuminance, alphaMinutes, AGE, T, K);
-    %
-    %     elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
-    %         weberContrastScotopic(i) = (meanTarget - meanBackground) / meanBackground;
-    %         meanBackgroundScotopic(i) = meanBackground;
-    %         currentDeltaLScotopic(i) = calcDeltaL(streetSurfaceLuminance, alphaMinutes, AGE, T, K);
-    %     end
-    %     meanTargetScotopic(i) = meanTarget;
-    %     %VLScotopic(i) = calcVisibilityLevelFromContrast(meanBackground, weberContrastScotopic(i),alphaMinutes,AGE,T,K);
-    %     VLScotopic(i) = currentDeltaLScotopic(i) / abs(meanTargetScotopic(i) - meanBackgroundScotopic(i));
-    %
-    %     %calc values for mesopic image
-    %     currentLMK_Image_Metadata.dataImageMesopic = mesopicLuminance(currentLMK_Image_Metadata.dataImagePhotopic, ...
-    %         currentLMK_Image_Metadata.dataImageScotopic);
-    %     currentMesopic_LMK_Image_Statistics = statisticsOfCircleAndRect(currentLMK_Image_Metadata, RADIUS, savePath, 'MESOPIC');
-    %     c = currentMesopic_LMK_Image_Statistics;
-    %     if(strmatch(BACKGROUND_LUMINANCE_MODE,'STREET'))
-    %         weberContrastMesopic(i) = (meanTarget - streetSurfaceLuminance) / streetSurfaceLuminance;
-    %         meanBackgroundMesopic(i) = streetSurfaceLuminance;
-    %         currentDeltaLMesopic(i) = calcDeltaL(streetSurfaceLuminance, alphaMinutes, AGE, T, K);
-    %     elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
-    %         weberContrastMesopic(i) = (meanTarget - meanBackground) / meanBackground;
-    %         meanBackgroundMesopic(i) = meanBackground;
-    %         currentDeltaLMesopic(i) = calcDeltaL(streetSurfaceLuminance, alphaMinutes, AGE, T, K);
-    %     end
-    %     meanTargetMesopic(i) = meanTarget;
-    %     %VLMesopic(i) = calcVisibilityLevelFromContrast(meanBackground,weberContrastMesopic(i),alphaMinutes,AGE,T,K);
-    %     VLMesopic(i) = currentDeltaLMesopic(i) / abs(meanTargetMesopic(i) - meanBackgroundMesopic(i));
-    %
+        meanTargetPhotopic(i) = meanTarget;
+        %VLPhotopic(i) = calcVisibilityLevelFromContrast(meanBackground, weberContrastPhotopic(i),alphaMinutes,AGE,T,K);
+        VLPhotopic(i) = currentDeltaLPhotopic(i) / abs(meanTargetPhotopic(i) - meanBackgroundPhotopic(i));
+    
+        %calc values for scotopic image
+        currentScotopic_LMK_Image_Statistics = statisticsOfCircleAndRect(currentLMK_Image_Metadata, RADIUS, savePath, 'SCOTOPIC');
+        c = currentScotopic_LMK_Image_Statistics;
+        if(strmatch(BACKGROUND_LUMINANCE_MODE,'STREET'))
+            weberContrastScotopic(i) = (meanTarget - streetSurfaceLuminance) / streetSurfaceLuminance;
+            meanBackgroundScotopic(i) = streetSurfaceLuminance;
+            currentDeltaLScotopic(i) = calcDeltaL(streetSurfaceLuminance, alphaMinutes, AGE, T, K);
+    
+        elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
+            weberContrastScotopic(i) = (meanTarget - meanBackground) / meanBackground;
+            meanBackgroundScotopic(i) = meanBackground;
+            currentDeltaLScotopic(i) = calcDeltaL(streetSurfaceLuminance, alphaMinutes, AGE, T, K);
+        end
+        meanTargetScotopic(i) = meanTarget;
+        %VLScotopic(i) = calcVisibilityLevelFromContrast(meanBackground, weberContrastScotopic(i),alphaMinutes,AGE,T,K);
+        VLScotopic(i) = currentDeltaLScotopic(i) / abs(meanTargetScotopic(i) - meanBackgroundScotopic(i));
+    
+        %calc values for mesopic image
+        currentLMK_Image_Metadata.dataImageMesopic = mesopicLuminance(currentLMK_Image_Metadata.dataImagePhotopic, ...
+            currentLMK_Image_Metadata.dataImageScotopic);
+        currentMesopic_LMK_Image_Statistics = statisticsOfCircleAndRect(currentLMK_Image_Metadata, RADIUS, savePath, 'MESOPIC');
+        c = currentMesopic_LMK_Image_Statistics;
+        if(strmatch(BACKGROUND_LUMINANCE_MODE,'STREET'))
+            weberContrastMesopic(i) = (meanTarget - streetSurfaceLuminance) / streetSurfaceLuminance;
+            meanBackgroundMesopic(i) = streetSurfaceLuminance;
+            currentDeltaLMesopic(i) = calcDeltaL(streetSurfaceLuminance, alphaMinutes, AGE, T, K);
+        elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
+            weberContrastMesopic(i) = (meanTarget - meanBackground) / meanBackground;
+            meanBackgroundMesopic(i) = meanBackground;
+            currentDeltaLMesopic(i) = calcDeltaL(streetSurfaceLuminance, alphaMinutes, AGE, T, K);
+        end
+        meanTargetMesopic(i) = meanTarget;
+        %VLMesopic(i) = calcVisibilityLevelFromContrast(meanBackground,weberContrastMesopic(i),alphaMinutes,AGE,T,K);
+        VLMesopic(i) = currentDeltaLMesopic(i) / abs(meanTargetMesopic(i) - meanBackgroundMesopic(i));
+    
     disp('-------------------------------')
 end
 
