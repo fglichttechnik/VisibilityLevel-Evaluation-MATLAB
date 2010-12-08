@@ -149,9 +149,9 @@ for i = 1 : childSize
                     if greatgrandMatch4 == 1
                         rectPosition = str2num(str.Children(1,i).Children(1,j).Children(1,l).Attributes(1,1).Value);
                         %jan: what was that for?
-%                     else
-%                         rectPosition = [];
-%                     end
+                        %                     else
+                        %                         rectPosition = [];
+                    end
                 end
             end
         end % end of browsing children
@@ -189,19 +189,19 @@ for i = 1 : childSize
         
         evaluatedData.comments = COMMENTS;
         
-%         % create object and save as .mat
-%         evaluatedData_VL = LMK_Image_Metadata(dataSRC_VL, dataType_VL, rect, ...
-%             border, dataImage_VL, imageMetaData_VL);
-%         evaluatedData_VS = LMK_Image_Metadata(dataSRC_VS, dataType_VS, rect, ...
-%             border, dataImage_VS, imageMetaData_VS);
-%         
-%         if(exist('quadrangle'))
-%             evaluatedData_VL.quadrangle = quadrangle;
-%             evaluatedData_VS.quadrangle = quadrangle;
-%         end
-%         
-%         evaluatedData_VL.comments = COMMENTS;
-%         evaluatedData_VS.comments = COMMENTS;
+        %         % create object and save as .mat
+        %         evaluatedData_VL = LMK_Image_Metadata(dataSRC_VL, dataType_VL, rect, ...
+        %             border, dataImage_VL, imageMetaData_VL);
+        %         evaluatedData_VS = LMK_Image_Metadata(dataSRC_VS, dataType_VS, rect, ...
+        %             border, dataImage_VS, imageMetaData_VS);
+        %
+        %         if(exist('quadrangle'))
+        %             evaluatedData_VL.quadrangle = quadrangle;
+        %             evaluatedData_VS.quadrangle = quadrangle;
+        %         end
+        %
+        %         evaluatedData_VL.comments = COMMENTS;
+        %         evaluatedData_VS.comments = COMMENTS;
         
         %dataName = [dataSRC(1:end-3), '.mat'];
         %save(dataName, 'evaluatedData')
