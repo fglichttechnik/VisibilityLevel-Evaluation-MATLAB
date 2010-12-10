@@ -6,7 +6,7 @@
 
 %clear all; %this will clear all breakpoints as well
 
-PATH = 'database/6,5/lmkXML.xml';	%this is the path to the datasets xml file
+PATH = 'C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB\database\6,5';	%this is the path to the datasets xml file
 RADIUS = 100;	%number of pixels which correspond to 2°
 AGE = 24;		%age of observer for adrians model
 T = 1;			%observing time of visual object
@@ -27,7 +27,7 @@ SIZE_OF_OBJECT = 0.30;	%size of visual object
 %these two methods have been taken from diploma thesis Krenz2010
 
 %either 'STREET' or '2DEGREE'
-BACKGROUND_LUMINANCE_MODE = '2DEGREE';
+BACKGROUND_LUMINANCE_MODE = 'STREET';
 
 %either 'OBJECT' or 'STRONGEST_EDGE'
 CONTRAST_MODE = 'OBJECT';
@@ -40,7 +40,7 @@ ANALYSIS_MODE = 'PHOTOPIC';
 %no adjustments have to be done below
 
 %load xml file and read all pf images
-imageset = XMLtoMAT(PATH);
+imageset = XMLtoMAT([PATH, '\lmkXML.xml']);
 lengthOfSet = length(imageset);
 
 %savepath for result images

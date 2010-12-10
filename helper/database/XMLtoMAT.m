@@ -1,4 +1,4 @@
-function [str, elements] = XMLtoMAT(filePath)
+function elements = XMLtoMAT(filePath)
 %author Sandy Buschmann, Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 % preferences
@@ -14,7 +14,6 @@ str = parseXML(filePath);
 %elements = cell(childSize*2,1);
 elements = cell(childSize,1);
 currentElementPointer = 1;
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
