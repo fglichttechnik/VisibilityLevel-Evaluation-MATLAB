@@ -13,6 +13,7 @@ T = 1;			%observing time of visual object
 K = 2.6;		%k factor of adrians model
 DISTANCE_TO_MEASUREMENT_FIELD = 35;	%distance between camera and first measurement position of visual object
 SIZE_OF_OBJECT = 0.30;	%size of visual object
+DATASETNAME = '6,5Proz.mat';
 
 %these parameters control the method of calculation 
 %for the target object and background luminances
@@ -27,7 +28,7 @@ SIZE_OF_OBJECT = 0.30;	%size of visual object
 %these two methods have been taken from diploma thesis Krenz2010
 
 %either 'STREET' or '2DEGREE'
-BACKGROUND_LUMINANCE_MODE = 'STREET';
+BACKGROUND_LUMINANCE_MODE = '2DEGREE';
 
 %either 'OBJECT' or 'STRONGEST_EDGE'
 CONTRAST_MODE = 'OBJECT';
@@ -39,8 +40,14 @@ ANALYSIS_MODE = 'PHOTOPIC';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %no adjustments have to be done below
 
-%load xml file and read all pf images
-imageset = XMLtoMAT([PATH, '\lmkXML.xml']);
+%load data
+if ~exist(DATASETNAME, 'file');
+    %load xml file and read all pf images
+    imageset = XMLtoMAT([PATH, '\lmkXML.xml']);
+else
+    %load image data set
+    imageset = load(DATASETNAME);    
+end
 lengthOfSet = length(imageset);
 
 %savepath for result images

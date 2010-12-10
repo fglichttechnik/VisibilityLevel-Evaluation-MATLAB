@@ -15,6 +15,16 @@ str = parseXML(filePath);
 elements = cell(childSize,1);
 currentElementPointer = 1;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% READ dataset name
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+for i = 1 : childSize
+    childMatch = strmatch('dataSetName', str.Children(1,i).Name);
+    if childMatch == 1
+        dataSetName = str.Children(1,i).Attributes.Value;
+        break
+    end
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % READ StreetLuminance object
@@ -229,6 +239,11 @@ for i = 1 : childSize
         end        
         evaluatedData.comments = COMMENTS;
         
+        % evaluate mesopic luminance image
+        [evaluatedData.dataImageMesopic, ~] = ...
+            mesopicLuminance_intermediate(evaluatedData.dataImagePhotopic,...
+            evaluatedData.dataImageScotopic);        
+        
         % save obj in output struct
         elements{currentElementPointer} = evaluatedData;
         currentElementPointer = currentElementPointer + 1;
@@ -245,6 +260,10 @@ for i = 1 : childSize
     end
 end
 elements = elements(1:currentEnd);
+
+% save dataset as .mat
+imageset = elements;
+save(dataSetName, 'imageset');
 
 end
 
