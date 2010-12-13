@@ -5,7 +5,8 @@ function elements = XMLtoMAT(filePath)
 COMMENTS = ' ';
 
 % parse XML-Data into a struct
-str = parseXML(filePath);
+stru = parseXML(filePath);
+str = stru(1,2);
 
 % get the number of children of the struct
 [~, childSize] = size(str.Children);
