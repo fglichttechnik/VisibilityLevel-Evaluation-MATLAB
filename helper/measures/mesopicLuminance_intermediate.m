@@ -79,12 +79,12 @@ imgVisualization(valuesBelow) = imgVisualization(valuesBelow) * 3;
 %photopic luminances are red
 %mesopic luminances are green
 %scotopic luminances are blue
-map = [1.0,0,0;0,1.0,0;0,0,1.0];
-imgVisualization = ind2rgb(imgVisualization, map);
-imshow(imgVisualization);
-colorbar('YTick',[1;2;3],'YTickLabel',...
-    {'Photopic','Mesopic','Scotopic'});
-colormap(map);
+% map = [1.0,0,0;0,1.0,0;0,0,1.0];
+% imgVisualization = ind2rgb(imgVisualization, map);
+% imshow(imgVisualization);
+% colorbar('YTick',[1;2;3],'YTickLabel',...
+%     {'Photopic','Mesopic','Scotopic'});
+% colormap(map);
 
 % xn = STARTWERT;
 % for i = 1 : NUMBER_OF_ITERATIONS

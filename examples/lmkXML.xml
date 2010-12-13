@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE LMKSet SYSTEM "LMKSet.dtd">
+
+<LMKSet>  
+    <dataSetName src="6,5Proz.mat"/>	
+   
+    <StreetSurface>
+        <QuadrangleObject>
+			<upperLeft x="590" y="505"/>
+			<upperRight x="711" y="505"/>
+			<lowerLeft x="1" y="650"/>
+			<lowerRight x="1323" y="1030"/>
+		</QuadrangleObject>
+	</StreetSurface>
+	
+    <LMKData>
+        <dataPhotopic src="00m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="00m_6,5Proz_VS.pf" type="pf"/>	
+        <RectObject>
+            <upperLeft x="582" y="843"/>
+            <lowerRight x="687" y="951"/>
+            <border pixel="13"/>
+            <position p="0"/>
+        </RectObject>
+    </LMKData>
+    
+    <LMKData>
+        <dataPhotopic src="2,9m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="2,9m_6,5Proz_VS.pf" type="pf"/>
+        <RectObject>
+            <upperLeft x="600" y="805"/>
+            <lowerRight x="695" y="899"/>
+            <border pixel="9"/>
+	<position p="2.9"/>
+        </RectObject>
+    </LMKData>
+    
+    <LMKData>
+        <dataPhotopic src="5,8m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="5,8m_6,5Proz_VS.pf" type="pf"/>
+        <RectObject>
+            <upperLeft x="605" y="772"/>
+            <lowerRight x="688" y="853"/>
+            <border pixel="10"/>
+            <position p="5.8"/>
+        </RectObject>
+    </LMKData>
+    
+    <LMKData>
+        <dataPhotopic src="8,7m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="8,7m_6,5Proz_VS.pf" type="pf"/>
+        <RectObject>
+            <upperLeft x="618" y="741"/>
+            <lowerRight x="691" y="816"/>
+            <border pixel="12"/>
+            <position p="8.7"/>
+        </RectObject>
+    </LMKData>
+
+    <LMKData>
+        <dataPhotopic src="11,6m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="11,6m_6,5Proz_VS.pf" type="pf"/>
+        <RectObject>
+            <upperLeft x="624" y="719"/>
+            <lowerRight x="687" y="786"/>
+            <border pixel="11"/>
+            <position p="11.6"/>
+        </RectObject>
+    </LMKData>
+
+    <LMKData>
+        <dataPhotopic src="14,5m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="14,5m_6,5Proz_VS.pf" type="pf"/>
+        <RectObject>
+            <upperLeft x="633" y="698"/>
+            <lowerRight x="690" y="759"/>
+            <border pixel="12"/>
+            <position p="14.5"/>
+        </RectObject>
+    </LMKData>
+
+    <LMKData>
+        <dataPhotopic src="17,4m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="17,4m_6,5Proz_VS.pf" type="pf"/>
+        <RectObject>
+            <upperLeft x="636" y="684"/>
+            <lowerRight x="690" y="739"/>
+            <border pixel="10"/>
+            <position p="17.4"/>
+        </RectObject>
+    </LMKData>
+
+    <LMKData>
+        <dataPhotopic src="20,3m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="20,3m_6,5Proz_VS.pf" type="pf"/>		
+        <RectObject>
+            <upperLeft x="639" y="668"/>
+            <lowerRight x="688" y="720"/>
+            <border pixel="8"/>
+            <position p="20.3"/>
+        </RectObject>
+    </LMKData>
+
+    <LMKData>
+        <dataPhotopic src="23,2m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="23,2m_6,5Proz_VS.pf" type="pf"/>
+        <RectObject>
+            <upperLeft x="645" y="657"/>
+            <lowerRight x="690" y="705"/>
+            <border pixel="9"/>
+            <position p="23.2"/>
+        </RectObject>
+    </LMKData>
+ 
+    <LMKData>
+        <dataPhotopic src="26,1m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="26,1m_6,5Proz_VS.pf" type="pf"/>
+        <RectObject>
+            <upperLeft x="644" y="648"/>
+            <lowerRight x="685" y="691"/>
+            <border pixel="9"/>
+            <position p="26.1"/>
+        </RectObject>
+    </LMKData>
+
+    <LMKData>
+        <dataPhotopic src="29,0m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="29,0m_6,5Proz_VS.pf" type="pf"/>
+        <RectObject>
+            <upperLeft x="646" y="641"/>
+            <lowerRight x="685" y="680"/>
+            <border pixel="8"/>
+            <position p="29"/>
+        </RectObject>
+    </LMKData>
+
+    <LMKData>
+        <dataPhotopic src="31,9m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="31,9m_6,5Proz_VS.pf" type="pf"/>
+        <RectObject>
+            <upperLeft x="645" y="633"/>
+            <lowerRight x="684" y="670"/>
+            <border pixel="9"/>
+            <position p="31.9"/>
+        </RectObject>
+    </LMKData>
+
+    <LMKData>
+        <dataPhotopic src="34,8m_6,5Proz_VL.pf" type="pf"/>
+		<dataScotopic src="34,8m_6,5Proz_VS.pf" type="pf"/>
+        <RectObject>
+            <upperLeft x="648" y="626"/>
+            <lowerRight x="684" y="664"/>
+            <border pixel="7"/>
+            <position p="34.8"/>
+        </RectObject>
+    </LMKData>
+</LMKSet>

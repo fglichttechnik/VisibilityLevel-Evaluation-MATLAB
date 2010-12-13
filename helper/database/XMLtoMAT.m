@@ -4,7 +4,11 @@ function elements = XMLtoMAT(filePath)
 % preferences
 COMMENTS = ' ';
 
+%%%%%%%%%%%%%%%nothing needs to be adjusted below%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 % parse XML-Data into a struct
+disp('Loading xml file and read all pf images...');
 stru = parseXML(filePath);
 str = stru(1,2);
 
@@ -16,46 +20,38 @@ str = stru(1,2);
 elements = cell(childSize,1);
 currentElementPointer = 1;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% READ dataset name
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for i = 1 : childSize
-    childMatch = strmatch('dataSetName', str.Children(1,i).Name);
-    if childMatch == 1
-        dataSetName = str.Children(1,i).Attributes.Value;
-        break
-    end
-end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % READ StreetLuminance object
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for i = 1 : childSize    
+for i = 1 : childSize 
     % browse children
-    childMatch2 = strmatch('StreetSurface', str.Children(1,i).Name);
-    if (childMatch2 == 1)
+    childMatch = strmatch('StreetSurface', str.Children(1,i).Name);
+    if (childMatch == 1)
         % get the number of children of 'StreetSurface'
         [~, grandchildSize] = size(str.Children(1,i).Children);
         % browse the children of 'LMKData'
         for j = 1 : grandchildSize
             % search for children named 'QuadrangleObject'
-            grandchildMatch1 = strmatch('QuadrangleObject', str.Children...
+            grandchildMatch = strmatch('QuadrangleObject', str.Children...
                 (1,i).Children(1,j).Name);
-            if grandchildMatch1 == 1
+            if grandchildMatch == 1
                 % get the number of children of 'QuadrangleObject'
                 [~, greatgrandSize] = size(str.Children(1,i).Children...
                     (1,j).Children);
                 % browse the children of 'RectObject' 
+                matchCounter = 0;
                 for l = 1 : greatgrandSize
                     greatgrandMatch1 = strmatch('upperLeft', ...
                         str.Children(1,i).Children(1,j).Children...
                         (1,l).Name);
-                    if greatgrandMatch1 == 1
+                    if greatgrandMatch1 == 1 
                         x1_quad = str2double(str.Children(1,i).Children...
                             (1,j).Children(1,l).Attributes(1,1).Value);
                         y1_quad = str2double(str.Children(1,i).Children...
                             (1,j).Children(1,l).Attributes(1,2).Value);
-                        continue
+                        matchCounter = matchCounter + 1;
+                        continue 
                     end
                     greatgrandMatch2 = strmatch('upperRight', ...
                         str.Children(1,i).Children(1,j).Children...
@@ -65,6 +61,7 @@ for i = 1 : childSize
                             (1,j).Children(1,l).Attributes(1,1).Value);
                         y2_quad = str2double(str.Children(1,i).Children...
                             (1,j).Children(1,l).Attributes(1,2).Value);
+                        matchCounter = matchCounter + 1;
                         continue
                     end
                     greatgrandMatch3 = strmatch('lowerLeft', ...
@@ -75,6 +72,7 @@ for i = 1 : childSize
                             (1,j).Children(1,l).Attributes(1,1).Value);
                         y3_quad = str2double(str.Children(1,i).Children...
                             (1,j).Children(1,l).Attributes(1,2).Value);
+                        matchCounter = matchCounter + 1;
                         continue
                     end
                     greatgrandMatch4 = strmatch('lowerRight', ...
@@ -85,18 +83,24 @@ for i = 1 : childSize
                             (1,j).Children(1,l).Attributes(1,1).Value);
                         y4_quad = str2double(str.Children(1,i).Children...
                             (1,j).Children(1,l).Attributes(1,2).Value);
+                        matchCounter = matchCounter + 1;
                     end
                 end
             end
         end
         
         % and quadrangle object
-        point1 = struct('x',x1_quad,'y',y1_quad);
-        point2 = struct('x',x2_quad,'y',y2_quad);
-        point3 = struct('x',x3_quad,'y',y3_quad);
-        point4 = struct('x',x4_quad,'y',y4_quad);
-        quadrangle = struct('upperLeft',point1,'upperRight',point2,...
-            'lowerLeft',point3,'lowerRight',point4);        
+        if matchCounter == 4 
+            point1 = struct('x',x1_quad,'y',y1_quad);
+            point2 = struct('x',x2_quad,'y',y2_quad);
+            point3 = struct('x',x3_quad,'y',y3_quad);
+            point4 = struct('x',x4_quad,'y',y4_quad);
+            quadrangle = struct('upperLeft',point1,'upperRight',point2,...
+                'lowerLeft',point3,'lowerRight',point4);  
+        else
+            disp(['Warning: not enough coordinates for quadrangle',...
+                    ' object found!']);
+        end
         
         %there should be only 1 StreetLuminance Object
         break;
@@ -117,16 +121,20 @@ for i = 1 : childSize
     evaluatedData = LMK_Image_Metadata;
     
     % browse the children
-    childMatch1 = strmatch('LMKData', str.Children(1,i).Name);
-    if childMatch1 == 1
+    childMatch = strmatch('LMKData', str.Children(1,i).Name);
+    if childMatch == 1
         % get the number of children of 'LMKData'
         [~, grandchildSize] = size(str.Children(1,i).Children);
         % browse the children of 'LMKData'
+        rectMatch = 0;
+        photMatch = 0;
+        scotMatch = 0;
         for j = 1 : grandchildSize
             % search for children
             grandchildMatch1 = strmatch('dataPhotopic', str.Children...
                 (1,i).Children(1,j).Name);
             if grandchildMatch1 == 1
+                photMatch = 1;
                 % get the number of attributes of 'dataPhotopic'
                 [~, grandchildAttributesSize1] = size(str.Children...
                     (1,i).Children(1,j).Attributes);
@@ -138,6 +146,7 @@ for i = 1 : childSize
                     if grandchildAttributeMatch1 == 1
                         evaluatedData.dataSRCPhotopic = str.Children...
                             (1,i).Children(1,j).Attributes(1,k).Value;
+                        disp(evaluatedData.dataSRCPhotopic);
                         continue
                     end
                     grandchildAttributeMatch2 = strmatch('type', ...
@@ -145,14 +154,15 @@ for i = 1 : childSize
                         (1,k).Name);
                     if grandchildAttributeMatch2 == 1
                         evaluatedData.dataTypePhotopic = str.Children...
-                            (1,i).Children(1,j).Attributes(1,k).Value;
+                            (1,i).Children(1,j).Attributes(1,k).Value;                        
                     end
-                end  
+                end                 
                 continue
             end
             grandchildMatch2 = strmatch('dataScotopic', str.Children...
                 (1,i).Children(1,j).Name);
             if grandchildMatch2 == 1
+                scotMatch = 1;
                 % get the number of attributes of 'dataScotopic'
                 [~, grandchildAttributesSize2] = size(str.Children...
                     (1,i).Children(1,j).Attributes);
@@ -160,10 +170,11 @@ for i = 1 : childSize
                 for k = 1 : grandchildAttributesSize2
                     grandchildAttributeMatch1 = strmatch('src', ...
                         str.Children(1,i).Children(1,j).Attributes...
-                        (1,k).Name);                    
+                        (1,k).Name);                   
                     if grandchildAttributeMatch1 == 1
                         evaluatedData.dataSRCScotopic = str.Children...
                             (1,i).Children(1,j).Attributes(1,k).Value;
+                        disp(evaluatedData.dataSRCScotopic);
                         continue
                     end
                     grandchildAttributeMatch2 = strmatch('type', ...
@@ -179,6 +190,7 @@ for i = 1 : childSize
             grandchildMatch3 = strmatch('RectObject', str.Children...
                 (1,i).Children(1,j).Name);
             if grandchildMatch3 == 1
+                rectMatch = 1;
                 % get the number of children of 'RectObject'
                 [~, greatgrandSize] = size(str.Children(1,i).Children...
                     (1,j).Children);
@@ -221,7 +233,45 @@ for i = 1 : childSize
                     end
                 end
             end
-        end % end of browsing children
+        end % end of browsing children  
+               
+        % error handling:
+         if photMatch == 1 && isempty(evaluatedData.dataSRCPhotopic) 
+            disp(['Warning: no src attributes for photopic data found!',...
+                'Picture cannot be loaded!']);
+         end
+         if photMatch == 1 && isempty(evaluatedData.dataTypePhotopic)
+            disp(['Warning: no type attributes for photopic data found!',...
+                'Picture cannot be loaded!']);           
+         end 
+         if scotMatch == 1 && isempty(evaluatedData.dataSRCScotopic) 
+            disp(['Warning: no src attributes for scotopic data found!',...
+                'Picture cannot be loaded!']);           
+         end
+         if scotMatch == 1 && isempty(evaluatedData.dataTypeScotopic)
+            disp(['Warning: no type attributes for scotopic data found!',...
+                'Picture cannot be loaded!']);
+         end 
+         if rectMatch == 0
+             disp('Warning: no rectangle object found!');
+         elseif ~(exist('x1', 'var')) || ~(exist('y1', 'var'))
+             disp('Warning: no upper left coordinates for rectangle object found!');
+         elseif ~(exist('x2', 'var')) || ~(exist('y2', 'var'))
+             disp('Warning: no lower right coordinates for rectangle object found!');
+         elseif (isempty(evaluatedData.border))
+             disp('Warning: no border for rectangle object found!');
+         elseif (isempty(evaluatedData.rectPosition))
+             disp('Warning: no position for rectangle object found!');
+         end   
+         if ~(isempty(evaluatedData.dataSRCPhotopic)) ...
+                 && ~(exist([evaluatedData.dataSRCPhotopic],'file'))
+             disp(['Warning: File ', evaluatedData.dataSRCPhotopic, ' not found!']);
+         end
+         if ~(isempty(evaluatedData.dataSRCScotopic)) ...
+                 && ~(exist([evaluatedData.dataSRCScotopic],'file'))
+             disp(['Warning: File ', evaluatedData.dataSRCScotopic, ' not found!']);
+         end
+                 
         
         % create struct for rect object
         point1 = struct('x',x1,'y',y1);
@@ -229,10 +279,14 @@ for i = 1 : childSize
         evaluatedData.rect = struct('upperLeft',point1,'lowerRight',point2);
         
         % read Image
-        evaluatedData.dataImagePhotopic = LMK_readPfImage...
-            (evaluatedData.dataSRCPhotopic);
-        evaluatedData.dataImageScotopic= LMK_readPfImage...
-            (evaluatedData.dataSRCScotopic);
+        if ~(isempty(evaluatedData.dataSRCPhotopic)) && (exist([evaluatedData.dataSRCPhotopic],'file'))            
+            evaluatedData.dataImagePhotopic = LMK_readPfImage...
+                (evaluatedData.dataSRCPhotopic);
+        end
+        if ~(isempty(evaluatedData.dataSRCScotopic)) && (exist([evaluatedData.dataSRCScotopic],'file'))
+            evaluatedData.dataImageScotopic= LMK_readPfImage...
+                (evaluatedData.dataSRCScotopic);
+        end
         
         % put quadrangle into obj
         if(exist('quadrangle','var'))
@@ -240,16 +294,21 @@ for i = 1 : childSize
         end        
         evaluatedData.comments = COMMENTS;
         
-        % evaluate mesopic luminance image
-        [evaluatedData.dataImageMesopic, ~] = ...
-            mesopicLuminance_intermediate(evaluatedData.dataImagePhotopic,...
-            evaluatedData.dataImageScotopic);        
+        % evaluate mesopic luminance image if photopic & scotopic image
+        % data exists
+        if ~(isempty(evaluatedData.dataImagePhotopic)) ...
+                && ~(isempty(evaluatedData.dataImageScotopic))
+            [evaluatedData.dataImageMesopic, ~] = ...
+                mesopicLuminance_intermediate(evaluatedData.dataImagePhotopic,...
+                evaluatedData.dataImageScotopic);   
+        end
         
         % save obj in output struct
         elements{currentElementPointer} = evaluatedData;
         currentElementPointer = currentElementPointer + 1;
         
-    end % end of browsing for 'LMKData'    
+    end % end of browsing for 'LMKData'  
+    
 end % end of parse the Children of struct
 
 % remove potential empty cells
@@ -261,10 +320,6 @@ for i = 1 : childSize
     end
 end
 elements = elements(1:currentEnd);
-
-% save dataset as .mat
-imageset = elements;
-save(dataSetName, 'imageset');
 
 end
 

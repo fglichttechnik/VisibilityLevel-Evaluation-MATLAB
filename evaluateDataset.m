@@ -13,7 +13,8 @@ T = 1;			%observing time of visual object
 K = 2.6;		%k factor of adrians model
 DISTANCE_TO_MEASUREMENT_FIELD = 35;	%distance between camera and first measurement position of visual object
 SIZE_OF_OBJECT = 0.30;	%size of visual object
-DATASETNAME = '6,5Proz.mat';
+DATASETNAME = '6,5Proz'; % name of the .mat-file to save image data
+XMLNAME = 'lmkXML'; % name of the .xml-file for this dataset
 
 %these parameters control the method of calculation 
 %for the target object and background luminances
@@ -41,23 +42,29 @@ ANALYSIS_MODE = 'PHOTOPIC';
 %no adjustments have to be done below
 
 %load data
-if ~exist(DATASETNAME, 'file');
+if ~exist([DATASETNAME, '.mat'], 'file');
     %load xml file and read all pf images
-    imageset = XMLtoMAT([PATH, '\lmkXML.xml']);
+    imageset = XMLtoMAT([PATH,'\',XMLNAME,'.xml']);
 else
     %load image data set
-    imageset = load(DATASETNAME);    
+    disp(['Loading dataset ', DATASETNAME, '.mat ...']);
+    load(DATASETNAME);    
 end
+
+%save data
+save(DATASETNAME, 'imageset');
+
 lengthOfSet = length(imageset);
 
 %savepath for result images
 savePath = which('evaluateDataset');
 savePath = savePath(1 : end - 18);
 savePath = strcat(savePath,'/resultImages');
-if(~exist(savePath))
+if(~exist(savePath, 'dir'))
     mkdir(savePath)
 end
 
+disp('Calculating...');
 %initialize result data
 weberContrastPhotopic = zeros(lengthOfSet,1);
 weberContrastScotopic = zeros(lengthOfSet,1);
