@@ -14,7 +14,7 @@ K = 2.6;		%k factor of adrians model
 DISTANCE_TO_MEASUREMENT_FIELD = 35;	%distance between camera and first measurement position of visual object
 SIZE_OF_OBJECT = 0.30;	%size of visual object
 DATASETNAME = '6,5Proz'; % name of the .mat-file to save image data
-XMLNAME = 'lmkXML'; % name of the .xml-file for this dataset
+XMLNAME = 'lmkXMLmat'; % name of the .xml-file for this dataset
 
 %these parameters control the method of calculation 
 %for the target object and background luminances
@@ -44,7 +44,7 @@ ANALYSIS_MODE = 'PHOTOPIC';
 %load data
 if ~exist([DATASETNAME, '.mat'], 'file');
     %load xml file and read all pf images
-    imageset = XMLtoMAT([PATH,'\',XMLNAME,'.xml']);
+    imageset = XMLtoMAT2([PATH,'\',XMLNAME,'.xml']);
 else
     %load image data set
     disp(['Loading dataset ', DATASETNAME, '.mat ...']);

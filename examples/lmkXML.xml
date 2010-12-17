@@ -2,8 +2,6 @@
 <!DOCTYPE LMKSet SYSTEM "LMKSet.dtd">
 
 <LMKSet>  
-    <dataSetName src="6,5Proz.mat"/>	
-   
     <StreetSurface>
         <QuadrangleObject>
 			<upperLeft x="590" y="505"/>
@@ -14,8 +12,8 @@
 	</StreetSurface>
 	
     <LMKData>
-        <dataPhotopic src="00m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="00m_6,5Proz_VS.pf" type="pf"/>	
+        <dataSource src="00m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="00m_6,5Proz_VS.pf" type="pf_scotopic"/>	
         <RectObject>
             <upperLeft x="582" y="843"/>
             <lowerRight x="687" y="951"/>
@@ -25,8 +23,8 @@
     </LMKData>
     
     <LMKData>
-        <dataPhotopic src="2,9m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="2,9m_6,5Proz_VS.pf" type="pf"/>
+        <dataSource src="2,9m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="2,9m_6,5Proz_VS.pf" type="pf_scotopic"/>
         <RectObject>
             <upperLeft x="600" y="805"/>
             <lowerRight x="695" y="899"/>
@@ -36,8 +34,8 @@
     </LMKData>
     
     <LMKData>
-        <dataPhotopic src="5,8m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="5,8m_6,5Proz_VS.pf" type="pf"/>
+        <dataSource src="5,8m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="5,8m_6,5Proz_VS.pf" type="pf_scotopic"/>
         <RectObject>
             <upperLeft x="605" y="772"/>
             <lowerRight x="688" y="853"/>
@@ -47,8 +45,8 @@
     </LMKData>
     
     <LMKData>
-        <dataPhotopic src="8,7m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="8,7m_6,5Proz_VS.pf" type="pf"/>
+        <dataSource src="8,7m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="8,7m_6,5Proz_VS.pf" type="pf_scotopic"/>
         <RectObject>
             <upperLeft x="618" y="741"/>
             <lowerRight x="691" y="816"/>
@@ -58,8 +56,8 @@
     </LMKData>
 
     <LMKData>
-        <dataPhotopic src="11,6m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="11,6m_6,5Proz_VS.pf" type="pf"/>
+        <dataSource src="11,6m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="11,6m_6,5Proz_VS.pf" type="pf_scotopic"/>
         <RectObject>
             <upperLeft x="624" y="719"/>
             <lowerRight x="687" y="786"/>
@@ -69,8 +67,8 @@
     </LMKData>
 
     <LMKData>
-        <dataPhotopic src="14,5m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="14,5m_6,5Proz_VS.pf" type="pf"/>
+        <dataSource src="14,5m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="14,5m_6,5Proz_VS.pf" type="pf_scotopic"/>
         <RectObject>
             <upperLeft x="633" y="698"/>
             <lowerRight x="690" y="759"/>
@@ -80,8 +78,8 @@
     </LMKData>
 
     <LMKData>
-        <dataPhotopic src="17,4m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="17,4m_6,5Proz_VS.pf" type="pf"/>
+        <dataSource src="17,4m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="17,4m_6,5Proz_VS.pf" type="pf_scotopic"/>
         <RectObject>
             <upperLeft x="636" y="684"/>
             <lowerRight x="690" y="739"/>
@@ -91,8 +89,8 @@
     </LMKData>
 
     <LMKData>
-        <dataPhotopic src="20,3m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="20,3m_6,5Proz_VS.pf" type="pf"/>		
+        <dataSource src="20,3m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="20,3m_6,5Proz_VS.pf" type="pf_scotopic"/>		
         <RectObject>
             <upperLeft x="639" y="668"/>
             <lowerRight x="688" y="720"/>
@@ -102,8 +100,8 @@
     </LMKData>
 
     <LMKData>
-        <dataPhotopic src="23,2m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="23,2m_6,5Proz_VS.pf" type="pf"/>
+        <dataSource src="23,2m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="23,2m_6,5Proz_VS.pf" type="pf_scotopic"/>
         <RectObject>
             <upperLeft x="645" y="657"/>
             <lowerRight x="690" y="705"/>
@@ -113,8 +111,8 @@
     </LMKData>
  
     <LMKData>
-        <dataPhotopic src="26,1m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="26,1m_6,5Proz_VS.pf" type="pf"/>
+        <dataSource src="26,1m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="26,1m_6,5Proz_VS.pf" type="pf_scotopic"/>
         <RectObject>
             <upperLeft x="644" y="648"/>
             <lowerRight x="685" y="691"/>
@@ -124,8 +122,8 @@
     </LMKData>
 
     <LMKData>
-        <dataPhotopic src="29,0m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="29,0m_6,5Proz_VS.pf" type="pf"/>
+        <dataSource src="29,0m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="29,0m_6,5Proz_VS.pf" type="pf_scotopic"/>
         <RectObject>
             <upperLeft x="646" y="641"/>
             <lowerRight x="685" y="680"/>
@@ -135,8 +133,8 @@
     </LMKData>
 
     <LMKData>
-        <dataPhotopic src="31,9m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="31,9m_6,5Proz_VS.pf" type="pf"/>
+        <dataSource src="31,9m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="31,9m_6,5Proz_VS.pf" type="pf_scotopic"/>
         <RectObject>
             <upperLeft x="645" y="633"/>
             <lowerRight x="684" y="670"/>
@@ -146,8 +144,8 @@
     </LMKData>
 
     <LMKData>
-        <dataPhotopic src="34,8m_6,5Proz_VL.pf" type="pf"/>
-		<dataScotopic src="34,8m_6,5Proz_VS.pf" type="pf"/>
+        <dataSource src="34,8m_6,5Proz_VL.pf" type="pf_photopic"/>
+		<dataSource src="34,8m_6,5Proz_VS.pf" type="pf_scotopic"/>
         <RectObject>
             <upperLeft x="648" y="626"/>
             <lowerRight x="684" y="664"/>

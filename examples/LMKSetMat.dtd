@@ -1,4 +1,4 @@
-<!ELEMENT LMKSet (dataSetName, StreetSurface, LMKData+)>
+<!ELEMENT LMKSetMat (dataSetName, StreetSurface, LMKData+)>
 <!ELEMENT dataSetName (#PCDATA)>
 <!ATTLIST dataSetName 
     src CDATA #REQUIRED

@@ -117,6 +117,7 @@ for i = 1 : childSize
     if i > 1
         clear evaluatedData
     end
+    matSource = '';
     % create new object 
     evaluatedData = LMK_Image_Metadata;
     
@@ -128,63 +129,49 @@ for i = 1 : childSize
         % browse the children of 'LMKData'
         rectMatch = 0;
         photMatch = 0;
-        scotMatch = 0;
+%         scotMatch = 0;
         for j = 1 : grandchildSize
             % search for children
-            grandchildMatch1 = strmatch('dataPhotopic', str.Children...
+            grandchildMatch1 = strmatch('dataSource', str.Children...
                 (1,i).Children(1,j).Name);
             if grandchildMatch1 == 1
                 photMatch = 1;
-                % get the number of attributes of 'dataPhotopic'
+                % get the number of attributes of 'dataSource'
                 [~, grandchildAttributesSize1] = size(str.Children...
                     (1,i).Children(1,j).Attributes);
-                % browse the attributes of 'dataPhotopic'
+                % browse the attributes of 'dataSource'
                 for k = 1 : grandchildAttributesSize1 
                     grandchildAttributeMatch1 = strmatch('src', ...
                         str.Children(1,i).Children(1,j).Attributes...
                         (1,k).Name);                      
-                    if grandchildAttributeMatch1 == 1
-                        evaluatedData.dataSRCPhotopic = str.Children...
-                            (1,i).Children(1,j).Attributes(1,k).Value;
-                        disp(evaluatedData.dataSRCPhotopic);
+                    if grandchildAttributeMatch1 == 1   
+                        dataSRC = str.Children(1,i).Children(1,j).Attributes(1,k).Value;                                                
                         continue
                     end
                     grandchildAttributeMatch2 = strmatch('type', ...
                         str.Children(1,i).Children(1,j).Attributes...
                         (1,k).Name);
                     if grandchildAttributeMatch2 == 1
-                        evaluatedData.dataTypePhotopic = str.Children...
-                            (1,i).Children(1,j).Attributes(1,k).Value;                        
+                        dataType = str.Children(1,i).Children(1,j).Attributes(1,k).Value;
+                        typeMatch1 = strcmp(dataType, 'pf_photopic');
+                        typeMatch2 = strcmp(dataType, 'pf_scotopic');
+                        typeMatch3 = strcmp(dataType, 'mat');
+                        if typeMatch1 == 1
+                            evaluatedData.dataTypePhotopic = dataType;
+                            evaluatedData.dataSRCPhotopic = dataSRC;
+                        elseif typeMatch2 == 1
+                            evaluatedData.dataTypeScotopic = dataType;
+                            evaluatedData.dataSRCScotopic = dataSRC;
+                        elseif typeMatch3 == 1
+                            evaluatedData.dataSRCPhotopic = dataSRC;
+                            evaluatedData.dataSRCScotopic = dataSRC;
+                            evaluatedData.dataTypePhotopic = dataType;
+                            evaluatedData.dataTypeScotopic = dataType;
+                            matSource = dataSRC;
+                        end                                
+                        disp(dataSRC)
                     end
                 end                 
-                continue
-            end
-            grandchildMatch2 = strmatch('dataScotopic', str.Children...
-                (1,i).Children(1,j).Name);
-            if grandchildMatch2 == 1
-                scotMatch = 1;
-                % get the number of attributes of 'dataScotopic'
-                [~, grandchildAttributesSize2] = size(str.Children...
-                    (1,i).Children(1,j).Attributes);
-                % browse the attributes of 'dataPhotopic'
-                for k = 1 : grandchildAttributesSize2
-                    grandchildAttributeMatch1 = strmatch('src', ...
-                        str.Children(1,i).Children(1,j).Attributes...
-                        (1,k).Name);                   
-                    if grandchildAttributeMatch1 == 1
-                        evaluatedData.dataSRCScotopic = str.Children...
-                            (1,i).Children(1,j).Attributes(1,k).Value;
-                        disp(evaluatedData.dataSRCScotopic);
-                        continue
-                    end
-                    grandchildAttributeMatch2 = strmatch('type', ...
-                        str.Children(1,i).Children(1,j).Attributes...
-                        (1,k).Name);
-                    if grandchildAttributeMatch2 == 1
-                        evaluatedData.dataTypeScotopic = str.Children...
-                            (1,i).Children(1,j).Attributes(1,k).Value;
-                    end
-                end
                 continue
             end
             grandchildMatch3 = strmatch('RectObject', str.Children...
@@ -244,11 +231,11 @@ for i = 1 : childSize
             disp(['Warning: no type attributes for photopic data found!',...
                 'Picture cannot be loaded!']);           
          end 
-         if scotMatch == 1 && isempty(evaluatedData.dataSRCScotopic) 
+         if photMatch == 1 && isempty(evaluatedData.dataSRCScotopic) 
             disp(['Warning: no src attributes for scotopic data found!',...
                 'Picture cannot be loaded!']);           
          end
-         if scotMatch == 1 && isempty(evaluatedData.dataTypeScotopic)
+         if photMatch == 1 && isempty(evaluatedData.dataTypeScotopic)
             disp(['Warning: no type attributes for scotopic data found!',...
                 'Picture cannot be loaded!']);
          end 
@@ -278,15 +265,26 @@ for i = 1 : childSize
         point2 = struct('x',x2,'y',y2);
         evaluatedData.rect = struct('upperLeft',point1,'lowerRight',point2);
         
-        % read Image
-        if ~(isempty(evaluatedData.dataSRCPhotopic)) && (exist([evaluatedData.dataSRCPhotopic],'file'))            
-            evaluatedData.dataImagePhotopic = LMK_readPfImage...
-                (evaluatedData.dataSRCPhotopic);
+        % read .pf-images   
+        if isempty(matSource)
+            if ~(isempty(evaluatedData.dataSRCPhotopic)) && (exist([evaluatedData.dataSRCPhotopic],'file'))
+                    evaluatedData.dataImagePhotopic= LMK_readPfImage...
+                        (evaluatedData.dataSRCPhotopic);
+            end
+            if ~(isempty(evaluatedData.dataSRCScotopic)) && (exist([evaluatedData.dataSRCScotopic],'file'))
+                    evaluatedData.dataImageScotopic= LMK_readPfImage...
+                        (evaluatedData.dataSRCScotopic);
+            end
         end
-        if ~(isempty(evaluatedData.dataSRCScotopic)) && (exist([evaluatedData.dataSRCScotopic],'file'))
-            evaluatedData.dataImageScotopic= LMK_readPfImage...
-                (evaluatedData.dataSRCScotopic);
+        % load .mat-image data
+        if (isempty(matSource)== 0) && (exist([matSource],'file')==2)
+                matImage = load([matSource]);
+                evaluatedData.dataImagePhotopic = ....
+                    matImage.LMK_measurements.dataImage.YL;
+                evaluatedData.dataImageScotopic = ...
+                    matImage.LMK_measurements.dataImage.LS;
         end
+        
         
         % put quadrangle into obj
         if(exist('quadrangle','var'))
