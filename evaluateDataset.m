@@ -6,15 +6,23 @@
 
 %clear all; %this will clear all breakpoints as well
 
-PATH = 'C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB\database\6,5';	%this is the path to the datasets xml file
+%file path preferences
+XMLNAME = 'keller_alle'; % name of the .xml-file for this dataset
+PATH = 'C:\Dokumente und Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	%this is the path to the datasets xml file
+%C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB
+
+%2° field for current lens (8mm)
 RADIUS = 100;	%number of pixels which correspond to 2Â°
+
+%adrian threshold model parameter
 AGE = 24;		%age of observer for adrians model
 T = 1;			%observing time of visual object
 K = 2.6;		%k factor of adrians model
-DISTANCE_TO_MEASUREMENT_FIELD = 35;	%distance between camera and first measurement position of visual object
+
+%visual object preferences
+DISTANCE_TO_MEASUREMENT_FIELD = 11;	%distance between camera and first measurement position of visual object
 SIZE_OF_OBJECT = 0.30;	%size of visual object
-DATASETNAME = '6,5Proz'; % name of the .mat-file to save image data
-XMLNAME = 'lmkXMLmat'; % name of the .xml-file for this dataset
+
 
 %these parameters control the method of calculation 
 %for the target object and background luminances
@@ -32,27 +40,25 @@ XMLNAME = 'lmkXMLmat'; % name of the .xml-file for this dataset
 BACKGROUND_LUMINANCE_MODE = '2DEGREE';
 
 %either 'OBJECT' or 'STRONGEST_EDGE'
-CONTRAST_MODE = 'OBJECT';
+CONTRAST_MODE = 'STRONGEST_EDGE';
 
 %analyse either photopic luminances or photopic, scotopic and mesopic luminances
 %either 'PHOTOPIC' or 'ALL'
-ANALYSIS_MODE = 'PHOTOPIC';
+ANALYSIS_MODE = 'ALL';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %no adjustments have to be done below
 
 %load data
-if ~exist([DATASETNAME, '.mat'], 'file');
+if ~exist([PATH,'\',XMLNAME, '.mat'], 'file');
     %load xml file and read all pf images
-    imageset = XMLtoMAT2([PATH,'\',XMLNAME,'.xml']);
+    imageset = XMLtoMAT([PATH,'\',XMLNAME,'.xml']);
+    save([PATH,'\',XMLNAME, '.mat'], 'imageset');
 else
     %load image data set
-    disp(['Loading dataset ', DATASETNAME, '.mat ...']);
-    load(DATASETNAME);    
+    disp(['Loading dataset ', XMLNAME, '.mat ...']);
+    load(XMLNAME);    
 end
-
-%save data
-save(DATASETNAME, 'imageset');
 
 lengthOfSet = length(imageset);
 
