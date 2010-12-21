@@ -8,7 +8,8 @@
 
 %file path preferences
 XMLNAME = 'keller_alle'; % name of the .xml-file for this dataset
-PATH = 'C:\Dokumente und Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	%this is the path to the datasets xml file
+%PATH = 'C:\Dokumente und Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	%this is the path to the datasets xml file
+PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Testmessung Keller 2010_12_21';
 %C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB
 
 %2° field for current lens (8mm)
@@ -49,11 +50,19 @@ ANALYSIS_MODE = 'ALL';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %no adjustments have to be done below
 
+%platform specific path delimiter
+if(ispc)
+    DELIMITER = '\';
+elseif(isunix)
+    DELIMITER = '/';
+end
+
+
 %load data
-if ~exist([PATH,'\',XMLNAME, '.mat'], 'file');
+if ~exist([PATH,DELIMITER,XMLNAME, '.mat'], 'file');
     %load xml file and read all pf images
-    imageset = XMLtoMAT([PATH,'\',XMLNAME,'.xml']);
-    save([PATH,'\',XMLNAME, '.mat'], 'imageset');
+    imageset = XMLtoMAT([PATH,DELIMITER,XMLNAME,'.xml']);
+    save([PATH,DELIMITER,XMLNAME, '.mat'], 'imageset');
 else
     %load image data set
     disp(['Loading dataset ', XMLNAME, '.mat ...']);
@@ -259,7 +268,7 @@ axis('tight');
 xlabel('d in m');
 ylabel('C');
 title(strcat('Weber Kontrast ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
-saveas(gcf,strcat(savePath,'/WeberKontrast_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+saveas(gcf,strcat(savePath,DELIMITER,'WeberKontrast_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
 
 figure
@@ -277,7 +286,7 @@ axis('tight');
 xlabel('d in m');
 ylabel('Delta L');
 title(strcat('/Delta L ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
-saveas(gcf,strcat(savePath,'/DeltaL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+saveas(gcf,strcat(savePath,DELIMITER,'DeltaL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
 figure
 plot(d,VLPhotopic,'r')
@@ -294,41 +303,41 @@ axis('tight');
 xlabel('d in m');
 ylabel('VL');
 title(strcat('Visibility Level ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
-saveas(gcf,strcat(savePath,'/VL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+saveas(gcf,strcat(savePath,DELIMITER,'VL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
-figure;
-plot(d,meanTargetPhotopic,'r');
-if(strmatch(ANALYSIS_MODE,'ALL'))
-	hold on
-	plot(d,meanTargetMesopic,'gr')
-	plot(d,meanTargetScotopic,'b')
-	hold off
-	legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
-else
-	legend('L_{photopisch}');
-end
-axis('tight');
-xlabel('d in m');
-ylabel('L');
-title(strcat('mean L_t ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
-saveas(gcf,strcat(savePath,'/meanLt_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
-
-figure;
-plot(d,meanBackgroundPhotopic,'r');
-if(strmatch(ANALYSIS_MODE,'ALL'))
-	hold on
-	plot(d,meanBackgroundMesopic,'gr')
-	plot(d,meanBackgroundScotopic,'b')
-	hold off
-	legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
-else
-	legend('L_{photopisch}');
-end
-axis('tight');
-xlabel('d in m');
-ylabel('L');
-title(strcat('mean L_B ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
-saveas(gcf,strcat(savePath,'/meanLB_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+% figure;
+% plot(d,meanTargetPhotopic,'r');
+% if(strmatch(ANALYSIS_MODE,'ALL'))
+% 	hold on
+% 	plot(d,meanTargetMesopic,'gr')
+% 	plot(d,meanTargetScotopic,'b')
+% 	hold off
+% 	legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
+% else
+% 	legend('L_{photopisch}');
+% end
+% axis('tight');
+% xlabel('d in m');
+% ylabel('L');
+% title(strcat('mean L_t ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
+% saveas(gcf,strcat(savePath,DELIMITER,'meanLt_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+% 
+% figure;
+% plot(d,meanBackgroundPhotopic,'r');
+% if(strmatch(ANALYSIS_MODE,'ALL'))
+% 	hold on
+% 	plot(d,meanBackgroundMesopic,'gr')
+% 	plot(d,meanBackgroundScotopic,'b')
+% 	hold off
+% 	legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
+% else
+% 	legend('L_{photopisch}');
+% end
+% axis('tight');
+% xlabel('d in m');
+% ylabel('L');
+% title(strcat('mean L_B ',DELIMITER,' ',CONTRAST_MODE));
+% saveas(gcf,strcat(savePath,DELIMINTER,'meanLB_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
 figure;
 plot(d,meanTargetPhotopic,'r');
@@ -351,7 +360,7 @@ axis('tight');
 xlabel('d in m');
 ylabel('L');
 title(strcat('mean L_t vs mean L_B ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
-saveas(gcf,strcat(savePath,'/meanLtLB_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+saveas(gcf,strcat(savePath,DELIMITER,'meanLtLB_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
 figure;
 plot(d,alpha);
@@ -365,7 +374,7 @@ set(gca,'xtick',[]);
 delete(findall(gcf,'parent',ax))
 set(ax,'color','none','ytick',[],'tickdir','out','hittest','off')
 
-saveas(gcf,strcat(savePath,'/Sehobjektwinkel_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+saveas(gcf,strcat(savePath,DELIMITER,'Sehobjektwinkel_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
 
 
