@@ -48,12 +48,12 @@ function sqrt_phi = calcRiccoPhi(Lb)
 % calculates the Ricco part
 %Lb >= 0.6cd/m^2
 if(Lb >= 0.6)
-    sqrt_phi = log(4.1925 .* Lb.^(0.1556)) + 0.1684 .* Lb.^(0.5867);
+    sqrt_phi = log10(4.1925 .* Lb.^(0.1556)) + 0.1684 .* Lb.^(0.5867);
 elseif(Lb <= 0.00418)
-    log_sqrt_phi = 0.028 + 0.173 .* log(Lb);
+    log_sqrt_phi = 0.028 + 0.173 .* log10(Lb);
     sqrt_phi = 10.^log_sqrt_phi;
 else
-    log_sqrt_phi = -0.072 + 0.3372 .* log(Lb) + 0.0866 .* (log(Lb)).^2;
+    log_sqrt_phi = -0.072 + 0.3372 .* log10(Lb) + 0.0866 .* (log10(Lb)).^2;
     sqrt_phi = 10.^log_sqrt_phi;
 end
 end
@@ -64,10 +64,10 @@ function sqrt_L = calcWeberL(Lb)
 if(Lb >= 0.6)
     sqrt_L = 0.05946 .* Lb.^(0.466);
 elseif(Lb <= 0.00418)
-    log_sqrt_L = -0.891 + 0.5275 .* log(Lb) + 0.0227 .* (log(Lb))^2;
+    log_sqrt_L = -0.891 + 0.5275 .* log10(Lb) + 0.0227 .* (log10(Lb))^2;
     sqrt_L = 10.^log_sqrt_L;
 else
-    log_sqrt_L = -1.256 + 0.319 .* log(Lb);
+    log_sqrt_L = -1.256 + 0.319 .* log10(Lb);
     sqrt_L = 10.^log_sqrt_L;
 end
 end
@@ -81,7 +81,7 @@ if(Lb >= 0.1)
 elseif(Lb > 0.004)
     factor = 0.075;    %Lb > 0.004 cd/m^2
 end
-m = 10.^(- (factor .* (log(Lb) + 1).^2 + 0.0245));
+m = 10.^(- (factor .* (log10(Lb) + 1).^2 + 0.0245));
 m = 10.^(-m)
 beta = 0.6 .* Lb.^(-0.1488)
 Fcp = 1 - (m * alpha^(-beta) / (2.4 * deltaLpos));
@@ -92,10 +92,10 @@ function timeFactor = calcTimeFactor (alpha, Lb, t)
 
 assert(alpha < 60);
 
-logAlpha = log(alpha) + 0523;
+logAlpha = log10(alpha) + 0523;
 aAlpha = 0.36 - 0.0972 * logAlpha^2 / (logAlpha^2 - 2.513 * logAlpha + 2.7895)
 
-logLb = log(Lb) + 6;
+logLb = log10(Lb) + 6;
 aLb = 0.355 - 0.1217 * logLb^2 / (logLb^2 - 10.4 * logLb + 52.28)
 
 %for alpha < 60'
