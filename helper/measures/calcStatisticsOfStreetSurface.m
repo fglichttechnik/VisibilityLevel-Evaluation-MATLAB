@@ -1,4 +1,4 @@
-function [adaptLum, imgResult] = calcStatisticsOfStreetSurface(img, quadrangle)
+function [meanStreet, stdStreet, imgResult] = calcStatisticsOfStreetSurface(img, quadrangle)
 %author Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 
@@ -41,10 +41,12 @@ gradLeft = x1 / (y3 - y1);
 gradRight = x2 / (y4 - y2);
                         
 pixelCounter = 0;
-adaptLum = 0;
+meanStreet = 0;
+stdStreet = 0;
 currentInsetLeft = 0;
 currentInsetRight = 0;
 
+%calc mean
 for lines = y1 : y4   
     currentLeftX = x1 - currentInsetLeft;
     currentRightX = x2 + currentInsetRight;   
@@ -59,14 +61,7 @@ for lines = y1 : y4
         roundedCurrentRightX = x4;
     end
     
-    %ineffizient:
-    %for columns = currentLeftX : currentRightX;       
-    %    adaptLum = adaptLum + img(round(lines), round(columns));
-    %    pixelCounter = pixelCounter +1;
-    %end
-    
-    %effizienter in matlab sind vektoroperationen und eingebaute funktionen:
-    adaptLum = adaptLum + sum(img(round(lines), roundedCurrentLeftX : roundedCurrentRightX));
+    meanStreet = meanStreet + sum(img(round(lines), roundedCurrentLeftX : roundedCurrentRightX));
     pixelCounter = pixelCounter + roundedCurrentRightX - roundedCurrentLeftX + 1;
     
     %prepare result image
@@ -78,12 +73,36 @@ for lines = y1 : y4
     %adjust inset values
     currentInsetLeft = currentInsetLeft + gradLeft;
     currentInsetRight = currentInsetRight + gradRight;    
-end     
+end 
+
+%calc std
+for lines = y1 : y4   
+    currentLeftX = x1 - currentInsetLeft;
+    currentRightX = x2 + currentInsetRight;   
+    
+    roundedCurrentLeftX = round(currentLeftX);
+    roundedCurrentRightX = round(currentRightX);
+    
+    if roundedCurrentLeftX < 1
+        roundedCurrentLeftX = 1;
+    end
+    if roundedCurrentRightX > x4
+        roundedCurrentRightX = x4;
+    end
+    
+    stdStreet = stdStreet + sum(img(round(lines), roundedCurrentLeftX : roundedCurrentRightX) - meanStreet).^2;
+    pixelCounter = pixelCounter + roundedCurrentRightX - roundedCurrentLeftX + 1;
+
+    %adjust inset values
+    currentInsetLeft = currentInsetLeft + gradLeft;
+    currentInsetRight = currentInsetRight + gradRight;    
+end
 
 if(SAVEIMAGE)
     imgResult = logical(imgResult);
 end
 
-adaptLum = adaptLum / pixelCounter;
+stdStreet = sqrt(stdStreet / pixelCounter);
+meanStreet = meanStreet / pixelCounter;
 
 end

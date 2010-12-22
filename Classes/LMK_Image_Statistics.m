@@ -12,8 +12,8 @@ classdef LMK_Image_Statistics < hgsetget
         minBackground
         maxBackground
         stdBackground
-        streetSurfaceLuminance
-        
+        meanStreetSurface
+        stdStreetSurface
         upperEdgeContrast
         lowerEdgeContrast
         leftEdgeContrast
@@ -31,7 +31,8 @@ classdef LMK_Image_Statistics < hgsetget
         minBackground,...
         maxBackground,...
         stdBackground,...
-        streetSurfaceLuminance,...        
+        meanStreetSurface,... 
+        stdStreetSurface,...
         upperEdgeContrast,...
         lowerEdgeContrast,...
         leftEdgeContrast,...
@@ -46,7 +47,8 @@ classdef LMK_Image_Statistics < hgsetget
                 obj.minBackground = minBackground;
                 obj.maxBackground = maxBackground;
                 obj.stdBackground = stdBackground;
-                obj.streetSurfaceLuminance = streetSurfaceLuminance;
+                obj.meanStreetSurface = meanStreetSurface;
+                obj.stdStreetSurface = stdStreetSurface;
                 obj.upperEdgeContrast = upperEdgeContrast;
                 obj.lowerEdgeContrast = lowerEdgeContrast;
                 obj.leftEdgeContrast = leftEdgeContrast;

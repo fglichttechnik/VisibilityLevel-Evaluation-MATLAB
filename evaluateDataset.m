@@ -7,9 +7,9 @@
 %clear all; %this will clear all breakpoints as well
 
 %file path preferences
-XMLNAME = 'keller_alle'; % name of the .xml-file for this dataset
+XMLNAME = 'keller_vorne'; % name of the .xml-file for this dataset
 %PATH = 'C:\Dokumente und Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	%this is the path to the datasets xml file
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Testmessung Keller 2010_12_21';
+PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/2010_12_22_Testmessung_Keller_vorne';
 %C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB
 
 %2° field for current lens (8mm)
@@ -38,10 +38,10 @@ SIZE_OF_OBJECT = 0.30;	%size of visual object
 %these two methods have been taken from diploma thesis Krenz2010
 
 %either 'STREET' or '2DEGREE'
-BACKGROUND_LUMINANCE_MODE = '2DEGREE';
+BACKGROUND_LUMINANCE_MODE = 'STREET';
 
 %either 'OBJECT' or 'STRONGEST_EDGE'
-CONTRAST_MODE = 'STRONGEST_EDGE';
+CONTRAST_MODE = 'OBJECT';
 
 %analyse either photopic luminances or photopic, scotopic and mesopic luminances
 %either 'PHOTOPIC' or 'ALL'
@@ -87,9 +87,15 @@ weberContrastMesopic = zeros(lengthOfSet,1);
 meanBackgroundPhotopic = zeros(lengthOfSet,1);
 meanBackgroundScotopic = zeros(lengthOfSet,1);
 meanBackgroundMesopic = zeros(lengthOfSet,1);
+stdBackgroundPhotopic = zeros(lengthOfSet,1);
+stdBackgroundScotopic = zeros(lengthOfSet,1);
+stdBackgroundMesopic = zeros(lengthOfSet,1);
 meanTargetPhotopic = zeros(lengthOfSet,1);
 meanTargetScotopic = zeros(lengthOfSet,1);
 meanTargetMesopic = zeros(lengthOfSet,1);
+stdTargetPhotopic = zeros(lengthOfSet,1);
+stdTargetScotopic = zeros(lengthOfSet,1);
+stdTargetMesopic = zeros(lengthOfSet,1);
 VLPhotopic = zeros(lengthOfSet,1);
 VLScotopic = zeros(lengthOfSet,1);
 VLMesopic = zeros(lengthOfSet,1);
@@ -141,7 +147,6 @@ for i = 1 : lengthOfSet
     
     
     meanTargetPhotopic(i) = c.meanTarget;
-    %VLPhotopic(i) = calcVisibilityLevelFromContrast(meanBackground, weberContrastPhotopic(i),alphaMinutes,AGE,T,K);
     VLPhotopic(i) = currentDeltaLPhotopic(i) / abs(meanTargetPhotopic(i) - meanBackgroundPhotopic(i));
     
     if(strmatch(ANALYSIS_MODE,'ALL'))
@@ -175,7 +180,6 @@ for i = 1 : lengthOfSet
         
     
     meanTargetScotopic(i) = c.meanTarget;
-    %VLScotopic(i) = calcVisibilityLevelFromContrast(meanBackground, weberContrastScotopic(i),alphaMinutes,AGE,T,K);
     VLScotopic(i) = currentDeltaLScotopic(i) / abs(meanTargetScotopic(i) - meanBackgroundScotopic(i));
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -210,100 +214,65 @@ for i = 1 : lengthOfSet
         
     
     meanTargetMesopic(i) = c.meanTarget;
-    %VLMesopic(i) = calcVisibilityLevelFromContrast(meanBackground, weberContrastMesopic(i),alphaMinutes,AGE,T,K);
     VLMesopic(i) = currentDeltaLMesopic(i) / abs(meanTargetMesopic(i) - meanBackgroundMesopic(i));
     end
-    
-    %
-    %         %calc values for scotopic image
-    %         currentScotopic_LMK_Image_Statistics = statisticsOfCircleAndRect(currentLMK_Image_Metadata, RADIUS, savePath, 'SCOTOPIC');
-    %         c = currentScotopic_LMK_Image_Statistics;
-    %         if(strmatch(BACKGROUND_LUMINANCE_MODE,'STREET'))
-    %             weberContrastScotopic(i) = (meanTarget - streetSurfaceLuminance) / streetSurfaceLuminance;
-    %             meanBackgroundScotopic(i) = streetSurfaceLuminance;
-    %             currentDeltaLScotopic(i) = calcDeltaL(streetSurfaceLuminance, alphaMinutes, AGE, T, K);
-    %
-    %         elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
-    %             weberContrastScotopic(i) = (meanTarget - meanBackground) / meanBackground;
-    %             meanBackgroundScotopic(i) = meanBackground;
-    %             currentDeltaLScotopic(i) = calcDeltaL(streetSurfaceLuminance, alphaMinutes, AGE, T, K);
-    %         end
-    %         meanTargetScotopic(i) = meanTarget;
-    %         %VLScotopic(i) = calcVisibilityLevelFromContrast(meanBackground, weberContrastScotopic(i),alphaMinutes,AGE,T,K);
-    %         VLScotopic(i) = currentDeltaLScotopic(i) / abs(meanTargetScotopic(i) - meanBackgroundScotopic(i));
-    %
-    %         %calc values for mesopic image
-    %         currentLMK_Image_Metadata.dataImageMesopic = mesopicLuminance(currentLMK_Image_Metadata.dataImagePhotopic, ...
-    %             currentLMK_Image_Metadata.dataImageScotopic);
-    %         currentMesopic_LMK_Image_Statistics = statisticsOfCircleAndRect(currentLMK_Image_Metadata, RADIUS, savePath, 'MESOPIC');
-    %         c = currentMesopic_LMK_Image_Statistics;
-    %         if(strmatch(BACKGROUND_LUMINANCE_MODE,'STREET'))
-    %             weberContrastMesopic(i) = (meanTarget - streetSurfaceLuminance) / streetSurfaceLuminance;
-    %             meanBackgroundMesopic(i) = streetSurfaceLuminance;
-    %             currentDeltaLMesopic(i) = calcDeltaL(streetSurfaceLuminance, alphaMinutes, AGE, T, K);
-    %         elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
-    %             weberContrastMesopic(i) = (meanTarget - meanBackground) / meanBackground;
-    %             meanBackgroundMesopic(i) = meanBackground;
-    %             currentDeltaLMesopic(i) = calcDeltaL(streetSurfaceLuminance, alphaMinutes, AGE, T, K);
-    %         end
-    %         meanTargetMesopic(i) = meanTarget;
-    %         %VLMesopic(i) = calcVisibilityLevelFromContrast(meanBackground,weberContrastMesopic(i),alphaMinutes,AGE,T,K);
-    %         VLMesopic(i) = currentDeltaLMesopic(i) / abs(meanTargetMesopic(i) - meanBackgroundMesopic(i));
-    %
     disp('-------------------------------')
 end
 
 figure
-plot(d,weberContrastPhotopic,'r')
 if(strmatch(ANALYSIS_MODE,'ALL'))
 	hold on
-	plot(d,weberContrastMesopic,'gr')
-	plot(d,weberContrastScotopic,'b')
+	plot(d,weberContrastMesopic,'o-gr')
+    plot(d,weberContrastPhotopic,'o-r')
+	plot(d,weberContrastScotopic,'o-b')
 	hold off
 	legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
 else
+    plot(d,weberContrastPhotopic,'o-r')
 	legend('L_{photopisch}');
 end
 axis('tight');
 xlabel('d in m');
 ylabel('C');
 title(strcat('Weber Kontrast ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
-saveas(gcf,strcat(savePath,DELIMITER,'WeberKontrast_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+saveas(gcf,strcat(savePath,DELIMITER,XMLNAME,'_','WeberKontrast_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
 
 figure
-plot(d,currentDeltaLPhotopic,'r')
 if(strmatch(ANALYSIS_MODE,'ALL'))
 	hold on
-	plot(d,currentDeltaLMesopic,'gr')
-	plot(d,currentDeltaLScotopic,'b')
+	plot(d,currentDeltaLMesopic,'o-gr')
+    plot(d,currentDeltaLPhotopic,'o-r')
+	plot(d,currentDeltaLScotopic,'o-b')
 	hold off
 	legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
 else
+    plot(d,currentDeltaLPhotopic,'o-r')
 	legend('L_{photopisch}');
 end
 axis('tight');
 xlabel('d in m');
 ylabel('Delta L');
 title(strcat('/Delta L ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
-saveas(gcf,strcat(savePath,DELIMITER,'DeltaL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+saveas(gcf,strcat(savePath,DELIMITER,XMLNAME,'_','DeltaL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
 figure
-plot(d,VLPhotopic,'r')
 if(strmatch(ANALYSIS_MODE,'ALL'))
 	hold on
-	plot(d,VLMesopic,'gr')
-	plot(d,VLScotopic,'b')
+	plot(d,VLMesopic,'o-gr')
+    plot(d,VLPhotopic,'o-r')
+	plot(d,VLScotopic,'o-b')
 	hold off
 	legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
 else
+    plot(d,VLPhotopic,'o-r')
 	legend('L_{photopisch}');
 end
 axis('tight');
 xlabel('d in m');
 ylabel('VL');
 title(strcat('Visibility Level ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
-saveas(gcf,strcat(savePath,DELIMITER,'VL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+saveas(gcf,strcat(savePath,DELIMITER,XMLNAME,'_','VL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
 % figure;
 % plot(d,meanTargetPhotopic,'r');
@@ -340,19 +309,20 @@ saveas(gcf,strcat(savePath,DELIMITER,'VL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAS
 % saveas(gcf,strcat(savePath,DELIMINTER,'meanLB_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
 figure;
-plot(d,meanTargetPhotopic,'r');
 if(strmatch(ANALYSIS_MODE,'ALL'))
 	hold on
-	plot(d,meanTargetMesopic,'gr')
-	plot(d,meanTargetScotopic,'b')
-	plot(d,meanBackgroundPhotopic,'r:');
-	plot(d,meanBackgroundMesopic,'gr:')
-	plot(d,meanBackgroundScotopic,'b:')
+	plot(d,meanTargetMesopic,'o-gr');
+    plot(d,meanTargetPhotopic,'o-r');
+	plot(d,meanTargetScotopic,'o-b');
+    plot(d,meanBackgroundMesopic,'ogr:');
+	plot(d,meanBackgroundPhotopic,'or:');
+	plot(d,meanBackgroundScotopic,'ob:');
 	hold off
 	legend('L_t_{photopisch}','L_t_{mesopisch}','L_t_{skotopisch}','L_B_{photopisch}','L_B_{mesopisch}','L_B_{skotopisch}');
 else
 	hold on
-	plot(d,meanBackgroundPhotopic,'r:');
+    plot(d,meanTargetPhotopic,'or');
+	plot(d,meanBackgroundPhotopic,'or:');
 	hold off
 	legend('L_t_{photopisch}','L_B_{photopisch}');
 end
@@ -360,7 +330,7 @@ axis('tight');
 xlabel('d in m');
 ylabel('L');
 title(strcat('mean L_t vs mean L_B ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
-saveas(gcf,strcat(savePath,DELIMITER,'meanLtLB_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+saveas(gcf,strcat(savePath,DELIMITER,XMLNAME,'_','meanLtLB_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
 figure;
 plot(d,alpha);
@@ -374,7 +344,7 @@ set(gca,'xtick',[]);
 delete(findall(gcf,'parent',ax))
 set(ax,'color','none','ytick',[],'tickdir','out','hittest','off')
 
-saveas(gcf,strcat(savePath,DELIMITER,'Sehobjektwinkel_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+saveas(gcf,strcat(savePath,DELIMITER,XMLNAME,'_','Sehobjektwinkel_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
 
 
