@@ -7,10 +7,12 @@
 %clear all; %this will clear all breakpoints as well
 
 %file path preferences
-XMLNAME = 'keller_vorne'; % name of the .xml-file for this dataset
+%XMLNAME = 'keller_vorne'; % name of the .xml-file for this dataset
+XMLNAME = 'lmkXML';
 %PATH = 'C:\Dokumente und Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	%this is the path to the datasets xml file
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/2010_12_22_Testmessung_Keller_vorne';
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/2010_12_22_Testmessung_Keller_vorne';
 %C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB
+PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/6,5';
 
 %2° field for current lens (8mm)
 RADIUS = 100;	%number of pixels which correspond to 2Â°
@@ -273,40 +275,6 @@ xlabel('d in m');
 ylabel('VL');
 title(strcat('Visibility Level ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
 saveas(gcf,strcat(savePath,DELIMITER,XMLNAME,'_','VL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
-
-% figure;
-% plot(d,meanTargetPhotopic,'r');
-% if(strmatch(ANALYSIS_MODE,'ALL'))
-% 	hold on
-% 	plot(d,meanTargetMesopic,'gr')
-% 	plot(d,meanTargetScotopic,'b')
-% 	hold off
-% 	legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
-% else
-% 	legend('L_{photopisch}');
-% end
-% axis('tight');
-% xlabel('d in m');
-% ylabel('L');
-% title(strcat('mean L_t ',BACKGROUND_LUMINANCE_MODE,' ',CONTRAST_MODE));
-% saveas(gcf,strcat(savePath,DELIMITER,'meanLt_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
-% 
-% figure;
-% plot(d,meanBackgroundPhotopic,'r');
-% if(strmatch(ANALYSIS_MODE,'ALL'))
-% 	hold on
-% 	plot(d,meanBackgroundMesopic,'gr')
-% 	plot(d,meanBackgroundScotopic,'b')
-% 	hold off
-% 	legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
-% else
-% 	legend('L_{photopisch}');
-% end
-% axis('tight');
-% xlabel('d in m');
-% ylabel('L');
-% title(strcat('mean L_B ',DELIMITER,' ',CONTRAST_MODE));
-% saveas(gcf,strcat(savePath,DELIMINTER,'meanLB_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
 
 figure;
 if(strmatch(ANALYSIS_MODE,'ALL'))

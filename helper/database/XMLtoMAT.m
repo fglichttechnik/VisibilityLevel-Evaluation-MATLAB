@@ -6,11 +6,16 @@ COMMENTS = ' ';
 
 %%%%%%%%%%%%%%%nothing needs to be adjusted below%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 % parse XML-Data into a struct
 disp('Loading xml file and read all pf images...');
 stru = parseXML(filePath);
-str = stru(1,2);
+
+%either xml file with old pf data or xml file with new mat data
+if(length(stru) > 1)
+    str = stru(1,2);
+else
+    str = stru;
+end
 
 % get the number of children of the struct
 [~, childSize] = size(str.Children);

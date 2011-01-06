@@ -29,7 +29,7 @@
             <upperLeft x="600" y="805"/>
             <lowerRight x="695" y="899"/>
             <border pixel="9"/>
-	<position p="2.9"/>
+            <position p="2.9"/>
         </RectObject>
     </LMKData>
     
