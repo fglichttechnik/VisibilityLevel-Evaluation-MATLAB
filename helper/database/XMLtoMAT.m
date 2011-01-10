@@ -1,4 +1,4 @@
-function elements = XMLtoMAT(filePath)
+function elements = XMLtoMAT(xml_path)
 %author Sandy Buschmann, Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 % preferences
@@ -9,7 +9,7 @@ COMMENTS = ' ';
 
 % parse XML-Data into a struct
 disp('Loading xml file and read all pf images...');
-stru = parseXML(filePath);
+stru = parseXML(xml_path);
 str = stru(1,2);
 
 % get the number of children of the struct
@@ -155,7 +155,7 @@ for i = 1 : childSize
                         dataType = str.Children(1,i).Children(1,j).Attributes(1,k).Value;
                         typeMatch1 = strcmp(dataType, 'pf_photopic');
                         typeMatch2 = strcmp(dataType, 'pf_scotopic');
-                        typeMatch3 = strcmp(dataType, 'mat');
+                        typeMatch3 = strcmp(dataType, '.mat');
                         if typeMatch1 == 1
                             evaluatedData.dataTypePhotopic = dataType;
                             evaluatedData.dataSRCPhotopic = dataSRC;
