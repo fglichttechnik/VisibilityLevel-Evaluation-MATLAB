@@ -1,4 +1,6 @@
 function [Lmes, imgVisualization] = mesopicLuminance(Lp,Ls)
+%DEPRECATED: use mesopicLuminance_move or mesopicLuminance_intermediate
+%instead
 %author Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 %calculates the mesopic luminance according to the MOVE model
