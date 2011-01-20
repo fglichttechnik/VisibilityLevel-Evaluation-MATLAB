@@ -1,6 +1,6 @@
 function writeDTD(dataset_name, dir_name)
 
-myDTD{1}= '<!ELEMENT LMKSet (dataSetName, StreetSurface, LMKData+)>';
+myDTD{1}= ['<!ELEMENT ', dataset_name, ' (dataSetName, StreetSurface, LMKData+)>'];
 myDTD{2}= '<!ELEMENT dataSetName (#PCDATA)>';
 myDTD{3}= '<!ATTLIST dataSetName';
 myDTD{4}= '    src CDATA #REQUIRED';

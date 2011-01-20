@@ -5,41 +5,18 @@ if isempty(str(1,1).Children) && ~isempty(str(1,2).Children)
     str = str(1,2);
 end
 
-xml_name = str.Name   
+xml_name = str.Name;   
 
-xml_path = [dir_name, '\', xml_name, '.xml']
+xml_path = [dir_name, '\', xml_name, '.xml'];
 
-% parse .xml file if exists:
-%  
-
-%     % Find out whether xml data element already exits for file_name and delete it:
-%     xDoc = xmlread(xml_path);
-% 
-%     allListitems = xDoc.getElementsByTagName(str.Children(1,2).Name);
-%     for k = 0:allListitems.getLength-1
-%        thisListitem = allListitems.item(k);
-%        thisList = thisListitem.getElementsByTagName(childelement);
-%        thisElement = thisList.item(0);
-%        thisAttribute = thisElement.getAttributeNode(attribute);
-%        if strcmp(thisAttribute.getNodeValue, file_name)
-%            thisListitem.getParentNode.removeChild(thisListitem);
-%            break; % same entry should be found only once
-%        end   
-%     end
-
-    
-
-% write new .xml file if it does not exist:
-%else
-    xDoc = com.mathworks.xml.XMLUtils.createDocument(str.Name, str.Name,...
+xDoc = com.mathworks.xml.XMLUtils.createDocument(str.Name, str.Name,...
         'SYSTEM', [str.Name, '.dtd'] );
-    docRootNode = xDoc.getDocumentElement;  
-%end
+docRootNode = xDoc.getDocumentElement;  
+
 
 % Write new data element in .xml file:
-[~, n] = size(str.Children)
+[~, n] = size(str.Children);
 for i = 2 : 2 : n
-    i
     LMKData_node = xDoc.createElement(str.Children(1,2).Name);
     xDoc.getDocumentElement.appendChild(LMKData_node);
 

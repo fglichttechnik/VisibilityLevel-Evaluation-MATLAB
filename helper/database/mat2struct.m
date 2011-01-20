@@ -7,14 +7,14 @@ else
     S = load(filename);
 end
 
-str(1,1).Name = 'LMKSet';
+str(1,1).Name = S.elements{1,1}.Name;
 
 str(1,1).Children = struct('Name', {}, ...
     'Attributes', {}, ...
     'Data', {}, ...
     'Children', {});
 
-str(1,2).Name = 'LMKSet';
+str(1,2).Name = S.elements{1,1}.Name;
 
 n = size(S.elements);
 
