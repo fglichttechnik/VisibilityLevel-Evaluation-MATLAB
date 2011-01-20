@@ -16,6 +16,7 @@ classdef LMK_Image_Metadata
         dataImageMesopic
         imageMetaData
         comments
+        lightSource
         Name
     end % properties
     methods
