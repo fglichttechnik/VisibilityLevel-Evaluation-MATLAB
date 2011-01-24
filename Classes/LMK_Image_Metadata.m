@@ -3,6 +3,8 @@
 
 classdef LMK_Image_Metadata
     properties
+        dataSRCMat
+        dataTypeMat
         dataSRCPhotopic
         dataTypePhotopic
         dataSRCScotopic

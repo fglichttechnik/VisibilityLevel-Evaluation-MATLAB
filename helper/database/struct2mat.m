@@ -160,10 +160,8 @@ for i = 1 : childSize
                             evaluatedData.dataTypeScotopic = dataType;
                             evaluatedData.dataSRCScotopic = dataSRC;
                         elseif typeMatch3 == 1
-                            evaluatedData.dataSRCPhotopic = dataSRC;
-                            evaluatedData.dataSRCScotopic = dataSRC;
-                            evaluatedData.dataTypePhotopic = dataType;
-                            evaluatedData.dataTypeScotopic = dataType;
+                            evaluatedData.dataSRCMat = dataSRC;
+                            evaluatedData.dataTypeMat = dataType;
                             matSource = dataSRC;
                         end                                
                         disp(dataSRC)
@@ -220,19 +218,23 @@ for i = 1 : childSize
         end % end of browsing children  
                
         % error handling:
-         if photMatch == 1 && isempty(evaluatedData.dataSRCPhotopic) 
+         if (photMatch == 1) && (isempty(evaluatedData.dataSRCPhotopic) && ...
+                 (isempty(evaluatedData.dataSRCMat)))
             disp(['Warning: no src attributes for photopic data found!',...
                 'Picture cannot be loaded!']);
          end
-         if photMatch == 1 && isempty(evaluatedData.dataTypePhotopic)
+         if (photMatch == 1) && (isempty(evaluatedData.dataTypePhotopic) && ...
+                 (isempty(evaluatedData.dataSRCMat)))
             disp(['Warning: no type attributes for photopic data found!',...
                 'Picture cannot be loaded!']);           
          end 
-         if photMatch == 1 && isempty(evaluatedData.dataSRCScotopic) 
+         if (photMatch == 1) && (isempty(evaluatedData.dataSRCScotopic) && ...
+                 (isempty(evaluatedData.dataSRCMat)))
             disp(['Warning: no src attributes for scotopic data found!',...
                 'Picture cannot be loaded!']);           
          end
-         if photMatch == 1 && isempty(evaluatedData.dataTypeScotopic)
+         if (photMatch) == 1 && (isempty(evaluatedData.dataTypeScotopic) && ...
+                 (isempty(evaluatedData.dataSRCMat)))
             disp(['Warning: no type attributes for scotopic data found!',...
                 'Picture cannot be loaded!']);
          end 
@@ -254,6 +256,10 @@ for i = 1 : childSize
          if ~(isempty(evaluatedData.dataSRCScotopic)) ...
                  && ~(exist([evaluatedData.dataSRCScotopic],'file'))
              disp(['Warning: File ', evaluatedData.dataSRCScotopic, ' not found!']);
+         end
+         if ~(isempty(evaluatedData.dataSRCMat)) ...
+                 && ~(exist([evaluatedData.dataSRCMat],'file'))
+             disp(['Warning: File ', evaluatedData.dataSRCMat, ' not found!']);
          end
                  
         

@@ -44,13 +44,14 @@ for i = 2 : 2 : n*2
 
             str(1,2).Children(1,i).Children(1,2).Attributes(1,1).Name = ...
                 'src';
+           
             str(1,2).Children(1,i).Children(1,2).Attributes(1,1).Value = ...
-                S.elements{j,1}.dataSRCPhotopic;
+                S.elements{j,1}.dataSRCMat;
 
             str(1,2).Children(1,i).Children(1,2).Attributes(1,2).Name = ...
                 'type';
             str(1,2).Children(1,i).Children(1,2).Attributes(1,2).Value = ...
-                S.elements{j,1}.dataTypePhotopic;        
+                S.elements{j,1}.dataTypeMat;        
             
         str(1,2).Children(1,i).Children(1,4).Name = 'RectObject';
                 
