@@ -63,7 +63,8 @@ end
 %load data
 if ~exist([PATH,DELIMITER,XMLNAME, '.mat'], 'file');
     %load xml file and read all pf images
-    imageset = XMLtoMAT([PATH,DELIMITER,XMLNAME,'.xml']);
+    str = parseXML([PATH,DELIMITER,XMLNAME,'.xml']);
+    imageset = struct2mat(str);
     save([PATH,DELIMITER,XMLNAME, '.mat'], 'imageset');
 else
     %load image data set

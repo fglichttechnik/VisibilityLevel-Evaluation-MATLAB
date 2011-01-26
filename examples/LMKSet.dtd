@@ -1,6 +1,6 @@
 <!ELEMENT LMKSet (dataSetName, StreetSurface, LMKData+)>
 <!ELEMENT dataSetName (#PCDATA)>
-<!ATTLIST dataSetName 
+<!ATTLIST dataSetName
     src CDATA #REQUIRED
 >
 <!ELEMENT StreetSurface (QuadrangleObject)>
@@ -16,7 +16,7 @@
     y CDATA #REQUIRED
 >
 <!ELEMENT lowerLeft (#PCDATA)>
-<!ATTLIST lowerLeft 
+<!ATTLIST lowerLeft
     x CDATA #REQUIRED
     y CDATA #REQUIRED
 >
