@@ -122,7 +122,8 @@ for i = 1 : height
         if(currentDistanceFromCenter < radius)
             %rect criterion
             if(((i < subY1) || (i > subY2)) || ((j < subX1) || (j > subX2)))
-                stdVal = stdVal + (meanBackground - subImage(i, j))^2;
+                currentPixelValue = subImage(i, j);
+                stdVal = stdVal + (currentPixelValue - meanBackground)^2;
                 numberOfVals = numberOfVals + 1;
             end
         end

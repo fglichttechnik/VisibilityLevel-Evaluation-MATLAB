@@ -7,12 +7,12 @@
 %clear all; %this will clear all breakpoints as well
 
 %file path preferences
-%XMLNAME = 'keller_vorne'; % name of the .xml-file for this dataset
-XMLNAME = 'lmkXML';
+XMLNAME = 'keller_vorne'; % name of the .xml-file for this dataset
+%XMLNAME = 'lmkXML';
 %PATH = 'C:\Dokumente und Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	%this is the path to the datasets xml file
-%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/2010_12_22_Testmessung_Keller_vorne';
+PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/2010_12_22_Testmessung_Keller_vorne';
 %C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/6,5';
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/6,5';
 
 %2° field for current lens (8mm)
 RADIUS = 100;	%number of pixels which correspond to 2Â°
@@ -131,10 +131,10 @@ for i = 1 : lengthOfSet
             weberContrastPhotopic(i) = strongestEdgeContrast;
             %
         elseif(strmatch(CONTRAST_MODE,'OBJECT'))
-            weberContrastPhotopic(i) = (c.meanTarget - c.streetSurfaceLuminance) / c.streetSurfaceLuminance;
+            weberContrastPhotopic(i) = (c.meanTarget - c.meanStreetSurface) / c.meanStreetSurface;
         end
-        meanBackgroundPhotopic(i) = c.streetSurfaceLuminance;
-        currentDeltaLPhotopic(i) = calcDeltaL(c.streetSurfaceLuminance, alphaMinutes, AGE, T, K);
+        meanBackgroundPhotopic(i) = c.meanStreetSurface;
+        currentDeltaLPhotopic(i) = calcDeltaL(c.meanStreetSurface, alphaMinutes, AGE, T, K);
     elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
         if(strmatch(CONTRAST_MODE,'STRONGEST_EDGE'))
             strongestEdgeContrast = get(c,c.strongestEdge);
@@ -144,9 +144,11 @@ for i = 1 : lengthOfSet
             weberContrastPhotopic(i) = (c.meanTarget - c.meanBackground) / c.meanBackground;
         end
         meanBackgroundPhotopic(i) = c.meanBackground;
-        currentDeltaLPhotopic(i) = calcDeltaL(c.meanBackground, alphaMinutes, AGE, T, K);
+        currentDeltaLPhotopic(i) = calcDeltaL(c.meanBackground, alphaMinutes, AGE, T, K);       
     end 
-    
+    %stds
+    stdTargetPhotopic(i) = c.stdTarget;
+    stdBackgroundPhotopic(i) = c.stdBackground;
     
     meanTargetPhotopic(i) = c.meanTarget;
     VLPhotopic(i) = currentDeltaLPhotopic(i) / abs(meanTargetPhotopic(i) - meanBackgroundPhotopic(i));
@@ -164,10 +166,10 @@ for i = 1 : lengthOfSet
             weberContrastScotopic(i) = strongestEdgeContrast;
             %
         elseif(strmatch(CONTRAST_MODE,'OBJECT'))
-            weberContrastScotopic(i) = (c.meanTarget - c.streetSurfaceLuminance) / c.streetSurfaceLuminance;
+            weberContrastScotopic(i) = (c.meanTarget - c.meanStreetSurface) / c.meanStreetSurface;
         end
-        meanBackgroundScotopic(i) = c.streetSurfaceLuminance;
-        currentDeltaLScotopic(i) = calcDeltaL(c.streetSurfaceLuminance, alphaMinutes, AGE, T, K);
+        meanBackgroundScotopic(i) = c.meanStreetSurface;
+        currentDeltaLScotopic(i) = calcDeltaL(c.meanStreetSurface, alphaMinutes, AGE, T, K);
     elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
         if(strmatch(CONTRAST_MODE,'STRONGEST_EDGE'))
             strongestEdgeContrast = get(c,c.strongestEdge);
@@ -179,7 +181,9 @@ for i = 1 : lengthOfSet
         meanBackgroundScotopic(i) = c.meanBackground;
         currentDeltaLScotopic(i) = calcDeltaL(c.meanBackground, alphaMinutes, AGE, T, K);
     end
-        
+     %stds
+    stdTargetScotopic(i) = c.stdTarget;
+    stdBackgroundScotopic(i) = c.stdBackground;   
     
     meanTargetScotopic(i) = c.meanTarget;
     VLScotopic(i) = currentDeltaLScotopic(i) / abs(meanTargetScotopic(i) - meanBackgroundScotopic(i));
@@ -198,10 +202,10 @@ for i = 1 : lengthOfSet
             weberContrastMesopic(i) = strongestEdgeContrast;
             %
         elseif(strmatch(CONTRAST_MODE,'OBJECT'))
-            weberContrastMesopic(i) = (c.meanTarget - c.streetSurfaceLuminance) / c.streetSurfaceLuminance;
+            weberContrastMesopic(i) = (c.meanTarget - c.meanStreetSurface) / c.meanStreetSurface;
         end
-        meanBackgroundMesopic(i) = c.streetSurfaceLuminance;
-        currentDeltaLMesopic(i) = calcDeltaL(c.streetSurfaceLuminance, alphaMinutes, AGE, T, K);
+        meanBackgroundMesopic(i) = c.meanStreetSurface;
+        currentDeltaLMesopic(i) = calcDeltaL(c.meanStreetSurface, alphaMinutes, AGE, T, K);
     elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
         if(strmatch(CONTRAST_MODE,'STRONGEST_EDGE'))
             strongestEdgeContrast = get(c,c.strongestEdge);
@@ -213,6 +217,9 @@ for i = 1 : lengthOfSet
         meanBackgroundMesopic(i) = c.meanBackground;
         currentDeltaLMesopic(i) = calcDeltaL(c.meanBackground, alphaMinutes, AGE, T, K);
     end
+    %stds
+    stdTargetMesopic(i) = c.stdTarget;
+    stdBackgroundMesopic(i) = c.stdBackground;
         
     
     meanTargetMesopic(i) = c.meanTarget;
@@ -224,13 +231,13 @@ end
 figure
 if(strmatch(ANALYSIS_MODE,'ALL'))
 	hold on
-	plot(d,weberContrastMesopic,'o-gr')
-    plot(d,weberContrastPhotopic,'o-r')
-	plot(d,weberContrastScotopic,'o-b')
+	errorbar(d, weberContrastMesopic, stdTargetMesopic,'o-gr')
+    errorbar(d, weberContrastPhotopic, stdTargetPhotopic, 'o-r')
+	errorbar(d, weberContrastScotopic, stdTargetScotopic, 'o-b')
 	hold off
 	legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
 else
-    plot(d,weberContrastPhotopic,'o-r')
+    errorbar(d, weberContrastPhotopic, stdTargetPhotopic, 'o-r')
 	legend('L_{photopisch}');
 end
 axis('tight');

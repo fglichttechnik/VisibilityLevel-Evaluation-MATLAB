@@ -75,7 +75,10 @@ for lines = y1 : y4
     currentInsetRight = currentInsetRight + gradRight;    
 end 
 
+meanStreet = meanStreet / pixelCounter;
+
 %calc std
+pixelCounter = 0;
 for lines = y1 : y4   
     currentLeftX = x1 - currentInsetLeft;
     currentRightX = x2 + currentInsetRight;   
@@ -90,7 +93,7 @@ for lines = y1 : y4
         roundedCurrentRightX = x4;
     end
     
-    stdStreet = stdStreet + sum(img(round(lines), roundedCurrentLeftX : roundedCurrentRightX) - meanStreet).^2;
+    stdStreet = stdStreet + sum((img(round(lines), roundedCurrentLeftX : roundedCurrentRightX) - meanStreet).^2);
     pixelCounter = pixelCounter + roundedCurrentRightX - roundedCurrentLeftX + 1;
 
     %adjust inset values
@@ -103,6 +106,6 @@ if(SAVEIMAGE)
 end
 
 stdStreet = sqrt(stdStreet / pixelCounter);
-meanStreet = meanStreet / pixelCounter;
+
 
 end
