@@ -1,5 +1,9 @@
 %author Sandy Buschmann, Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
+%
+% Calculates mean and contrast for background of an image using XML meta
+% data.
+
 %read xml meta data
 xml = parseXML('lmkXML.xml');
 x1 = str2num(xml.Children(4).Children(2).Attributes(1).Value);

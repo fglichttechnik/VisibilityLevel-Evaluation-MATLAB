@@ -1,4 +1,13 @@
 function writeDTD(dataset_name, dir_name)
+%author Sandy Buschmann, Jan Winter TU Berlin
+%email j.winter@tu-berlin.de
+%
+% Writes .dtd file especially fitting to the LMK XML files.
+% 
+% Input: dataset_name = name of current measurement series used for
+%                       the XML name, too
+%        dir_name     = directory where the XML file is located, too
+
 
 myDTD{1}= ['<!ELEMENT ', dataset_name, ' (dataSetName, StreetSurface, LMKData+)>'];
 myDTD{2}= '<!ELEMENT dataSetName (#PCDATA)>';

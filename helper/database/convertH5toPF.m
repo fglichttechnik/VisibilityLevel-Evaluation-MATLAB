@@ -1,9 +1,15 @@
 %author Sandy Buschmann, Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
-% end preferences:
+%
+% Loads .h5 protocols into labSoft and saves luminance pictures in .pf 
+% format.
+
+% preferences:
 DIR = 'Z:\Postfach\Transfer zu Winter\Sandy\Datenbank\2009_03_03 Flurweg Leuchtdichtebilder';
+        % directory where the .h5 protocols are located
 DATAPATH = 'C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB\LMK_2010_10_25\LMK_Data_evaluation';
-DATABASE = 'DB'; % folder where the .pf-data should be saved
+        % path to your target database
+DATABASE = 'DB'; % name of the folder where the .pf-data should be saved
 NEED_SUBFOLDERS = 1; % 0 or 1 when subfolders should be made
 SUBFOLDER1 = 'VS'; % name of subfolder 1
 SUBFOLDER2 = 'VL'; % name of subfolder 2
@@ -53,7 +59,7 @@ for i = 1 : l
         val_date = 0;
         date_time = clock;
         picformat = '.pf';
-        [text, file_path] = LMK_saveSinglePic(dir_name, name, ...
+        [text, file_path] = LMK_saveImage(dir_name, name, ...
             val_date, date_time, picformat);
    end
 end

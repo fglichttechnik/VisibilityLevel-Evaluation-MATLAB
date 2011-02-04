@@ -1,4 +1,5 @@
 function [Lseq] = systemEqLuminance_sagawa(Lxy,Lp,Ls)
+%DEPRECATED: function is not completed
 %author Sandy Buschmann, Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 %calculates the system equivalent luminance according to the 
