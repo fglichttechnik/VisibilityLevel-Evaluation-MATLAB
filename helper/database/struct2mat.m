@@ -1,6 +1,11 @@
 function elements = struct2mat(str)
 %author Sandy Buschmann, Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
+%
+% Converts struct resulting from function parseXML into a MATLAB object of
+% class LMK_image_Metadata.
+
+
 % preferences
 COMMENTS = ' ';
 

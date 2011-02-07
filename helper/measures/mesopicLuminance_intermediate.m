@@ -1,5 +1,5 @@
 function [Lmes, imgVisualization] = mesopicLuminance_intermediate(Lp,Ls)
-%author Jan Winter TU Berlin
+%author Jan Winter, Sandy Buschmann TU Berlin
 %email j.winter@tu-berlin.de
 %calculates the mesopic luminance according to the INTERMEDIATE SYSTEM
 %Lp, Ls might be single values or matrices
