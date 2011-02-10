@@ -38,5 +38,14 @@ classdef LMK_Image_Metadata
                 obj.dataImagePhotopic = dataImagePhotopic;
             end
         end% constructor
+        
+        %lazy loading of photopic data
+%         function value = get.dataImagePhotopic(obj)
+%            % if(isempty(obj.dataImagePhotopic))
+%             %    obj.dataImagePhotopic = 1;
+%            % end
+%             value = obj.dataImagePhotopic;
+% %            disp(value)
+%         end%lazy loading of photopic data
     end % methods
 end

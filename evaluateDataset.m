@@ -8,11 +8,13 @@
 
 %file path preferences
 %XMLNAME = 'keller_vorne'; % name of the .xml-file for this dataset
-XMLNAME = 'lmkXML';
+%XMLNAME = 'lmkXML';
+XMLNAME = 'LMKSet';
 %PATH = 'C:\Dokumente und Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	%this is the path to the datasets xml file
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/2010_12_22_Testmessung_Keller_vorne';
 %C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/6,5';
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/';
+PATH = 'C:\Dokumente und Einstellungen\jaw\Desktop\Development\LMK\LMK_data_evaluation\database\labor1';
 
 %2° field for current lens (8mm)
 RADIUS = 100;	%number of pixels which correspond to 2Â°
