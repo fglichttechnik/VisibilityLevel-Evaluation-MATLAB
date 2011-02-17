@@ -1,7 +1,10 @@
 %author Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 
-classdef LMK_Image_Metadata
+%this class needs to know it's dataSRCMat
+%all other properties are set on demand
+
+classdef LMK_Image_Metadata < handle
     properties
         dataSRCMat
         dataTypeMat
@@ -38,5 +41,14 @@ classdef LMK_Image_Metadata
                 obj.dataImagePhotopic = dataImagePhotopic;
             end
         end% constructor
+        
+        %lazy loading of image data
+        function value = get.dataImagePhotopic(obj)
+           if(isempty(obj.dataImagePhotopic))
+               obj.dataImagePhotopic = 1;
+           end
+            value = obj.dataImagePhotopic;
+%            disp(value)
+        end%lazy loading of photopic data
     end % methods
 end

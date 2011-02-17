@@ -1,7 +1,7 @@
 %author Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 
-classdef LMK_Image_Statistics < hgsetget
+classdef LMK_Image_Statistics < handle
     properties
         
         meanTarget

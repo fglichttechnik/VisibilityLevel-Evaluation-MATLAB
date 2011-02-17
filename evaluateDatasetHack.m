@@ -63,16 +63,16 @@ end
 
 
 %load data
-if ~exist([PATH,DELIMITER,XMLNAME, '.mat'], 'file');
+%if ~exist([PATH,DELIMITER,XMLNAME, '.mat'], 'file');
     %load xml file and read all pf images
     str = parseXML([PATH,DELIMITER,XMLNAME,'.xml']);
     imageset = struct2mat(str);
     save([PATH,DELIMITER,XMLNAME, '.mat'], 'imageset');
-else
-    %load image data set
-    disp(['Loading dataset ', XMLNAME, '.mat ...']);
-    load(XMLNAME);    
-end
+% else
+%     %load image data set
+%     disp(['Loading dataset ', XMLNAME, '.mat ...']);
+%     load(XMLNAME);    
+% end
 
 lengthOfSet = length(imageset);
 
