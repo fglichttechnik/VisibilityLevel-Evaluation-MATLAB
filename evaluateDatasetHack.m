@@ -190,7 +190,7 @@ for i = 1 : lengthOfSet
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %calc values for mesopic image
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    [currentLMK_Image_Metadata.dataImageMesopic, imgVisualisation] = mesopicLuminance_intermediate(currentLMK_Image_Metadata.dataImagePhotopic, ...
+    [currentLMK_Image_Metadata.dataImageMesopic, imgVisualisation] = mesopicLuminance_recommended(currentLMK_Image_Metadata.dataImagePhotopic, ...
                  currentLMK_Image_Metadata.dataImageScotopic);
     currentMesopic_LMK_Image_Statistics = statisticsOfCircleAndRectHack(currentLMK_Image_Metadata, RADIUS, savePath, 'MESOPIC');
     c = currentMesopic_LMK_Image_Statistics;

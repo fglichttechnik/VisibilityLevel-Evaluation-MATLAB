@@ -136,10 +136,13 @@ stdBackground = sqrt(stdVal / numberOfVals);
 
 
 %%calc adaptation luminance
-%[meanStreetSurface, stdStreetSurface, resultImg] = calcStatisticsOfStreetSurface(img, currentLMK_Evaluation.quadrangle);
-meanStreetSurface=1;
-stdStreetSurface=1;
-resultImg=logical(zeros(size(img)));
+meanStreetSurface = '';
+stdStreetSurface= '';
+if ~(isempty(currentLMK_Evaluation.quadrangle))
+    [meanStreetSurface, stdStreetSurface, resultImg] = calcStatisticsOfStreetSurface(img, currentLMK_Evaluation.quadrangle);
+else
+    resultImg=logical(zeros(size(img)));
+end
 %calc edge contrasts
 
 TARGET_SIZE_PERCENTAGE_FOR_REGION = 0.3;

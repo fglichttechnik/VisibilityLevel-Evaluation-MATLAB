@@ -273,25 +273,25 @@ for i = 1 : childSize
         point2 = struct('x',x2,'y',y2);
         evaluatedData.rect = struct('upperLeft',point1,'lowerRight',point2);
         
-        % read .pf-images   
-        if isempty(matSource)
-            if ~(isempty(evaluatedData.dataSRCPhotopic)) && (exist([evaluatedData.dataSRCPhotopic],'file'))
-                    evaluatedData.dataImagePhotopic= LMK_readPfImage...
-                        (evaluatedData.dataSRCPhotopic);
-            end
-            if ~(isempty(evaluatedData.dataSRCScotopic)) && (exist([evaluatedData.dataSRCScotopic],'file'))
-                    evaluatedData.dataImageScotopic= LMK_readPfImage...
-                        (evaluatedData.dataSRCScotopic);
-            end
-        end
-        % load .mat-image data
-        if (isempty(matSource)== 0) && (exist([matSource],'file')==2)
-                matImage = load([matSource]);
-                evaluatedData.dataImagePhotopic = ....
-                    matImage.LMK_measurements.dataImage.YL;
-                evaluatedData.dataImageScotopic = ...
-                    matImage.LMK_measurements.dataImage.LS;
-        end
+%         % read .pf-images   
+%         if isempty(matSource)
+%             if ~(isempty(evaluatedData.dataSRCPhotopic)) && (exist([evaluatedData.dataSRCPhotopic],'file'))
+%                     evaluatedData.dataImagePhotopic= LMK_readPfImage...
+%                         (evaluatedData.dataSRCPhotopic);
+%             end
+%             if ~(isempty(evaluatedData.dataSRCScotopic)) && (exist([evaluatedData.dataSRCScotopic],'file'))
+%                     evaluatedData.dataImageScotopic= LMK_readPfImage...
+%                         (evaluatedData.dataSRCScotopic);
+%             end
+%         end
+%         % load .mat-image data
+%         if (isempty(matSource)== 0) && (exist([matSource],'file')==2)
+%                 matImage = load([matSource]);
+%                 evaluatedData.dataImagePhotopic = ....
+%                     matImage.LMK_measurements.dataImage.YL;
+%                 evaluatedData.dataImageScotopic = ...
+%                     matImage.LMK_measurements.dataImage.LS;
+%         end
         
         
         % put quadrangle into obj
@@ -302,12 +302,12 @@ for i = 1 : childSize
         
         % evaluate mesopic luminance image if photopic & scotopic image
         % data exists
-        if ~(isempty(evaluatedData.dataImagePhotopic)) ...
-                && ~(isempty(evaluatedData.dataImageScotopic))
-            [evaluatedData.dataImageMesopic, ~] = ...
-                mesopicLuminance_intermediate(evaluatedData.dataImagePhotopic,...
-                evaluatedData.dataImageScotopic);   
-        end
+%         if ~(isempty(evaluatedData.dataImagePhotopic)) ...
+%                 && ~(isempty(evaluatedData.dataImageScotopic))
+%             [evaluatedData.dataImageMesopic, ~] = ...
+%                 mesopicLuminance_recommended(evaluatedData.dataImagePhotopic,...
+%                 evaluatedData.dataImageScotopic);   
+%         end
         
         % save obj in output struct
         elements{currentElementPointer} = evaluatedData;

@@ -42,13 +42,67 @@ classdef LMK_Image_Metadata < handle
             end
         end% constructor
         
-        %lazy loading of image data
+        %lazy loading of image data        
         function value = get.dataImagePhotopic(obj)
            if(isempty(obj.dataImagePhotopic))
-               obj.dataImagePhotopic = 1;
+               if ~(isempty(obj.dataSRCPhotopic))
+                    obj.dataImagePhotopic= LMK_readPfImage...
+                        (obj.dataSRCPhotopic);
+               elseif ~(isempty(obj.dataSRCMat))
+                    matImage = load([obj.dataSRCMat]);
+                    obj.dataImagePhotopic = ....
+                        matImage.LMK_measurements.dataImage.YL;
+                    obj.dataImageScotopic = ...
+                        matImage.LMK_measurements.dataImage.LS;
+               end
            end
             value = obj.dataImagePhotopic;
-%            disp(value)
         end%lazy loading of photopic data
+        
+        function value = get.dataImageScotopic(obj)
+           if(isempty(obj.dataImageScotopic))
+               if ~(isempty(obj.dataSRCScotopic))
+                    obj.dataImageScotopic= LMK_readPfImage...
+                        (evaluatedData.dataSRCScotopic);
+               elseif ~(isempty(obj.dataSRCMat))
+                    matImage = load([obj.dataSRCMat]);
+                    obj.dataImagePhotopic = ....
+                        matImage.LMK_measurements.dataImage.YL;
+                    obj.dataImageScotopic = ...
+                        matImage.LMK_measurements.dataImage.LS;
+               end
+           end
+            value = obj.dataImageScotopic;
+        end%lazy loading of scotopic data  
+        
+        function value = get.dataImageMesopic(obj)
+            if (isempty(obj.dataImageMesopic))
+                [obj.dataImageMesopic, ~] = ...
+                    mesopicLuminance_recommended(obj.dataImagePhotopic,...
+                    obj.dataImageScotopic);                  
+            end
+            value = obj.dataImageMesopic;
+        end%lazy loading of mesopic data
+        
+        function value = get.comments(obj)
+            if (isempty(obj.comments))
+                obj.comments = 'No comments';
+            end
+            value = obj.comments;
+        end%lazy loading of comments
+        
+        function value = get.lightSource(obj)
+            if (isempty(obj.lightSource))
+                obj.lightSource = 'Unknown light source';
+            end
+            value = obj.lightSource;
+        end%lazy loading of light source
+        
+        function value = get.Name(obj)
+            if (isempty(obj.Name))
+                obj.Name = 'LMKSet';
+            end
+            value = obj.Name;
+        end%lazy loading of measurement series name
     end % methods
 end

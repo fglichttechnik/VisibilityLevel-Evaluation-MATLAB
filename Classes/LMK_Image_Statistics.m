@@ -2,8 +2,7 @@
 %email j.winter@tu-berlin.de
 
 classdef LMK_Image_Statistics < handle
-    properties
-        
+    properties        
         meanTarget
         minTarget
         maxTarget
@@ -56,5 +55,21 @@ classdef LMK_Image_Statistics < handle
                 obj.strongestEdge = strongestEdge;
             end
         end% constructor
+        
+        %lazy loading of street surface data        
+        function value = get.meanStreetSurface(obj)
+            if (isempty(obj.meanStreetSurface))
+                obj.meanStreetSurface = 1;
+            end
+            value = obj.meanStreetSurface;
+        end%lazy loading of mean of street surface
+        
+        function value = get.stdStreetSurface(obj)
+            if (isempty(obj.stdStreetSurface))
+                obj.stdStreetSurface = 1;
+            end
+            value = obj.stdStreetSurface;
+        end%lazy loading of standard deviation of street surface
+        
     end % methods
 end

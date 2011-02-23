@@ -10,14 +10,14 @@
 %XMLNAME = 'keller_vorne'; % name of the .xml-file for this dataset
 %XMLNAME = 'lmkXML';
 %XMLNAME = 'lmkXML';
-XMLNAME = 'LMKSet';
+XMLNAME = 'Testmessung';
 
 %PATH = 'C:\Dokumente und Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	%this is the path to the datasets xml file
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/2010_12_22_Testmessung_Keller_vorne';
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/2010_12_22_Testmessung_Keller_vorne';
 %C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/6,5';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/';
-PATH = 'C:\Dokumente und Einstellungen\jaw\Desktop\Development\LMK\LMK_data_evaluation\database\labor1';
+PATH = 'C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB\LMK\LMK\Testmessung\Test';
 
 
 %2° field for current lens (8mm)
@@ -198,7 +198,7 @@ for i = 1 : lengthOfSet
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %calc values for mesopic image
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    [currentLMK_Image_Metadata.dataImageMesopic, imgVisualisation] = mesopicLuminance_intermediate(currentLMK_Image_Metadata.dataImagePhotopic, ...
+    [currentLMK_Image_Metadata.dataImageMesopic, imgVisualisation] = mesopicLuminance_recommended(currentLMK_Image_Metadata.dataImagePhotopic, ...
                  currentLMK_Image_Metadata.dataImageScotopic);
     currentMesopic_LMK_Image_Statistics = statisticsOfCircleAndRect(currentLMK_Image_Metadata, RADIUS, savePath, 'MESOPIC');
     c = currentMesopic_LMK_Image_Statistics;
