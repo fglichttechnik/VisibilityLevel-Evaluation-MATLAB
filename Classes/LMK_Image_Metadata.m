@@ -19,7 +19,7 @@ classdef LMK_Image_Metadata < handle
         dataImageScotopic
         dataImagePhotopic
         dataImageMesopic
-        imageMetaData
+        imageMetaData % currently not in use
         comments
         lightSource
         Name

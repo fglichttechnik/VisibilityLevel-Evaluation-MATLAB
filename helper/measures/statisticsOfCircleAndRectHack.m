@@ -1,27 +1,37 @@
-function image_Statistics = statisticsOfCircleAndRect(currentLMK_Evaluation, radius, savePath, luminanceMode)
+%function image_Statistics = statisticsOfCircleAndRect(currentLMK_Evaluation, radius, savePath, luminanceMode)
+function statisticsOfCircleAndRect(currentLMK_Evaluation)
 %author Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 %calculates the mean within a given circle of an image
 %without taking the pixels of the rect region into account
 
-if(strmatch(luminanceMode,'PHOTOPIC'))
-    img = currentLMK_Evaluation.dataImagePhotopic;
-    filename = currentLMK_Evaluation.dataSRCPhotopic;
-    
-elseif(strmatch(luminanceMode,'SCOTOPIC'))
-    img = currentLMK_Evaluation.dataImageScotopic;
-    filename = currentLMK_Evaluation.dataSRCScotopic;
-    
-elseif(strmatch(luminanceMode,'MESOPIC'))
-    img = currentLMK_Evaluation.dataImageMesopic;
-    filename = currentLMK_Evaluation.dataSRCPhotopic;
-end
+% if(strmatch(luminanceMode,'PHOTOPIC'))
+%     img = currentLMK_Evaluation.dataImagePhotopic;
+%     filename = currentLMK_Evaluation.dataSRCPhotopic;
+%     
+% elseif(strmatch(luminanceMode,'SCOTOPIC'))
+%     img = currentLMK_Evaluation.dataImageScotopic;
+%     filename = currentLMK_Evaluation.dataSRCScotopic;
+%     
+% elseif(strmatch(luminanceMode,'MESOPIC'))
+%     img = currentLMK_Evaluation.dataImageMesopic;
+%     filename = currentLMK_Evaluation.dataSRCPhotopic;
+% end
+disp('Calc statistics of circle and rect');
 
-x1 = currentLMK_Evaluation.rect.upperLeft.x;
-y1 = currentLMK_Evaluation.rect.upperLeft.y;
-x2 = currentLMK_Evaluation.rect.lowerRight.x;
-y2 = currentLMK_Evaluation.rect.lowerRight.y;
-border = currentLMK_Evaluation.border;
+img = currentLMK_Evaluation.dataImage;
+filename = currentLMK_Evaluation.filename;
+radius = currentLMK_Evaluation.radius;
+savePath = currentLMK_Evaluation.savePath;
+
+
+
+
+x1 = currentLMK_Evaluation.imageMetadata.rect.upperLeft.x;
+y1 = currentLMK_Evaluation.imageMetadata.rect.upperLeft.y;
+x2 = currentLMK_Evaluation.imageMetadata.rect.lowerRight.x;
+y2 = currentLMK_Evaluation.imageMetadata.rect.lowerRight.y;
+border = currentLMK_Evaluation.imageMetadata.border;
 
 %preferences
 %save image for visualisation purposes
@@ -138,9 +148,9 @@ stdBackground = sqrt(stdVal / numberOfVals);
 %%calc adaptation luminance
 meanStreetSurface = '';
 stdStreetSurface= '';
-if ~(isempty(currentLMK_Evaluation.quadrangle))
-    [meanStreetSurface, stdStreetSurface, resultImg] = calcStatisticsOfStreetSurface(img, currentLMK_Evaluation.quadrangle);
-else
+if ~(isempty(currentLMK_Evaluation.imageMetadata.quadrangle))
+    resultImg = currentLMK_Evaluation.imgResult;
+else    
     resultImg=logical(zeros(size(img)));
 end
 %calc edge contrasts
@@ -163,30 +173,30 @@ upperTargetY1 = y1;
 upperTargetY2 = y1 + targetRegionHeight;
 upperBackgroundX1 = x1;
 upperBackgroundX2 = x2;
-upperBackgroundY1 = y1 - border - targetRegionHeight;
-upperBackgroundY2 = y1 - border;
+upperBackgroundY1 = inImageVert(y1 - border - targetRegionHeight, img);
+upperBackgroundY2 = inImageVert(y1 - border, img);
 lowerTargetX1 = x1;
 lowerTargetX2 = x2;
 lowerTargetY1 = y2 - targetRegionHeight;
 lowerTargetY2 = y2;
 lowerBackgroundX1 = x1;
 lowerBackgroundX2 = x2;
-lowerBackgroundY1 = y2 + border;
-lowerBackgroundY2 = y2 + border + targetRegionHeight;
+lowerBackgroundY1 = inImageVert(y2 + border, img);
+lowerBackgroundY2 = inImageVert(y2 + border + targetRegionHeight, img);
 leftTargetX1 = x1;
 leftTargetX2 = x1 + targetRegionWidth;
 leftTargetY1 = y1;
 leftTargetY2 = y2;
-leftBackgroundX1 = x1 - targetRegionWidth - border;
-leftBackgroundX2 = x1 - border;
+leftBackgroundX1 = inImageHor(x1 - targetRegionWidth - border, img);
+leftBackgroundX2 = inImageHor(x1 - border, img);
 leftBackgroundY1 = y1;
 leftBackgroundY2 = y2;
 rightTargetX1 = x2 - targetRegionWidth;
 rightTargetX2 = x2;
 rightTargetY1 = y1;
 rightTargetY2 = y2;
-rightBackgroundX1 = x2 + border;
-rightBackgroundX2 = x2 + targetRegionWidth + border;
+rightBackgroundX1 = inImageHor(x2 + border, img);
+rightBackgroundX2 = inImageHor(x2 + targetRegionWidth + border, img);
 rightBackgroundY1 = y1;
 rightBackgroundY2 = y2;
 
@@ -228,6 +238,7 @@ elseif ((abs(leftEdgeContrast) >= abs(upperEdgeContrast)) && (abs(leftEdgeContra
 else
     strongestEdge = 'rightEdgeContrast';
 end
+strongestEdge
 
 
 if(SAVEIMAGE)
@@ -266,10 +277,10 @@ if(SAVEIMAGE)
     imgGray(resultImg) = 1;
     imgGray(edgeContrastAlphaMask) = 1;
     
-    %filename = currentLMK_Evaluation.dataSRC;
+    %filename = currentLMK_Evaluation.imageMetadata.dataSRC;
     
     %add mode
-    filename = strcat(luminanceMode,'_',filename);
+    %filename = strcat(luminanceMode,'_',filename);
     
     %remove .pf
     filename = filename(1:end-3);
@@ -281,24 +292,64 @@ end
 
 
 
+currentLMK_Evaluation.meanTarget = meanTarget;
+currentLMK_Evaluation.minTarget = minTarget;
+currentLMK_Evaluation.maxTarget = maxTarget;
+currentLMK_Evaluation.stdTarget = stdTarget;
+currentLMK_Evaluation.meanBackground = meanBackground;
+currentLMK_Evaluation.minBackground = minBackground;
+currentLMK_Evaluation.maxBackground = maxBackground;
+currentLMK_Evaluation.stdBackground = stdBackground;
+currentLMK_Evaluation.meanStreetSurface = meanStreetSurface;
+currentLMK_Evaluation.stdStreetSurface = stdStreetSurface; 
+currentLMK_Evaluation.upperEdgeContrast = upperEdgeContrast;
+currentLMK_Evaluation.lowerEdgeContrast = lowerEdgeContrast;
+currentLMK_Evaluation.leftEdgeContrast = leftEdgeContrast;
+currentLMK_Evaluation.rightEdgeContrast = rightEdgeContrast;
+currentLMK_Evaluation.strongestEdge = strongestEdge;
 
 %prepare output
-image_Statistics = LMK_Image_Statistics(meanTarget,...
-    minTarget,...
-    maxTarget,...
-    stdTarget,...
-    meanBackground,...
-    minBackground,...
-    maxBackground,...
-    stdBackground,...
-    meanStreetSurface,...
-    stdStreetSurface,...
-    upperEdgeContrast,...
-    lowerEdgeContrast,...
-    leftEdgeContrast,...
-    rightEdgeContrast,...
-    strongestEdge);
+% image_Statistics = LMK_Image_Statistics(meanTarget,...
+%     minTarget,...
+%     maxTarget,...
+%     stdTarget,...
+%     meanBackground,...
+%     minBackground,...
+%     maxBackground,...
+%     stdBackground,...
+%     meanStreetSurface,...
+%     stdStreetSurface,...
+%     upperEdgeContrast,...
+%     lowerEdgeContrast,...
+%     leftEdgeContrast,...
+%     rightEdgeContrast,...
+%     strongestEdge);
 
+
+
+
+end
+
+function outputValue = inImageHor(inputValue, img)
+    [lines, columns] = size(img);
+    if inputValue < 1
+        outputValue = 1;
+    elseif inputValue > columns
+        outputValue = columns;
+    else
+        outputValue = inputValue;
+    end
+end
+
+function outputValue = inImageVert(inputValue, img)
+    [lines, columns] = size(img);
+    if inputValue < 1
+        outputValue = 1;
+    elseif inputValue > lines
+        outputValue = lines;
+    else
+        outputValue = inputValue;
+    end
 end
 
 
