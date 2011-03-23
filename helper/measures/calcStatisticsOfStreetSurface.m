@@ -1,4 +1,5 @@
-function [meanStreet, stdStreet, imgResult] = calcStatisticsOfStreetSurface(img, quadrangle)
+%function [meanStreet, stdStreet, imgResult] = calcStatisticsOfStreetSurface(img, quadrangle)
+function calcStatisticsOfStreetSurface(currentLMK_image_Statistics)
 %author Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 
@@ -6,7 +7,10 @@ function [meanStreet, stdStreet, imgResult] = calcStatisticsOfStreetSurface(img,
 %return resultImage for visualisation purposes
 SAVEIMAGE = 1;  %0 or 1
 
+disp('calc statistics of street surface');
 
+img = currentLMK_image_Statistics.dataImage;
+quadrangle = currentLMK_image_Statistics.imageMetadata.quadrangle;
 
 
 % % Polygon parameters: 
@@ -106,6 +110,10 @@ if(SAVEIMAGE)
 end
 
 stdStreet = sqrt(stdStreet / pixelCounter);
+
+currentLMK_image_statistics.meanStreet = meanStreet;
+currentLMK_image_statistics.stdStreet = stdStreet;
+currentLMK_image_statistics.imgResult = imgResult;
 
 
 end

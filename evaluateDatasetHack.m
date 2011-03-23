@@ -65,8 +65,11 @@ end
 %load data
 %if ~exist([PATH,DELIMITER,XMLNAME, '.mat'], 'file');
     %load xml file and read all pf images
+    disp('Parsing xml...');
     str = parseXML([PATH,DELIMITER,XMLNAME,'.xml']);
+    disp('Struct2mat...');
     imageset = struct2mat(str);
+    disp('saving...');
     save([PATH,DELIMITER,XMLNAME, '.mat'], 'imageset');
 % else
 %     %load image data set
@@ -112,10 +115,10 @@ currentDeltaLMesopic = zeros(lengthOfSet,1);
 
 %analyse each image
 for i = 1 : lengthOfSet
+    i
     %get current element
-    currentLMK_Image_Metadata = imageset{i};
-    
-    disp(currentLMK_Image_Metadata.dataSRCPhotopic);
+    currentLMK_Image_Metadata = imageset{i};    
+    disp(currentLMK_Image_Metadata.dataSRCMat);
     
     %current visual size of object
     d(i) = currentLMK_Image_Metadata.rectPosition;
@@ -126,7 +129,13 @@ for i = 1 : lengthOfSet
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %calc values for photopic image
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    currentPhotopic_LMK_Image_Statistics = statisticsOfCircleAndRectHack(currentLMK_Image_Metadata, RADIUS, savePath, 'PHOTOPIC');
+    currentPhotopic_LMK_Image_Statistics = LMK_Image_Statistics();
+    currentPhotopic_LMK_Image_Statistics.radius = RADIUS;
+    currentPhotopic_LMK_Image_Statistics.savePath = savePath;
+    currentPhotopic_LMK_Image_Statistics.dataImage = currentLMK_Image_Metadata.dataImagePhotopic;
+    currentPhotopic_LMK_Image_Statistics.filename = currentLMK_Image_Metadata.dataSRCMat;
+    currentPhotopic_LMK_Image_Statistics.imageMetadata = currentLMK_Image_Metadata;
+    %currentPhotopic_LMK_Image_Statistics = statisticsOfCircleAndRectHack(currentLMK_Image_Metadata, RADIUS, savePath, 'PHOTOPIC');
     c = currentPhotopic_LMK_Image_Statistics;
     if(strmatch(BACKGROUND_LUMINANCE_MODE,'STREET'))
         if(strmatch(CONTRAST_MODE,'STRONGEST_EDGE'))
@@ -134,12 +143,13 @@ for i = 1 : lengthOfSet
             weberContrastPhotopic(i) = strongestEdgeContrast;
             %
         elseif(strmatch(CONTRAST_MODE,'OBJECT'))
-            weberContrastPhotopic(i) = (c.meanTarget - c.streetSurfaceLuminance) / c.streetSurfaceLuminance;
+            weberContrastPhotopic(i) = (c.meanTarget - c.meanStreetSurface) / c.meanStreetSurface;
         end
-        meanBackgroundPhotopic(i) = c.streetSurfaceLuminance;
-        currentDeltaLPhotopic(i) = calcDeltaL(c.streetSurfaceLuminance, alphaMinutes, AGE, T, K);
+        meanBackgroundPhotopic(i) = c.meanStreetSurface;
+        currentDeltaLPhotopic(i) = calcDeltaL(c.meanStreetSurface, alphaMinutes, AGE, T, K);
     elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
         if(strmatch(CONTRAST_MODE,'STRONGEST_EDGE'))
+            c.strongestEdge
             strongestEdgeContrast = get(c,c.strongestEdge);
             weberContrastPhotopic(i) = strongestEdgeContrast;
             %
@@ -158,7 +168,13 @@ for i = 1 : lengthOfSet
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %calc values for scotopic image
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    currentScotopic_LMK_Image_Statistics = statisticsOfCircleAndRectHack(currentLMK_Image_Metadata, RADIUS, savePath, 'SCOTOPIC');
+    currentScotopic_LMK_Image_Statistics = LMK_Image_Statistics();
+    currentScotopic_LMK_Image_Statistics.radius = RADIUS;
+    currentScotopic_LMK_Image_Statistics.savePath = savePath;
+    currentScotopic_LMK_Image_Statistics.dataImage = currentLMK_Image_Metadata.dataImageScotopic;
+    currentScotopic_LMK_Image_Statistics.filename = currentLMK_Image_Metadata.dataSRCMat;
+    currentScotopic_LMK_Image_Statistics.imageMetadata = currentLMK_Image_Metadata;
+    %currentScotopic_LMK_Image_Statistics = statisticsOfCircleAndRectHack(currentLMK_Image_Metadata, RADIUS, savePath, 'SCOTOPIC');
     c = currentScotopic_LMK_Image_Statistics;
     
     if(strmatch(BACKGROUND_LUMINANCE_MODE,'STREET'))
@@ -167,10 +183,10 @@ for i = 1 : lengthOfSet
             weberContrastScotopic(i) = strongestEdgeContrast;
             %
         elseif(strmatch(CONTRAST_MODE,'OBJECT'))
-            weberContrastScotopic(i) = (c.meanTarget - c.streetSurfaceLuminance) / c.streetSurfaceLuminance;
+            weberContrastScotopic(i) = (c.meanTarget - c.meanStreetSurface) / c.meanStreetSurface;
         end
-        meanBackgroundScotopic(i) = c.streetSurfaceLuminance;
-        currentDeltaLScotopic(i) = calcDeltaL(c.streetSurfaceLuminance, alphaMinutes, AGE, T, K);
+        meanBackgroundScotopic(i) = c.meanStreetSurface;
+        currentDeltaLScotopic(i) = calcDeltaL(c.meanStreetSurface, alphaMinutes, AGE, T, K);
     elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
         if(strmatch(CONTRAST_MODE,'STRONGEST_EDGE'))
             strongestEdgeContrast = get(c,c.strongestEdge);
@@ -190,9 +206,15 @@ for i = 1 : lengthOfSet
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %calc values for mesopic image
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    [currentLMK_Image_Metadata.dataImageMesopic, imgVisualisation] = mesopicLuminance_recommended(currentLMK_Image_Metadata.dataImagePhotopic, ...
-                 currentLMK_Image_Metadata.dataImageScotopic);
-    currentMesopic_LMK_Image_Statistics = statisticsOfCircleAndRectHack(currentLMK_Image_Metadata, RADIUS, savePath, 'MESOPIC');
+    currentMesopic_LMK_Image_Statistics = LMK_Image_Statistics();
+    currentMesopic_LMK_Image_Statistics.radius = RADIUS;
+    currentMesopic_LMK_Image_Statistics.savePath = savePath;
+    currentMesopic_LMK_Image_Statistics.dataImage = currentLMK_Image_Metadata.dataImageMesopic;
+    currentMesopic_LMK_Image_Statistics.filename = currentLMK_Image_Metadata.dataSRCMat;
+    currentPhotopic_LMK_Image_Statistics.imageMetadata = currentLMK_Image_Metadata;
+    %[currentLMK_Image_Metadata.dataImageMesopic, imgVisualisation] = mesopicLuminance_recommended(currentLMK_Image_Metadata.dataImagePhotopic, ...
+    %             currentLMK_Image_Metadata.dataImageScotopic);
+    %currentMesopic_LMK_Image_Statistics = statisticsOfCircleAndRectHack(currentLMK_Image_Metadata, RADIUS, savePath, 'MESOPIC');
     c = currentMesopic_LMK_Image_Statistics;
     
     if(strmatch(BACKGROUND_LUMINANCE_MODE,'STREET'))
@@ -201,10 +223,10 @@ for i = 1 : lengthOfSet
             weberContrastMesopic(i) = strongestEdgeContrast;
             %
         elseif(strmatch(CONTRAST_MODE,'OBJECT'))
-            weberContrastMesopic(i) = (c.meanTarget - c.streetSurfaceLuminance) / c.streetSurfaceLuminance;
+            weberContrastMesopic(i) = (c.meanTarget - c.meanStreetSurface) / c.meanStreetSurface;
         end
-        meanBackgroundMesopic(i) = c.streetSurfaceLuminance;
-        currentDeltaLMesopic(i) = calcDeltaL(c.streetSurfaceLuminance, alphaMinutes, AGE, T, K);
+        meanBackgroundMesopic(i) = c.meanStreetSurface;
+        currentDeltaLMesopic(i) = calcDeltaL(c.meanStreetSurface, alphaMinutes, AGE, T, K);
     elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
         if(strmatch(CONTRAST_MODE,'STRONGEST_EDGE'))
             strongestEdgeContrast = get(c,c.strongestEdge);
