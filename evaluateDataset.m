@@ -151,7 +151,7 @@ for i = 1 : lengthOfSet
             weberContrastPhotopic(i) = (c.meanTarget - c.meanBackground) / c.meanBackground;
         end
         meanBackgroundPhotopic(i) = c.meanBackground;
-        currentDeltaLPhotopic(i) = calcDeltaL(c.meanBackground, alphaMinutes, AGE, T, K);       
+        currentDeltaLPhotopic(i) = calcDeltaL(c.meanBackground, c.meanTarget, alphaMinutes, AGE, T, K);       
     end 
     %stds
     stdTargetPhotopic(i) = c.stdTarget;
@@ -176,7 +176,7 @@ for i = 1 : lengthOfSet
             weberContrastScotopic(i) = (c.meanTarget - c.meanStreetSurface) / c.meanStreetSurface;
         end
         meanBackgroundScotopic(i) = c.meanStreetSurface;
-        currentDeltaLScotopic(i) = calcDeltaL(c.meanStreetSurface, alphaMinutes, AGE, T, K);
+        currentDeltaLScotopic(i) = calcDeltaL(c.meanStreetSurface, c.meanTarget, alphaMinutes, AGE, T, K);
     elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
         if(strmatch(CONTRAST_MODE,'STRONGEST_EDGE'))
             strongestEdgeContrast = get(c,c.strongestEdge);
@@ -186,7 +186,7 @@ for i = 1 : lengthOfSet
             weberContrastScotopic(i) = (c.meanTarget - c.meanBackground) / c.meanBackground;
         end
         meanBackgroundScotopic(i) = c.meanBackground;
-        currentDeltaLScotopic(i) = calcDeltaL(c.meanBackground, alphaMinutes, AGE, T, K);
+        currentDeltaLScotopic(i) = calcDeltaL(c.meanBackground, c.meanTarget, alphaMinutes, AGE, T, K);
     end
      %stds
     stdTargetScotopic(i) = c.stdTarget;
@@ -212,7 +212,7 @@ for i = 1 : lengthOfSet
             weberContrastMesopic(i) = (c.meanTarget - c.meanStreetSurface) / c.meanStreetSurface;
         end
         meanBackgroundMesopic(i) = c.meanStreetSurface;
-        currentDeltaLMesopic(i) = calcDeltaL(c.meanStreetSurface, alphaMinutes, AGE, T, K);
+        currentDeltaLMesopic(i) = calcDeltaL(c.meanStreetSurface, c.meanTarget, alphaMinutes, AGE, T, K);
     elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
         if(strmatch(CONTRAST_MODE,'STRONGEST_EDGE'))
             strongestEdgeContrast = get(c,c.strongestEdge);
@@ -222,7 +222,7 @@ for i = 1 : lengthOfSet
             weberContrastMesopic(i) = (c.meanTarget - c.meanBackground) / c.meanBackground;
         end
         meanBackgroundMesopic(i) = c.meanBackground;
-        currentDeltaLMesopic(i) = calcDeltaL(c.meanBackground, alphaMinutes, AGE, T, K);
+        currentDeltaLMesopic(i) = calcDeltaL(c.meanBackground, c.meanTarget, alphaMinutes, AGE, T, K);
     end
     %stds
     stdTargetMesopic(i) = c.stdTarget;

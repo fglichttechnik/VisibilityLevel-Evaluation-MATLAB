@@ -26,20 +26,13 @@ if ((Lt - Lb) < 0)
     deltaL = deltaL * Fcp;
 end
 
-%
-%     %correct time factor
-%     timeFactor = calcTimeFactor(alpha, Lb, t);
-%
-%     %correct age factor
-%     AF = calcAgeFactor(age) ;
-%
-%     deltaL = deltaLneg;
+%correct time factor
+timeFactor = calcTimeFactor(alpha, Lb, t);
 
+%correct age factor
+AF = calcAgeFactor(age) ;
 
-%deltaL = Lt - Lb
-
-%dit is quatsch!
-%contrastThreshold = deltaL ./ Lb;
+deltaL = deltaL * timeFactor * AF;
 
 end
 
@@ -92,9 +85,15 @@ end
 function timeFactor = calcTimeFactor (alpha, Lb, t)
 % calculates the time factor
 
+%is this correct?
+if(alpha > 60)
+    timeFactor = 1;
+    return;
+end
+
 assert(alpha < 60);
 
-logAlpha = log10(alpha) + 0523;
+logAlpha = log10(alpha) + 0.523;
 aAlpha = 0.36 - 0.0972 * logAlpha^2 / (logAlpha^2 - 2.513 * logAlpha + 2.7895)
 
 logLb = log10(Lb) + 6;
