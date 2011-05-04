@@ -1,7 +1,7 @@
-function deltaL = calcDeltaL(Lb, alpha, age, t, k)
+function deltaL = calcDeltaL(Lb, Lt, alpha, age, t, k)
 %author Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
-% function deltaL = calcDeltaL(Lb, alpha, age, t, k)
+% function deltaL = calcDeltaL(Lb, Lt, alpha, age, t, k)
 %	This function calculates the contrast threshold as published in Adrian89.
 %	Lb: background luminance in cd/m^2
 %	alpha: object size as percepted by a test person in minutes '
@@ -10,7 +10,7 @@ function deltaL = calcDeltaL(Lb, alpha, age, t, k)
 %	k: correction factor
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% calculate contrast threshold for circumstances
+% calculate deltaL threshold for circumstances
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %calculate Ricco part
 sqrt_phi = calcRiccoPhi(Lb);	%phi is sqrt(phi)
@@ -20,10 +20,12 @@ sqrt_L = calcWeberL(Lb);		%L is sqrt(L)
 %delta L uncorrected
 deltaL = k .* (sqrt_phi ./ alpha  + sqrt_L).^2;
 
-%     %correct for negative contrast
-%     %deltaLpos = 0.1046;
-%     Fcp = calcNegativeContrastFcp(alpha, Lb, deltaLpos);
-%     deltaLneg = deltaL * Fcp;
+%correct data for negative contrast
+if ((Lt - Lb) < 0)
+    Fcp = calcNegativeContrastFcp(alpha, Lb, deltaL);
+    deltaL = deltaL * Fcp;
+end
+
 %
 %     %correct time factor
 %     timeFactor = calcTimeFactor(alpha, Lb, t);

@@ -30,10 +30,11 @@ else
 end
 %
 Lb = [0.01; 0.1; 0.3; 1; 3; 10; 100];
+Lt = 1;
 deltaL = zeros(length(Lb), length(alpha));
 
 for i = 1 : length(Lb)
-    deltaL(i,:) = calcDeltaL(Lb(i), alpha, AGE, T ,K);
+    deltaL(i,:) = calcDeltaL(Lb(i), Lt, alpha, AGE, T ,K);
 end
 pP = loglog(alpha,deltaL,'LineWidth',1.2);
 
@@ -130,7 +131,7 @@ set(fig2, 'Position', [frame(1), frame(2), WIDTH, HEIGHT])
 
 
 alpha = [1; 2; 10; 20];
-%
+Lt = 1;
 
 
 if (strcmp(FOCUS_ON_STREET,'YES'))
@@ -142,7 +143,7 @@ end
 deltaL = zeros(length(alpha),length(Lb));
 
 for i = 1 : length(alpha)
-    deltaL(i,:) = calcDeltaL(Lb, alpha(i) / 60, AGE, T ,K);
+    deltaL(i,:) = calcDeltaL(Lb, Lt, alpha(i) / 60, AGE, T ,K);
 end
 pP = loglog(Lb,deltaL,'LineWidth',1.2);
 

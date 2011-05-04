@@ -141,7 +141,7 @@ for i = 1 : lengthOfSet
             weberContrastPhotopic(i) = (c.meanTarget - c.meanStreetSurface) / c.meanStreetSurface;
         end
         meanBackgroundPhotopic(i) = c.meanStreetSurface;
-        currentDeltaLPhotopic(i) = calcDeltaL(c.meanStreetSurface, alphaMinutes, AGE, T, K);
+        currentDeltaLPhotopic(i) = calcDeltaL(c.meanStreetSurface, c.meanTarget, alphaMinutes, AGE, T, K);
     elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
         if(strmatch(CONTRAST_MODE,'STRONGEST_EDGE'))
             strongestEdgeContrast = get(c,c.strongestEdge);
