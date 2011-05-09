@@ -1,7 +1,10 @@
 function SP = calcSPFromSpectrum(spectrum)
 
+load('V_CIE.mat');
+load('V_strich_CIE.mat');
+
 lambda_i = linspace(380,780,401);
-V_strich_i = interp1(lambda_CIE, V, lambda_i);
+V_i = interp1(lambda_CIE, V, lambda_i);
 Lv_photopic = 683 * sum(V_i .* spectrum);
 
 lambda_i = linspace(380,780,401);
