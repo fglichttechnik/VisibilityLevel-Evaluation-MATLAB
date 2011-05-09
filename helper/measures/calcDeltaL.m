@@ -23,16 +23,19 @@ deltaL = k .* (sqrt_phi ./ alpha  + sqrt_L).^2;
 %correct data for negative contrast
 if ((Lt - Lb) < 0)
     Fcp = calcNegativeContrastFcp(alpha, Lb, deltaL);
-    deltaL = deltaL * Fcp;
+    deltaL = deltaL .* Fcp;
 end
 
 %correct time factor
-timeFactor = calcTimeFactor(alpha, Lb, t);
+if (t < 2)
+    timeFactor = calcTimeFactor(alpha, Lb, t);
+    deltaL = deltaL .* timeFactor;
+end
 
 %correct age factor
-AF = calcAgeFactor(age) ;
+AF = calcAgeFactor(age);
 
-deltaL = deltaL * timeFactor * AF;
+deltaL = deltaL .* AF;
 
 end
 
@@ -70,41 +73,41 @@ end
 function Fcp = calcNegativeContrastFcp (alpha, Lb, deltaLpos)
 % calculates the negative to positive contrast conversion factor
 
-assert(Lb > 0.004)
+%assert(Lb > 0.004)
 if(Lb >= 0.1)
     factor = 0.125;     %Lb >= 0.1 cd/m^2
 elseif(Lb > 0.004)
     factor = 0.075;    %Lb > 0.004 cd/m^2
 end
 m = 10.^(- (factor .* (log10(Lb) + 1).^2 + 0.0245));
-m = 10.^(-m)
-beta = 0.6 .* Lb.^(-0.1488)
-Fcp = 1 - (m * alpha^(-beta) / (2.4 * deltaLpos));
+m = 10.^(-m);
+beta = 0.6 .* Lb.^(-0.1488);
+Fcp = 1 - (m .* alpha.^(-beta) ./ (2.4 .* deltaLpos));
 end
 
 function timeFactor = calcTimeFactor (alpha, Lb, t)
 % calculates the time factor
 
-%is this correct?
-if(alpha > 60)
-    timeFactor = 1;
-    return;
-end
 
-assert(alpha < 60);
+
+%assert(alpha < 60);
 
 logAlpha = log10(alpha) + 0.523;
-aAlpha = 0.36 - 0.0972 * logAlpha^2 / (logAlpha^2 - 2.513 * logAlpha + 2.7895)
+aAlpha = 0.36 - 0.0972 .* logAlpha.^2 ./ (logAlpha.^2 - 2.513 .* logAlpha + 2.7895);
 
 logLb = log10(Lb) + 6;
-aLb = 0.355 - 0.1217 * logLb^2 / (logLb^2 - 10.4 * logLb + 52.28)
+aLb = 0.355 - 0.1217 .* logLb.^2 ./ (logLb.^2 - 10.4 .* logLb + 52.28);
 
 %for alpha < 60'
-aAlphaLb = sqrt(aAlpha^2 + aLb^2) / 2.1
+aAlphaLb = sqrt(aAlpha.^2 + aLb.^2) / 2.1;
 
 timeFactor = (aAlphaLb + t) / t;
 
 
+%is this correct?
+%timefactor relevant for alpha < 60 only?
+alphaAbove60 = (alpha >= 60);
+timeFactor(alphaAbove60) = 1;
 
 end
 
@@ -115,9 +118,9 @@ assert((age > 23) && (age < 75))
 
 if(age < 64)
     %23 < age < 64
-    AF = (age - 19)^2 / 2160 + 0.99;
+    AF = (age - 19).^2 ./ 2160 + 0.99;
 else
     %64 <= age < 75
-    AF = (age - 56.6)^2 / 116.3 + 1.43;
+    AF = (age - 56.6).^2 ./ 116.3 + 1.43;
 end
 end
