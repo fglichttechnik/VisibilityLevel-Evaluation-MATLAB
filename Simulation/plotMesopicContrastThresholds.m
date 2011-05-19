@@ -3,7 +3,7 @@
 %make plots similar to adrian 89
 %adjusted to mesopic luminances
 
-AGE = 27;
+AGE = 67;
 T = 2;
 K = 2.6;
 
