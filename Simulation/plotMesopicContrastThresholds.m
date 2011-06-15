@@ -225,6 +225,8 @@ diffArray = [...
     ];
 diffArray = (diffArray' - 1) * 100;
 
+
+%%plots
 figure();
 bar(diffArray);
 legend(...
