@@ -113,22 +113,22 @@ classdef LMK_Image_Statistics < handle
             value = obj.stdBackground;
         end    
         %lazy loading of street surface data        
-        function value = get.meanStreetSurface(obj)
-            if (isempty(obj.imageMetadata.quadrangle))
-                obj.meanStreetSurface = 1;
-            else
-                calcStatisticsOfStreetSurface(obj);
-            end
-            value = obj.meanStreetSurface;
-        end
-        function value = get.stdStreetSurface(obj)
-            if (isempty(obj.imageMetadata.quadrangle))
-                obj.stdStreetSurface = 1;
-            else
-                calcStatisticsOfStreetSurface(obj);
-            end
-            value = obj.stdStreetSurface;
-        end
+%         function value = get.meanStreetSurface(obj)
+%             if (isempty(obj.imageMetadata.quadrangle))
+%                 obj.meanStreetSurface = 1;%hack TODO: to be implemented
+%             else
+%                 calcStatisticsOfStreetSurface(obj);
+%             end
+%             value = obj.meanStreetSurface;
+%         end
+%         function value = get.stdStreetSurface(obj)
+%             if (isempty(obj.imageMetadata.quadrangle))
+%                 obj.stdStreetSurface = 1;
+%             else
+%                 calcStatisticsOfStreetSurface(obj);
+%             end
+%             value = obj.stdStreetSurface;
+%         end
         %lazy loading of contrast data
         function value = get.upperEdgeContrast(obj)
             if isempty(obj.upperEdgeContrast)

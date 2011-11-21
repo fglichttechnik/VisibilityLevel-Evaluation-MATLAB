@@ -1,4 +1,4 @@
-SAVE = 1;
+SAVE = 0;
 FONTSIZE = 15;
 
 %%putenweg Gas
@@ -244,6 +244,60 @@ axis([380, 780, 10^-15, 10^1]);
 if(SAVE)
     saveas(gcf(), 'all_Spectra_relative_ordered', 'fig');
     saveas(gcf(), 'all_Spectra_relative_ordered', 'epsc');
+end
+
+
+%%plot all spectra LINEAR ordered manually
+figure();
+maxiI = max(m_I.spectralData);
+maxiGas = max(m_Gas.spectralData);
+maxiLED = max(m_LED.spectralData);
+maxiHM = max(m_HM.spectralData);
+maxiLM1 = max(m_LM1.spectralData);
+maxiLM2 = max(m_LM2.spectralData);
+maxiHS = max(m_HS.spectralData);
+maxiI = maxiI;
+maxiGas = maxiGas;
+maxiLM1 = maxiLM1;
+maxiLM2 = maxiLM2;
+maxiHM = maxiHM;
+maxiHS = maxiHS;
+maxiLED = maxiLED;
+
+m_I_normalized = CS2000Measurement();
+m_I_normalized.spectralData = m_I.spectralData / maxiI;
+m_Gas_normalized = CS2000Measurement();
+m_Gas_normalized.spectralData = m_Gas.spectralData / maxiGas;
+m_LED_normalized = CS2000Measurement();
+m_LED_normalized.spectralData = m_LED.spectralData / maxiLED;
+m_HM_normalized = CS2000Measurement();
+m_HM_normalized.spectralData = m_HM.spectralData / maxiHM;
+m_LM1_normalized = CS2000Measurement();
+m_LM1_normalized.spectralData = m_LM1.spectralData / maxiLM1;
+m_LM2_normalized = CS2000Measurement();
+m_LM2_normalized.spectralData = m_LM2.spectralData / maxiLM2;
+m_HS_normalized = CS2000Measurement();
+m_HS_normalized.spectralData = m_HS.spectralData / maxiHS;
+
+plot(m_Gas_normalized.spectralData,'k');
+hold on;
+plot(m_I_normalized.spectralData,'r');
+plot(m_LM1_normalized.spectralData,'c');
+plot(m_LM2_normalized.spectralData,'m');
+plot(m_HM_normalized.spectralData,'gr');
+plot(m_HS_normalized.spectralData,'y');
+plot(m_LED_normalized.spectralData,'b');
+hold off;
+legend('Gas', 'I','LM1', 'LM2', 'HM', 'HS',  'LED', 'Location','SouthEast');
+t = title('Relative Spectral Radiance');
+set(t ,'FontSize',FONTSIZE);
+y = ylabel('$$\mbox{L}_{e,rel} \hspace{5pt}  (\lambda)$$');
+set(y,'Interpreter','LaTeX','FontSize',FONTSIZE);
+set(gca, 'YTickLabel', []);
+%axis([380, 780, 10^-15, 10^1]);
+if(SAVE)
+    saveas(gcf(), 'all_Spectra_relative_ordered_linear', 'fig');
+    saveas(gcf(), 'all_Spectra_relative_ordered_linear', 'epsc');
 end
 
 

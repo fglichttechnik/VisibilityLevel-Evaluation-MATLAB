@@ -9,15 +9,16 @@
 %file path preferences
 %XMLNAME = 'keller_vorne'; % name of the .xml-file for this dataset
 %XMLNAME = 'lmkXML';
-%XMLNAME = 'lmkXML';
-XMLNAME = 'Testmessung';
+XMLNAME = 'pos';
+%XMLNAME = 'Testmessung';
 
 %PATH = 'C:\Dokumente und Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	%this is the path to the datasets xml file
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/2010_12_22_Testmessung_Keller_vorne';
 %C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/6,5';
+PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/LMKSetMat';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/';
-PATH = 'C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB\LMK\LMK\Testmessung\Test';
+%PATH = 'C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB\LMK\LMK\Testmessung\Test';
 
 
 %2° field for current lens (8mm)
@@ -49,11 +50,11 @@ SIZE_OF_OBJECT = 0.30;	%size of visual object
 BACKGROUND_LUMINANCE_MODE = 'STREET';
 
 %either 'OBJECT' or 'STRONGEST_EDGE'
-CONTRAST_MODE = 'OBJECT';
+CONTRAST_MODE = 'STRONGEST_EDGE';
 
 %analyse either photopic luminances or photopic, scotopic and mesopic luminances
 %either 'PHOTOPIC' or 'ALL'
-ANALYSIS_MODE = 'ALL';
+ANALYSIS_MODE = 'PHOTOPIC';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %no adjustments have to be done below
@@ -134,12 +135,15 @@ for i = 1 : lengthOfSet
     c = currentPhotopic_LMK_Image_Statistics;
     if(strmatch(BACKGROUND_LUMINANCE_MODE,'STREET'))
         if(strmatch(CONTRAST_MODE,'STRONGEST_EDGE'))
-            strongestEdgeContrast = get(c,c.strongestEdge);
+            %strongestEdgeContrast = get(c,c.strongestEdge); 
+            strongestEdgeContrast = c.upperEdgeContrast;%HACK the upper line doesn't work anymore
             weberContrastPhotopic(i) = strongestEdgeContrast;
             %
         elseif(strmatch(CONTRAST_MODE,'OBJECT'))
             weberContrastPhotopic(i) = (c.meanTarget - c.meanStreetSurface) / c.meanStreetSurface;
         end
+        %HACK: remove this
+        c.meanStreetSurface = 1;
         meanBackgroundPhotopic(i) = c.meanStreetSurface;
         currentDeltaLPhotopic(i) = calcDeltaL(c.meanStreetSurface, c.meanTarget, alphaMinutes, AGE, T, K);
     elseif(strmatch(BACKGROUND_LUMINANCE_MODE,'2DEGREE'))
