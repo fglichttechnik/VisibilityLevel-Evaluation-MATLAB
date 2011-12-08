@@ -2,163 +2,178 @@
 %email j.winter@tu-berlin.de
 
 classdef LMK_Image_Statistics < handle
-    properties        
+    properties
+        
+        imageMetadata   %metadata information about image
+        dataType        %photopic, mesopic, scotopic
+        
+        %values
         meanTarget
+        meanTargetUpperEdge
+        meanTargetLowerEdge
+        meanTargetLeftEdge
+        meanTargetRightEdge
+        meanBackgroundStreetSurface
+        meanBackgroundTwoDegree
+        meanBackgroundUpperEdge
+        meanBackgroundLowerEdge
+        meanBackgroundLeftEdge
+        meanBackgroundRightEdge
+        
+        %on demand calculated values
+        strongestEdgeContrast
+        strongestEdgeString         %upperEdge, lowerEdge, leftEdge, rightEdge
+        strongestEdgeMeanTarget
+        strongestEdgeMeanBackground
+        
+        %visualisation
+        visualisationImage
+        
+        %currently not necessary values
         minTarget
         maxTarget
         stdTarget
-        meanBackground
-        minBackground
-        maxBackground
-        stdBackground
-        meanStreetSurface
-        stdStreetSurface
         imgResult
-        upperEdgeContrast
-        lowerEdgeContrast
-        leftEdgeContrast
-        rightEdgeContrast
-        strongestEdge
         radius
         savePath
         dataImage
         filename
-        imageMetadata
+        
+        
+        
     end % properties
     methods
         %constructor
-        function obj = LMK_Image_Statistics(...
-        meanTarget,...
-        minTarget,...
-        maxTarget,...
-        stdTarget,...
-        meanBackground,...
-        minBackground,...
-        maxBackground,...
-        stdBackground,...
-        meanStreetSurface,... 
-        stdStreetSurface,...
-        upperEdgeContrast,...
-        lowerEdgeContrast,...
-        leftEdgeContrast,...
-        rightEdgeContrast,...
-        strongestEdge)
+        function obj = LMK_Image_Statistics( imageMetadata, dataType )
             if nargin > 0 % Support calling with 0 arguments
-                obj.meanTarget = meanTarget;
-                obj.minTarget = minTarget;
-                obj.maxTarget = maxTarget;
-                obj.stdTarget = stdTarget;
-                obj.meanBackground = meanBackground;
-                obj.minBackground = minBackground;
-                obj.maxBackground = maxBackground;
-                obj.stdBackground = stdBackground;
-                obj.meanStreetSurface = meanStreetSurface;
-                obj.stdStreetSurface = stdStreetSurface;
-                obj.upperEdgeContrast = upperEdgeContrast;
-                obj.lowerEdgeContrast = lowerEdgeContrast;
-                obj.leftEdgeContrast = leftEdgeContrast;
-                obj.rightEdgeContrast = rightEdgeContrast;
-                obj.strongestEdge = strongestEdge;
+                obj.imageMetadata = imageMetadata;
+                obj.dataType = dataType;
+                performCalculations( obj )
             end
         end% constructor
         
-        %lazy loading of target data
-        function value = get.meanTarget(obj)
-            if isempty(obj.meanTarget)
-                statisticsOfCircleAndRectHack(obj);
+        
+        %lazy loading of strongestEdgeContrast
+        function value = get.strongestEdgeContrast( obj )
+            if( isempty( obj.strongestEdgeContrast ) )
+                
+                upperEdgeContrast = obj.meanTargetUpperEdge / obj.meanBackgroundUpperEdge - 1;
+                lowerEdgeContrast = obj.meanTargetLowerEdge / obj.meanBackgroundLowerEdge - 1;
+                leftEdgeContrast = obj.meanTargetLeftEdge / obj.meanBackgroundLeftEdge - 1;
+                rightEdgeContrast = obj.meanTargetRightEdge / obj.meanBackgroundRightEdge - 1;
+                
+                if ( ( upperEdgeContrast >= lowerEdgeContrast )...
+                        && ( upperEdgeContrast >= leftEdgeContrast )...
+                        && ( upperEdgeContrast >= rightEdgeContrast ) )
+                    strongestEdge = 'upperEdge';
+                    stringestEdgeContrast = upperEdgeContrast;
+                elseif ( ( lowerEdgeContrast >= upperEdgeContrast )...
+                        && ( lowerEdgeContrast >= leftEdgeContrast )...
+                        && ( lowerEdgeContrast >= rightEdgeContrast ) )
+                    strongestEdge = 'lowerEdge';
+                    stringestEdgeContrast = lowerEdgeContrast;
+                elseif ( ( leftEdgeContrast >= lowerEdgeContrast )...
+                        && ( leftEdgeContrast >= upperEdgeContrast )...
+                        && ( leftEdgeContrast >= rightEdgeContrast ) )
+                    strongestEdge = 'leftEdge';
+                    stringestEdgeContrast = leftEdgeContrast;
+                else
+                    strongestEdge = 'rightEdge';
+                    stringestEdgeContrast = rightEdgeContrast;
+                end
+                
+                %print info
+                disp(sprintf('strongest edge: %s', strongestEdge));
+                
+                %assign values
+                obj.strongestEdgeContrast = stringestEdgeContrast;
+                obj.strongestEdgeString = strongestEdge;
             end
-            value = obj.meanTarget;
+            value = obj.strongestEdgeContrast;
         end
-        function value = get.minTarget(obj)
-            if isempty(obj.minTarget)
-                statisticsOfCircleAndRectHack(obj);
+        
+        %lazy loading of strongestEdgeString
+        function value = get.strongestEdgeString( obj )
+            if( isempty( obj.strongestEdgeString ) )
+                %trigger strongestEdgeContrast --> will calculate
+                %strongestEdgeString
+                obj.strongestEdgeContrast;
             end
-            value = obj.minTarget;
+            value = obj.strongestEdgeString;
         end
-        function value = get.maxTarget(obj)
-            if isempty(obj.maxTarget)
-                statisticsOfCircleAndRectHack(obj);
+        
+        %lazy loading of strongestEdgeMeanTarget
+        function value = get.strongestEdgeMeanTarget( obj )
+            if( isempty( obj.strongestEdgeMeanTarget ) )
+                %trigger strongestEdgeContrast --> will calculate
+                %strongestEdgeString
+                obj.strongestEdgeContrast;
+                
+                if ( strcmp( obj.strongestEdgeString, 'upperEdge' ) )
+                    strongestEdgeMeanTarget = obj.meanTargetUpperEdge;
+                elseif ( strcmp( obj.strongestEdgeString, 'lowerEdge' ) )
+                    strongestEdgeMeanTarget = obj.meanTargetLowerEdge;
+                elseif ( strcmp( obj.strongestEdgeString, 'leftEdge' ) )
+                    strongestEdgeMeanTarget = obj.meanTargetLeftEdge;
+                else
+                    strongestEdgeMeanTarget = obj.meanTargetRightEdge;
+                end
+                
+                obj.strongestEdgeMeanTarget = strongestEdgeMeanTarget;
             end
-            value = obj.maxTarget;
+            
+            value = obj.strongestEdgeMeanTarget;
         end
-        function value = get.stdTarget(obj)
-            if isempty(obj.stdTarget)
-                statisticsOfCircleAndRectHack(obj);
+        
+        %lazy loading of strongestEdgeString
+        function value = get.strongestEdgeMeanBackground( obj )
+            if( isempty( obj.strongestEdgeMeanBackground ) )
+                %trigger strongestEdgeContrast --> will calculate
+                %strongestEdgeString
+                obj.strongestEdgeContrast;
+                
+                if ( strcmp( obj.strongestEdgeString, 'upperEdge' ) )
+                    strongestEdgeMeanBackground = obj.meanBackgroundUpperEdge;
+                elseif ( strcmp( obj.strongestEdgeString, 'lowerEdge' ) )
+                    strongestEdgeMeanBackground = obj.meanBackgroundLowerEdge;
+                elseif ( strcmp( obj.strongestEdgeString, 'leftEdge' ) )
+                    strongestEdgeMeanBackground = obj.meanBackgroundLeftEdge;
+                else
+                    strongestEdgeMeanBackground = obj.meanBackgroundRightEdge;
+                end
+                
+                obj.strongestEdgeMeanBackground = strongestEdgeMeanBackground;
             end
-            value = obj.stdTarget;
+            
+            value = obj.strongestEdgeMeanBackground;
+            
         end
-        %lazy loading of background data
-        function value = get.meanBackground(obj)
-            if isempty(obj.meanBackground)
-                statisticsOfCircleAndRectHack(obj);
+        
+        %private methods
+        %calculate all values
+        function performCalculations(obj)
+            
+            if( strcmp( obj.dataType, 'Photopic') )
+                dataImage = obj.imageMetadata.dataImagePhotopic;
+            elseif( strcmp( obj.dataType, 'Scotopic') )
+                dataImage = obj.imageMetadata.dataImagePhotopic;
+            elseif( strcmp( obj.dataType, 'Mesopic') )
+                dataImage = obj.imageMetadata.dataImagePhotopic;
+            else
+                disp( sprintf( 'unknown dataType:%s', obj.dataType ) );
+                disp( 'dataType has to be Photopic, Scotopic or Mesopic' );
             end
-            value = obj.meanBackground;
+            
+            %set visualisation image
+            obj.visualisationImage = logical( zeros( size( dataImage ) ) );
+            
+            calcMeanOfTarget( dataImage , obj );
+            
+            calcMeanOfTargetEdges( dataImage , obj );
+            
+            disp('DEBUG');
+            %statisticsOfCircleAndRectHack(obj);
         end
-        function value = get.minBackground(obj)
-            if isempty(obj.minBackground)
-                statisticsOfCircleAndRectHack(obj);
-            end
-            value = obj.minBackground;
-        end
-        function value = get.maxBackground(obj)
-            if isempty(obj.maxBackground)
-                statisticsOfCircleAndRectHack(obj);
-            end
-            value = obj.maxBackground;
-        end
-        function value = get.stdBackground(obj)
-            if isempty(obj.stdBackground)
-                statisticsOfCircleAndRectHack(obj);
-            end
-            value = obj.stdBackground;
-        end    
-        %lazy loading of street surface data        
-%         function value = get.meanStreetSurface(obj)
-%             if (isempty(obj.imageMetadata.quadrangle))
-%                 obj.meanStreetSurface = 1;%hack TODO: to be implemented
-%             else
-%                 calcStatisticsOfStreetSurface(obj);
-%             end
-%             value = obj.meanStreetSurface;
-%         end
-%         function value = get.stdStreetSurface(obj)
-%             if (isempty(obj.imageMetadata.quadrangle))
-%                 obj.stdStreetSurface = 1;
-%             else
-%                 calcStatisticsOfStreetSurface(obj);
-%             end
-%             value = obj.stdStreetSurface;
-%         end
-        %lazy loading of contrast data
-        function value = get.upperEdgeContrast(obj)
-            if isempty(obj.upperEdgeContrast)
-                statisticsOfCircleAndRectHack(obj);
-            end
-            value = obj.upperEdgeContrast;
-        end   
-        function value = get.lowerEdgeContrast(obj)
-            if isempty(obj.lowerEdgeContrast)
-                statisticsOfCircleAndRectHack(obj);
-            end
-            value = obj.lowerEdgeContrast;
-        end 
-        function value = get.leftEdgeContrast(obj)
-            if isempty(obj.leftEdgeContrast)
-                statisticsOfCircleAndRectHack(obj);
-            end
-            value = obj.leftEdgeContrast;
-        end 
-        function value = get.rightEdgeContrast(obj)
-            if isempty(obj.rightEdgeContrast)
-                statisticsOfCircleAndRectHack(obj);
-            end
-            value = obj.rightEdgeContrast;
-        end 
-        function value = get.strongestEdge(obj)
-            if isempty(obj.strongestEdge)
-                statisticsOfCircleAndRectHack(obj);
-            end
-            value = obj.strongestEdge;
-        end     
+        
     end % methods
 end

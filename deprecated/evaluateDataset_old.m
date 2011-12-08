@@ -7,12 +7,19 @@
 %clear all; %this will clear all breakpoints as well
 
 %file path preferences
+%XMLNAME = 'keller_vorne'; % name of the .xml-file for this dataset
+%XMLNAME = 'lmkXML';
 XMLNAME = 'pos';
+%XMLNAME = 'Testmessung';
 
-%this is the path to the datasets xml file
-%PATH = 'C:\Dokumente und
-%Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	
+%PATH = 'C:\Dokumente und Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	%this is the path to the datasets xml file
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/2010_12_22_Testmessung_Keller_vorne';
+%C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/6,5';
 PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/test_20m_seitenversetzt';
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/';
+%PATH = 'C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB\LMK\LMK\Testmessung\Test';
+
 
 %2° field for current lens (8mm)
 %TODO: define 2° field for other lenses (25mm / 50mm)
@@ -27,6 +34,28 @@ K = 2.6;		%k factor of adrians model
 DISTANCE_TO_MEASUREMENT_FIELD = 11;	%distance between camera and first measurement position of visual object
 SIZE_OF_OBJECT = 0.30;	%size of visual object
 
+
+%these parameters control the method of calculation 
+%for the target object and background luminances
+%2 methods for calculating the background luminance
+%'STREET' calculates the mean luminance on the whole stree
+%'2DEGREE' calculates the mean luminance of 2Â° circle around the object
+%2 methods for calculating the threshold difference luminance
+%'OBJECT' calculates the difference luminance between mean of 
+%object luminance and the background luminance
+%'STRONGEST_EDGE' calculates the difference luminance on the strongest edge 
+%of the object
+%these two methods have been taken from diploma thesis Krenz2010
+
+%either 'STREET' or '2DEGREE'
+BACKGROUND_LUMINANCE_MODE = 'STREET';
+
+%either 'OBJECT' or 'STRONGEST_EDGE'
+CONTRAST_MODE = 'STRONGEST_EDGE';
+
+%analyse either photopic luminances or photopic, scotopic and mesopic luminances
+%either 'PHOTOPIC' or 'ALL'
+ANALYSIS_MODE = 'PHOTOPIC';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %no adjustments have to be done below
@@ -53,43 +82,6 @@ end
 
 lengthOfSet = length(imageset);
 
-disp('Calculating...');
-
-
-%prepare result class
-photopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Photopic', lengthOfSet, AGE, T, K );
-
-%analyse each image
-for currentIndex = 1 : lengthOfSet
-    
-    %get current element
-    currentLMK_Image_Metadata = imageset{ currentIndex };
-    
-        %%TODO: load size parameters from XML file
-    %current visual size of object
-    d = currentLMK_Image_Metadata.rectPosition;
-    gammaRad = 2 * atan(SIZE_OF_OBJECT / 2 ./ (d + DISTANCE_TO_MEASUREMENT_FIELD));
-    alphaMinutes = (gammaRad / pi * 180 * 60);
-    
-    %calculate all necessary values
-    currentPhotopic_LMK_Image_Statistics = LMK_Image_Statistics( currentLMK_Image_Metadata, photopicLMK_Image_Set_Statistics.type );
-    photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentPhotopic_LMK_Image_Statistics;
-    photopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = alphaMinutes;
-end  
-
-%prepare date for plotting
-photopicLMK_Image_Set_Statistics.gatherData();
-photopicLMK_Image_Set_Statistics.plotStrongestEdgeContrast();
-
-disp('');
-
-
-
-return;
-
-%%old stuff
-%%to be removed
-
 %savepath for result images
 savePath = which('evaluateDataset');
 savePath = savePath(1 : end - 18);
@@ -98,12 +90,7 @@ if(~exist(savePath, 'dir'))
     mkdir(savePath)
 end
 
-    %current visual size of object
-    d( currentIndex ) = currentLMK_Image_Metadata.rectPosition;
-    gammaRad = 2 * atan(SIZE_OF_OBJECT / 2 ./ (d( currentIndex ) + DISTANCE_TO_MEASUREMENT_FIELD));
-    alphaMinutes = (gammaRad / pi * 180 * 60);
-    alpha( currentIndex ) = alphaMinutes;
-
+disp('Calculating...');
 %initialize result data
 weberContrastPhotopic = zeros(lengthOfSet,1);
 weberContrastScotopic = zeros(lengthOfSet,1);
@@ -136,7 +123,11 @@ for i = 1 : lengthOfSet
     
     disp(currentLMK_Image_Metadata.dataSRCPhotopic);
     
-    
+    %current visual size of object
+    d(i) = currentLMK_Image_Metadata.rectPosition;
+    gammaRad = 2 * atan(SIZE_OF_OBJECT / 2 ./ (d(i) + DISTANCE_TO_MEASUREMENT_FIELD));
+    alphaMinutes = (gammaRad / pi * 180 * 60);
+    alpha(i) = alphaMinutes;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %calc values for photopic image
