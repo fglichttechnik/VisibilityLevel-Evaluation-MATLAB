@@ -7,12 +7,14 @@
 %clear all; %this will clear all breakpoints as well
 
 %file path preferences
-XMLNAME = 'pos';
+XMLNAME = 'FlurweglmkXML';
+%XMLNAME = 'pos';
 
 %this is the path to the datasets xml file
 %PATH = 'C:\Dokumente und
 %Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/test_20m_seitenversetzt';
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/test_20m_seitenversetzt';
+PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 
 %2° field for current lens (8mm)
 %TODO: define 2° field for other lenses (25mm / 50mm)
@@ -59,6 +61,7 @@ disp('Calculating...');
 %prepare result class
 photopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Photopic', lengthOfSet, AGE, T, K );
 
+
 %analyse each image
 for currentIndex = 1 : lengthOfSet
     
@@ -86,7 +89,16 @@ disp('');
 
 
 return;
+%%end of new evaluateDataset method
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%old stuff
 %%to be removed
 

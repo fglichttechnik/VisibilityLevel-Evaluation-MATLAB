@@ -171,7 +171,7 @@ classdef LMK_Image_Statistics < handle
             
             calcMeanOfTargetEdges( dataImage , obj );
             
-            disp('DEBUG');
+            %disp('DEBUG');
             %statisticsOfCircleAndRectHack(obj);
         end
         

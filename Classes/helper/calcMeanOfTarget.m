@@ -4,7 +4,7 @@ function calcMeanOfTarget( image, LMK_Image_Statistics )
 %   image                  imageData (photopic, scotopic, mesopic)
 %   LMK_Image_Statistics   instance of LMK_Image_Statistics class
 
-k = 100;    %debug: should be 0 in normal operation
+k = 0;%k = 100;    %debug: should be 0 in normal operation
 x1 = LMK_Image_Statistics.imageMetadata.rect.upperLeft.x - k;
 y1 = LMK_Image_Statistics.imageMetadata.rect.upperLeft.y - k;
 x2 = LMK_Image_Statistics.imageMetadata.rect.lowerRight.x + k;
