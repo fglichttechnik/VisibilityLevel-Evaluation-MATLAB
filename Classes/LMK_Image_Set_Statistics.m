@@ -18,6 +18,7 @@ classdef LMK_Image_Set_Statistics < handle
         thresholdContrastArray      %array with threshold contrasts of current set
         visibilityLevelArray        %array with visibility levels of current set
         distanceArray               %array with distances of current set
+        visualisationImageArray     %array with visualisation images of current set
         
     end % properties
     methods
@@ -51,12 +52,15 @@ classdef LMK_Image_Set_Statistics < handle
             meanBackgroundArray = zeros( size( currentStatisticsArray ) );
             thresholdContrastArray = zeros( size( currentStatisticsArray ) );
             distanceArray = zeros( size( currentStatisticsArray ) );
+            visualisationImageArray = cell( size( currentStatisticsArray ) );
             
             %create arrays with Lt , LB and d
             for currentIndex = 1 : length( meanTargetArray )
-                meanTargetArray( currentIndex ) = currentStatisticsArray{ currentIndex }.strongestEdgeMeanTarget;
-                meanBackgroundArray( currentIndex ) = currentStatisticsArray{ currentIndex }.strongestEdgeMeanBackground;
-                distanceArray( currentIndex ) = currentStatisticsArray{ currentIndex }.imageMetadata.rectPosition;
+                currentStatistics = currentStatisticsArray{ currentIndex };
+                meanTargetArray( currentIndex ) = currentStatistics.strongestEdgeMeanTarget;
+                meanBackgroundArray( currentIndex ) = currentStatistics.strongestEdgeMeanBackground;
+                distanceArray( currentIndex ) = currentStatistics.imageMetadata.rectPosition;
+                visualisationImageArray{ currentIndex } = currentStatistics.visualisationImage;
             end
             
             %calculate weber contrast
@@ -72,9 +76,11 @@ classdef LMK_Image_Set_Statistics < handle
             end
             
             %calculate visibility level
-            visibilityLevelArray = weberContrastArray ./ thresholdContrastArray;
+            %VL is always positive
+            visibilityLevelArray = abs(weberContrastArray ./ thresholdContrastArray);
             
             %set instance values
+            obj.visualisationImageArray = visualisationImageArray;
             obj.distanceArray = distanceArray;
             obj.meanTargetArray = meanTargetArray;
             obj.meanBackgroundArray = meanBackgroundArray;
@@ -83,8 +89,18 @@ classdef LMK_Image_Set_Statistics < handle
             obj.visibilityLevelArray = visibilityLevelArray;
         end
         
-        function plotStrongestEdgeContrast( obj )
-            %plot( obj.weberContrastArray );
+        function saveVisualisationImage( obj, savePath )
+            mkdir( savePath, 'visImages' );
+            for currentIndex = 1 : length( obj.visualisationImageArray )
+                image = obj.visualisationImageArray{ currentIndex };                
+                filename = sprintf( '%s/visImages/%d.png', savePath, currentIndex );
+                imwrite( image, filename );
+            end
+        end
+        
+        function plotStrongestEdgeContrast( obj, savePath )
+            
+            mkdir( savePath, 'plots' );
             
             %plot weber contrast
             figure();
@@ -94,7 +110,9 @@ classdef LMK_Image_Set_Statistics < handle
             xlabel('d in m');
             ylabel('C');
             title( strcat( 'Weber Contrast' ) ) ;
-            %saveas(gcf,strcat(savePath,DELIMITER,XMLNAME,'_','WeberKontrast_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+            filename = sprintf( '%s/plots/weberContrastPlot', savePath );
+            saveas(gcf, filename, 'epsc');
+            saveas(gcf, filename, 'fig');
             
             %plot delta L thresh
             deltaLArray = obj.thresholdContrastArray .* obj.meanBackgroundArray;
@@ -107,7 +125,9 @@ classdef LMK_Image_Set_Statistics < handle
             xlabel('d in m');
             ylabel('\Delta L in cd/m^2');
             title(strcat('\Delta L_{th} '));
-            %saveas(gcf,strcat(savePath,DELIMITER,XMLNAME,'_','DeltaL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+            filename = sprintf( '%s/plots/deltaLPlot', savePath );
+            saveas(gcf, filename, 'epsc');
+            saveas(gcf, filename, 'fig');
             
             %plot C thresh
             figure();
@@ -119,8 +139,9 @@ classdef LMK_Image_Set_Statistics < handle
             xlabel('d in m');
             ylabel('C_{th}');
             title(strcat('Threshold Contrast '));
-            %saveas(gcf,strcat(savePath,DELIMITER,XMLNAME,'_','DeltaL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
-            
+            filename = sprintf( '%s/plots/CthPlot', savePath );
+            saveas(gcf, filename, 'epsc');
+            saveas(gcf, filename, 'fig');
             
             %plot visibility level
             figure();
@@ -130,7 +151,9 @@ classdef LMK_Image_Set_Statistics < handle
             xlabel('d in m');
             ylabel('VL');
             title( strcat('Visibility Level ') );
-            %saveas(gcf,strcat(savePath,DELIMITER,XMLNAME,'_','VL_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
+            filename = sprintf( '%s/plots/VLPlot', savePath );
+            saveas(gcf, filename, 'epsc');
+            saveas(gcf, filename, 'fig');
             
             %plot Lt and Lb
             figure();
@@ -143,8 +166,10 @@ classdef LMK_Image_Set_Statistics < handle
             xlabel('d in m');
             ylabel('L in cd/m^2');
             title(strcat('mean L_t vs mean L_B ') );
-            %saveas(gcf,strcat(savePath,DELIMITER,XMLNAME,'_','meanLtLB_',BACKGROUND_LUMINANCE_MODE,'_',CONTRAST_MODE),'epsc');
-
+            filename = sprintf( '%s/plots/LtLbPlot', savePath );
+            saveas(gcf, filename, 'epsc');
+            saveas(gcf, filename, 'fig');
+            
         end   
         
     end % methods

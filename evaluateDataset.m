@@ -68,7 +68,7 @@ for currentIndex = 1 : lengthOfSet
     %get current element
     currentLMK_Image_Metadata = imageset{ currentIndex };
     
-        %%TODO: load size parameters from XML file
+        %%TODO: move this calculation to class!
     %current visual size of object
     d = currentLMK_Image_Metadata.rectPosition;
     gammaRad = 2 * atan(SIZE_OF_OBJECT / 2 ./ (d + DISTANCE_TO_MEASUREMENT_FIELD));
@@ -80,11 +80,14 @@ for currentIndex = 1 : lengthOfSet
     photopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = alphaMinutes;
 end  
 
-%prepare date for plotting
+%prepare data for plotting and plot
 photopicLMK_Image_Set_Statistics.gatherData();
-photopicLMK_Image_Set_Statistics.plotStrongestEdgeContrast();
+photopicLMK_Image_Set_Statistics.plotStrongestEdgeContrast( PATH );
 
-disp('');
+%save images
+photopicLMK_Image_Set_Statistics.saveVisualisationImage( PATH );
+
+%disp('');
 
 
 

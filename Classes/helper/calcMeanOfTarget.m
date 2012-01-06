@@ -11,17 +11,10 @@ x2 = LMK_Image_Statistics.imageMetadata.rect.lowerRight.x + k;
 y2 = LMK_Image_Statistics.imageMetadata.rect.lowerRight.y + k;
 
 %calc mean
-targetImage = image(y1 : y2, x1 : x2);
-meanTarget = mean2(targetImage);
+%targetImage = image(y1 : y2, x1 : x2);
+%meanTarget = mean2(targetImage);
+colorChannel = 2;
+[ meanTarget ] = calcMeanOfRectInImage(image, x1, x2, y1, y2, LMK_Image_Statistics, colorChannel);
 
 %save to class
 LMK_Image_Statistics.meanTarget = meanTarget;
-
-%%TODO: save region to visualisationImage
-
-%debug
-debugImage = image;
-debugImage( y1:y2, x1 : x2) = max(max(image)); 
-%imshow( adapthisteq(debugImage))
-
-disp('DEBUG');

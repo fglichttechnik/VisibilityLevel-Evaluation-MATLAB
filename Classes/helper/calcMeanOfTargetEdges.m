@@ -8,7 +8,7 @@ function calcMeanOfTargetEdges( image, LMK_Image_Statistics )
 %edges are 30% of the target size
 TARGET_SIZE_PERCENTAGE_FOR_REGION = 0.3;    
 
-k = 100;    %debug: should be 0 in normal operation
+k = 0;    %debug: should be 0 in normal operation
 x1 = LMK_Image_Statistics.imageMetadata.rect.upperLeft.x - k;
 y1 = LMK_Image_Statistics.imageMetadata.rect.upperLeft.y - k;
 x2 = LMK_Image_Statistics.imageMetadata.rect.lowerRight.x + k;
@@ -62,14 +62,15 @@ rightBackgroundY1 = y1;
 rightBackgroundY2 = y2;
 
 %calc mean of regions
-upperTargetMean = calcMeanOfRectInImage(image, upperTargetX1, upperTargetX2, upperTargetY1, upperTargetY2);
-upperBackgroundMean = calcMeanOfRectInImage(image, upperBackgroundX1, upperBackgroundX2, upperBackgroundY1, upperBackgroundY2);
-lowerTargetMean = calcMeanOfRectInImage(image, lowerTargetX1, lowerTargetX2, lowerTargetY1, lowerTargetY2);
-lowerBackgroundMean = calcMeanOfRectInImage(image, lowerBackgroundX1, lowerBackgroundX2, lowerBackgroundY1, lowerBackgroundY2);
-leftTargetMean = calcMeanOfRectInImage(image, leftTargetX1, leftTargetX2, leftTargetY1, leftTargetY2);
-leftBackgroundMean = calcMeanOfRectInImage(image, leftBackgroundX1, leftBackgroundX2, leftBackgroundY1, leftBackgroundY2);
-rightTargetMean = calcMeanOfRectInImage(image, rightTargetX1, rightTargetX2, rightTargetY1, rightTargetY2);
-rightBackgroundMean = calcMeanOfRectInImage(image, rightBackgroundX1, rightBackgroundX2, rightBackgroundY1, rightBackgroundY2);
+colorChannel = 3;
+[upperTargetMean] = calcMeanOfRectInImage(image, upperTargetX1, upperTargetX2, upperTargetY1, upperTargetY2, LMK_Image_Statistics, colorChannel);
+[upperBackgroundMean] = calcMeanOfRectInImage(image, upperBackgroundX1, upperBackgroundX2, upperBackgroundY1, upperBackgroundY2, LMK_Image_Statistics, colorChannel);
+[lowerTargetMean] = calcMeanOfRectInImage(image, lowerTargetX1, lowerTargetX2, lowerTargetY1, lowerTargetY2, LMK_Image_Statistics, colorChannel);
+[lowerBackgroundMean] = calcMeanOfRectInImage(image, lowerBackgroundX1, lowerBackgroundX2, lowerBackgroundY1, lowerBackgroundY2, LMK_Image_Statistics, colorChannel);
+[leftTargetMean] = calcMeanOfRectInImage(image, leftTargetX1, leftTargetX2, leftTargetY1, leftTargetY2, LMK_Image_Statistics, colorChannel);
+[leftBackgroundMean] = calcMeanOfRectInImage(image, leftBackgroundX1, leftBackgroundX2, leftBackgroundY1, leftBackgroundY2, LMK_Image_Statistics, colorChannel);
+[rightTargetMean] = calcMeanOfRectInImage(image, rightTargetX1, rightTargetX2, rightTargetY1, rightTargetY2, LMK_Image_Statistics, colorChannel);
+[rightBackgroundMean] = calcMeanOfRectInImage(image, rightBackgroundX1, rightBackgroundX2, rightBackgroundY1, rightBackgroundY2, LMK_Image_Statistics, colorChannel);
 
 %save to class
 LMK_Image_Statistics.meanTargetUpperEdge = upperTargetMean;
@@ -81,10 +82,6 @@ LMK_Image_Statistics.meanBackgroundUpperEdge = upperBackgroundMean;
 LMK_Image_Statistics.meanBackgroundLowerEdge = lowerBackgroundMean;
 LMK_Image_Statistics.meanBackgroundLeftEdge = leftBackgroundMean;
 LMK_Image_Statistics.meanBackgroundRightEdge = rightBackgroundMean;
-
-%%TODO: save region to visualisationImage
-
-disp('DEBUG');
 
 end
 

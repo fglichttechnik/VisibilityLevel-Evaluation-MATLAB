@@ -26,7 +26,7 @@ classdef LMK_Image_Statistics < handle
         strongestEdgeMeanTarget
         strongestEdgeMeanBackground
         
-        %visualisation
+        %visualisation (the areas for calculation are marked in that image)
         visualisationImage
         
         %currently not necessary values
@@ -164,15 +164,20 @@ classdef LMK_Image_Statistics < handle
                 disp( 'dataType has to be Photopic, Scotopic or Mesopic' );
             end
             
-            %set visualisation image
-            obj.visualisationImage = logical( zeros( size( dataImage ) ) );
+            %set visualisation image as RGB image
+            [ width, height ] = size( dataImage );
+            visImagePrototype = zeros( width, height, 3 );
+            visImage = mat2gray( adapthisteq( dataImage ) );
+            visImagePrototype(:, :, 1) = visImage;
+            visImagePrototype(:, :, 2) = visImage;
+            visImagePrototype(:, :, 3) = visImage;
+            obj.visualisationImage = visImagePrototype;
             
+            %calc mean of target
             calcMeanOfTarget( dataImage , obj );
             
+            %calc mean of background
             calcMeanOfTargetEdges( dataImage , obj );
-            
-            %disp('DEBUG');
-            %statisticsOfCircleAndRectHack(obj);
         end
         
     end % methods

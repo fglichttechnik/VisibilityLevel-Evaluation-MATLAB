@@ -1,4 +1,4 @@
-function meanImg = calcMeanOfRectInImage(img, x1, x2, y1, y2)
+function meanImg = calcMeanOfRectInImage(img, x1, x2, y1, y2, LMK_Image_Statistics, colorChannel)
 %author Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 %calculates the mean of a rect region within an image
@@ -27,4 +27,15 @@ if (y2 > height)
     y2 = height;
 end
 
-meanImg = mean2(img(y1 : y2, x1 : x2));
+meanImg = mean2( img(y1 : y2, x1 : x2) );
+
+%visualize measurement region
+visImage = logical( zeros( size( img ) ) );
+visImage(y1 : y2, x1 : x2) = 1;
+visImage = bwperim( visImage, 8);
+
+%mark region 
+alphaMask = zeros( size ( LMK_Image_Statistics.visualisationImage ) );
+alphaMask( : , : , colorChannel) = visImage;
+alphaMask = logical( alphaMask );
+LMK_Image_Statistics.visualisationImage( alphaMask ) = 1;
