@@ -7,18 +7,19 @@
 %clear all; %this will clear all breakpoints as well
 
 %file path preferences
-XMLNAME = 'FlurweglmkXML';
-%XMLNAME = 'pos';
+%XMLNAME = 'FlurweglmkXML';
+XMLNAME = 'pos';
 
 %this is the path to the datasets xml file
 %PATH = 'C:\Dokumente und
 %Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	
-%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/test_20m_seitenversetzt';
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
+PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/staggered7_35';
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 
 %2° field for current lens (8mm)
 %TODO: define 2° field for other lenses (25mm / 50mm)
 RADIUS = 100;	%number of pixels which correspond to 2°
+%CURRENTLY NOT IMPLEMENTED!!!
 
 %adrian threshold model parameter
 AGE = 24;		%age of observer for adrians model
@@ -28,7 +29,7 @@ K = 2.6;		%k factor of adrians model
 %visual object preferences
 DISTANCE_TO_MEASUREMENT_FIELD = 11;	%distance between camera and first measurement position of visual object
 SIZE_OF_OBJECT = 0.30;	%size of visual object
-
+%TODO: read this from XML file
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %no adjustments have to be done below
@@ -42,16 +43,17 @@ end
 
 
 %load data
-if ~exist([PATH,DELIMITER,XMLNAME, '.mat'], 'file');
+%THIS CAUSES A LOT OF PROBLEMS!!!
+%if ~exist([PATH,DELIMITER,XMLNAME, '.mat'], 'file');
     %load xml file and read all pf images
-    str = parseXML([PATH,DELIMITER,XMLNAME,'.xml']);
-    imageset = struct2mat(str);
-    save([PATH,DELIMITER,XMLNAME, '.mat'], 'imageset');
-else
+    str = parseXML([PATH, DELIMITER, XMLNAME,'.xml']);
+    imageset = struct2mat(str, PATH);
+    %save([PATH,DELIMITER,XMLNAME, '.mat'], 'imageset');
+%else
     %load image data set
-    disp(['Loading dataset ', XMLNAME, '.mat ...']);
-    load(XMLNAME);    
-end
+%    disp(['Loading dataset ', XMLNAME, '.mat ...']);
+ %   load(XMLNAME);    
+%end
 
 lengthOfSet = length(imageset);
 

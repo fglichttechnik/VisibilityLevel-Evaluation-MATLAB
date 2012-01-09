@@ -167,7 +167,8 @@ classdef LMK_Image_Statistics < handle
             %set visualisation image as RGB image
             [ width, height ] = size( dataImage );
             visImagePrototype = zeros( width, height, 3 );
-            visImage = mat2gray( adapthisteq( dataImage ) );
+            %visImage = mat2gray( adapthisteq( dataImage ) );
+            visImage = imadjust( dataImage, stretchlim(dataImage),[] ); %contrast stretch image for better viewing
             visImagePrototype(:, :, 1) = visImage;
             visImagePrototype(:, :, 2) = visImage;
             visImagePrototype(:, :, 3) = visImage;

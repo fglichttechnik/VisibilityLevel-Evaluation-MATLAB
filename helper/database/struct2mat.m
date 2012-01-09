@@ -1,4 +1,4 @@
-function elements = struct2mat(str)
+function elements = struct2mat(str, dirPath)
 %author Sandy Buschmann, Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 %
@@ -121,7 +121,8 @@ for i = 1 : childSize
     end
     matSource = '';
     % create new object 
-    evaluatedData = LMK_Image_Metadata;
+    evaluatedData = LMK_Image_Metadata();
+    evaluatedData.dirPath = dirPath;
     
     % browse the children
     childMatch = strmatch('LMKData', str.Children(1,i).Name);

@@ -105,6 +105,9 @@ classdef LMK_Image_Set_Statistics < handle
             %plot weber contrast
             figure();
             plot( obj.distanceArray, obj.weberContrastArray, 'o-r' );
+            hold on;
+            plot( obj.distanceArray, zeros( size( obj.distanceArray ) ), ':b' );
+            hold off;
             %legend('L_{photopisch}');
             axis('tight');
             xlabel('d in m');

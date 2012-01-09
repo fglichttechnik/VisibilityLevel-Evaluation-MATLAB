@@ -23,6 +23,7 @@ classdef LMK_Image_Metadata < handle
         comments
         lightSource
         Name
+        dirPath
     end % properties
     methods
         %constructor
@@ -46,8 +47,9 @@ classdef LMK_Image_Metadata < handle
         function value = get.dataImagePhotopic(obj)
            if(isempty(obj.dataImagePhotopic))
                if ~(isempty(obj.dataSRCPhotopic))
+                   filePath = sprintf( '%s/%s', obj.dirPath, obj.dataSRCPhotopic );
                     obj.dataImagePhotopic= LMK_readPfImage...
-                        (obj.dataSRCPhotopic);
+                        ( filePath );
                elseif ~(isempty(obj.dataSRCMat))
                     matImage = load([obj.dataSRCMat]);
                     obj.dataImagePhotopic = ....
@@ -62,8 +64,9 @@ classdef LMK_Image_Metadata < handle
         function value = get.dataImageScotopic(obj)
            if(isempty(obj.dataImageScotopic))
                if ~(isempty(obj.dataSRCScotopic))
+                   filePath = sprintf( '%s/%s', dirPath, obj.dataSRCScotopic );
                     obj.dataImageScotopic= LMK_readPfImage...
-                        (evaluatedData.dataSRCScotopic);
+                        ( filePath );
                elseif ~(isempty(obj.dataSRCMat))
                     matImage = load([obj.dataSRCMat]);
                     obj.dataImagePhotopic = ....
