@@ -15,15 +15,20 @@ classdef LMK_Image_Set_Statistics < handle
         meanTargetArray             %array with target means of current set
         meanBackgroundArray         %array with background means of current set
         weberContrastArray          %array with weber contrasts of current set
+        weberContrastAbsArray          %array with weber contrasts of current set
         thresholdContrastArray      %array with threshold contrasts of current set
         visibilityLevelArray        %array with visibility levels of current set
         distanceArray               %array with distances of current set
         visualisationImageArray     %array with visualisation images of current set
         
+        setTitle                    %title for this set
+        
+        contrastCalculationMethod   %can be STRONGEST, RP800, or other to be implemented methods
+        
     end % properties
     methods
         %constructor
-        function obj = LMK_Image_Set_Statistics( type, lengthOfSet, ageVL, tVL, kVL )
+        function obj = LMK_Image_Set_Statistics( type, lengthOfSet, ageVL, tVL, kVL, setTitle, contrastCalculationMethod )
             if nargin > 0 % Support calling with 0 arguments
                 
                 %check if type is valid
@@ -41,6 +46,8 @@ classdef LMK_Image_Set_Statistics < handle
                 obj.tVL = tVL;
                 obj.kVL = kVL;
                 obj.lmkImageStatisticsArray = cell( lengthOfSet, 1 );
+                obj.setTitle = setTitle;
+                obj.contrastCalculationMethod = contrastCalculationMethod;
             end
         end% constructor
         
@@ -57,14 +64,25 @@ classdef LMK_Image_Set_Statistics < handle
             %create arrays with Lt , LB and d
             for currentIndex = 1 : length( meanTargetArray )
                 currentStatistics = currentStatisticsArray{ currentIndex };
-                meanTargetArray( currentIndex ) = currentStatistics.strongestEdgeMeanTarget;
-                meanBackgroundArray( currentIndex ) = currentStatistics.strongestEdgeMeanBackground;
+                meanTargetArray( currentIndex ) = currentStatistics.strongestEdgeMeanTarget;                
                 distanceArray( currentIndex ) = currentStatistics.imageMetadata.rectPosition;
                 visualisationImageArray{ currentIndex } = currentStatistics.visualisationImage;
+                
+                if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST' ) )
+                    meanBackgroundArray( currentIndex ) = currentStatistics.strongestEdgeMeanBackground;
+                elseif ( strcmp( obj.contrastCalculationMethod, 'RP800' ) )
+                    meanBackgroundArray( currentIndex ) = currentStatistics.meanBackground_RP8_00;
+                else
+                    disp( sprintf( 'contrastCalculationMethod must be either STRONGEST or RP800' ) );
+                    disp( sprintf( 'contrastCalculationMethod is currently %s', obj.contrastCalculationMethod ) );
+                    disp( 'QUITTING' );
+                    return;
+                end
             end
             
             %calculate weber contrast
             weberContrastArray = meanTargetArray ./ meanBackgroundArray - 1;
+            weberContrastAbsArray = abs( meanTargetArray - meanBackgroundArray ) ./ meanBackgroundArray;
             
             %calculate threshold contrast
             for currentIndex = 1 : length( meanTargetArray )
@@ -85,6 +103,7 @@ classdef LMK_Image_Set_Statistics < handle
             obj.meanTargetArray = meanTargetArray;
             obj.meanBackgroundArray = meanBackgroundArray;
             obj.weberContrastArray = weberContrastArray;
+            obj.weberContrastAbsArray = weberContrastAbsArray;
             obj.thresholdContrastArray = thresholdContrastArray;
             obj.visibilityLevelArray = visibilityLevelArray;
         end
