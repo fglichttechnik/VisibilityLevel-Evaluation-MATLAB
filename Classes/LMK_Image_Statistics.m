@@ -106,7 +106,7 @@ classdef LMK_Image_Statistics < handle
         %lazy loading of background luminance according to RP800
         function value = get.meanBackground_RP8_00( obj )
             if( isempty( obj.meanBackground_RP8_00 ) )
-                meanBackground_RP8_00 = ( obj.meanTargetUpperEdge + obj.meanTargetLowerEdge ) / 2;
+                meanBackground_RP8_00 = ( obj.meanBackgroundUpperEdge + obj.meanBackgroundLowerEdge ) / 2;
                 obj.meanBackground_RP8_00 = meanBackground_RP8_00;
             end
             value = obj.meanBackground_RP8_00;
