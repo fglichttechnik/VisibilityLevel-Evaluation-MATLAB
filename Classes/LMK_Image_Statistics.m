@@ -19,6 +19,7 @@ classdef LMK_Image_Statistics < handle
         meanBackgroundLowerEdge
         meanBackgroundLeftEdge
         meanBackgroundRightEdge
+        meanBackground_RP8_00
         
         %on demand calculated values
         strongestEdgeContrast
@@ -57,10 +58,10 @@ classdef LMK_Image_Statistics < handle
         function value = get.strongestEdgeContrast( obj )
             if( isempty( obj.strongestEdgeContrast ) )
                 
-                upperEdgeContrast = obj.meanTargetUpperEdge / obj.meanBackgroundUpperEdge - 1;
-                lowerEdgeContrast = obj.meanTargetLowerEdge / obj.meanBackgroundLowerEdge - 1;
-                leftEdgeContrast = obj.meanTargetLeftEdge / obj.meanBackgroundLeftEdge - 1;
-                rightEdgeContrast = obj.meanTargetRightEdge / obj.meanBackgroundRightEdge - 1;
+                upperEdgeContrast = abs( obj.meanTargetUpperEdge - obj.meanBackgroundUpperEdge ) / obj.meanBackgroundUpperEdge;
+                lowerEdgeContrast = abs( obj.meanTargetLowerEdge - obj.meanBackgroundLowerEdge ) / obj.meanBackgroundLowerEdge;
+                leftEdgeContrast = abs( obj.meanTargetLeftEdge - obj.meanBackgroundLeftEdge ) / obj.meanBackgroundLeftEdge;
+                rightEdgeContrast = abs( obj.meanTargetRightEdge - obj.meanBackgroundRightEdge ) / obj.meanBackgroundRightEdge;
                 
                 if ( ( upperEdgeContrast >= lowerEdgeContrast )...
                         && ( upperEdgeContrast >= leftEdgeContrast )...
@@ -100,6 +101,15 @@ classdef LMK_Image_Statistics < handle
                 obj.strongestEdgeContrast;
             end
             value = obj.strongestEdgeString;
+        end
+        
+        %lazy loading of background luminance according to RP800
+        function value = get.meanBackground_RP8_00( obj )
+            if( isempty( obj.meanBackground_RP8_00 ) )
+                meanBackground_RP8_00 = ( obj.meanTargetUpperEdge + obj.meanTargetLowerEdge ) / 2;
+                obj.meanBackground_RP8_00 = meanBackground_RP8_00;
+            end
+            value = obj.meanBackground_RP8_00;
         end
         
         %lazy loading of strongestEdgeMeanTarget

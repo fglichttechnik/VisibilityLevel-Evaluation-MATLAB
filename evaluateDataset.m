@@ -14,6 +14,7 @@ XMLNAME = 'Treskowstr_lmkXML';
 %PATH = 'C:\Dokumente und
 %Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	
 PATH = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder\pf';
+
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 
 %2? field for current lens (8mm)
@@ -22,8 +23,12 @@ RADIUS = 100;	%number of pixels which correspond to 2?
 %CURRENTLY NOT IMPLEMENTED!!!
 
 %adrian threshold model parameter
-AGE = 24;		%age of observer for adrians model
-T = 1;			%observing time of visual object
+%AGE = 24;		%age of observer for adrians model
+%T = 1;			%observing time of visual object
+%K = 2.6;		%k factor of adrians model
+%as seen in (ANSI IESNA RP 8 00)
+AGE = 60;		%age of observer for adrians model
+T = 0.2;			%observing time of visual object
 K = 2.6;		%k factor of adrians model
 
 %visual object preferences
