@@ -8,17 +8,17 @@
 
 %file path preferences
 %XMLNAME = 'FlurweglmkXML';
-XMLNAME = 'pos';
+XMLNAME = 'Treskowstr_lmkXML';
 
 %this is the path to the datasets xml file
 %PATH = 'C:\Dokumente und
 %Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/staggered7_35';
+PATH = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder\pf';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 
-%2° field for current lens (8mm)
-%TODO: define 2° field for other lenses (25mm / 50mm)
-RADIUS = 100;	%number of pixels which correspond to 2°
+%2? field for current lens (8mm)
+%TODO: define 2? field for other lenses (25mm / 50mm)
+RADIUS = 100;	%number of pixels which correspond to 2?
 %CURRENTLY NOT IMPLEMENTED!!!
 
 %adrian threshold model parameter

@@ -9,6 +9,13 @@ function elements = struct2mat(str, dirPath)
 % preferences
 COMMENTS = ' ';
 
+%platform specific path delimiter
+if(ispc)
+    DELIMITER = '\';
+elseif(isunix)
+    DELIMITER = '/';
+end
+
 %%%%%%%%%%%%%%%nothing needs to be adjusted below%%%%%%%%%%%%%%%%%%%%%%%%%%
 if isempty(str(1,1).Children) && ~isempty(str(1,2).Children)
     str = str(1,2);
@@ -254,17 +261,17 @@ for i = 1 : childSize
              disp('Warning: no border for rectangle object found!');
          elseif (isempty(evaluatedData.rectPosition))
              disp('Warning: no position for rectangle object found!');
-         end   
+         end 
          if ~(isempty(evaluatedData.dataSRCPhotopic)) ...
-                 && ~(exist([evaluatedData.dataSRCPhotopic],'file'))
+                 && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCPhotopic],'file'))
              disp(['Warning: File ', evaluatedData.dataSRCPhotopic, ' not found!']);
          end
          if ~(isempty(evaluatedData.dataSRCScotopic)) ...
-                 && ~(exist([evaluatedData.dataSRCScotopic],'file'))
+                 && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCScotopic],'file'))
              disp(['Warning: File ', evaluatedData.dataSRCScotopic, ' not found!']);
          end
          if ~(isempty(evaluatedData.dataSRCMat)) ...
-                 && ~(exist([evaluatedData.dataSRCMat],'file'))
+                 && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCMat],'file'))
              disp(['Warning: File ', evaluatedData.dataSRCMat, ' not found!']);
          end
                  

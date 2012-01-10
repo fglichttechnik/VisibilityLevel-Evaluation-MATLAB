@@ -5,17 +5,17 @@
 % format.
 
 % preferences:
-DIR = 'Z:\Postfach\Transfer zu Winter\Sandy\Datenbank\2009_03_03 Flurweg Leuchtdichtebilder';
+DIR = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder';
         % directory where the .h5 protocols are located
-DATAPATH = 'C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB\LMK_2010_10_25\LMK_Data_evaluation';
+DATAPATH = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder';
         % path to your target database
-DATABASE = 'DB'; % name of the folder where the .pf-data should be saved
-NEED_SUBFOLDERS = 1; % 0 or 1 when subfolders should be made
+DATABASE = 'pf'; % name of the folder where the .pf-data should be saved
+NEED_SUBFOLDERS = 0; % 0 or 1 when subfolders should be made
 SUBFOLDER1 = 'VS'; % name of subfolder 1
 SUBFOLDER2 = 'VL'; % name of subfolder 2
 SUB_DATANAME1 = 'VS'; % string within the data name for subfolder 1
 SUB_DATANAME2 = 'VL'; % string within the data name for subfolder 2
-MY_MATLAB_ROOT = 'C:\Dokumente und Einstellungen\admin\Eigene Dateien\MATLAB\';
+MY_MATLAB_ROOT = 'C:\Dokumente und Einstellungen\student\Eigene Dateien\MATLAB\';
 % end preferences
 
 %add directories for LMK functions

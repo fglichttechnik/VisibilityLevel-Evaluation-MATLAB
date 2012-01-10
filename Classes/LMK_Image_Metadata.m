@@ -43,46 +43,60 @@ classdef LMK_Image_Metadata < handle
             end
         end% constructor
         
-        %lazy loading of image data        
+        %lazy loading of image data
         function value = get.dataImagePhotopic(obj)
-           if(isempty(obj.dataImagePhotopic))
-               if ~(isempty(obj.dataSRCPhotopic))
-                   filePath = sprintf( '%s/%s', obj.dirPath, obj.dataSRCPhotopic );
+            if(isempty(obj.dataImagePhotopic))
+                if ~(isempty(obj.dataSRCPhotopic))
+                    
+                    if(ispc)
+                        DELIMITER = '\';
+                    elseif(isunix)
+                        DELIMITER = '/';
+                    end
+                    
+                    filePath = sprintf( '%s%s%s', obj.dirPath, DELIMITER, obj.dataSRCPhotopic );
                     obj.dataImagePhotopic= LMK_readPfImage...
                         ( filePath );
-               elseif ~(isempty(obj.dataSRCMat))
+                elseif ~(isempty(obj.dataSRCMat))
                     matImage = load([obj.dataSRCMat]);
                     obj.dataImagePhotopic = ....
                         matImage.LMK_measurements.dataImage.YL;
                     obj.dataImageScotopic = ...
                         matImage.LMK_measurements.dataImage.LS;
-               end
-           end
+                end
+            end
             value = obj.dataImagePhotopic;
         end%lazy loading of photopic data
         
         function value = get.dataImageScotopic(obj)
-           if(isempty(obj.dataImageScotopic))
-               if ~(isempty(obj.dataSRCScotopic))
-                   filePath = sprintf( '%s/%s', dirPath, obj.dataSRCScotopic );
+            if(isempty(obj.dataImageScotopic))
+                if ~(isempty(obj.dataSRCScotopic))
+                    
+                    if(ispc)
+                        DELIMITER = '\';
+                    elseif(isunix)
+                        DELIMITER = '/';
+                    end
+                    
+                    filePath = sprintf( '%s%s%s', dirPath, DELIMITER, obj.dataSRCScotopic );
                     obj.dataImageScotopic= LMK_readPfImage...
                         ( filePath );
-               elseif ~(isempty(obj.dataSRCMat))
+                elseif ~(isempty(obj.dataSRCMat))
                     matImage = load([obj.dataSRCMat]);
                     obj.dataImagePhotopic = ....
                         matImage.LMK_measurements.dataImage.YL;
                     obj.dataImageScotopic = ...
                         matImage.LMK_measurements.dataImage.LS;
-               end
-           end
+                end
+            end
             value = obj.dataImageScotopic;
-        end%lazy loading of scotopic data  
+        end%lazy loading of scotopic data
         
         function value = get.dataImageMesopic(obj)
             if (isempty(obj.dataImageMesopic))
                 [obj.dataImageMesopic, ~] = ...
                     mesopicLuminance_recommended(obj.dataImagePhotopic,...
-                    obj.dataImageScotopic);                  
+                    obj.dataImageScotopic);
             end
             value = obj.dataImageMesopic;
         end%lazy loading of mesopic data
