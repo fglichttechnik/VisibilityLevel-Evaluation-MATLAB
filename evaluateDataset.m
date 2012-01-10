@@ -9,12 +9,14 @@
 %file path preferences
 %XMLNAME = 'FlurweglmkXML';
 XMLNAME = 'Treskowstr_lmkXML';
+%XMLNAME = 'pos';
 
 %this is the path to the datasets xml file
 %PATH = 'C:\Dokumente und
 %Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	
-<<<<<<< HEAD
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_RP8_99';
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_RP8_99';
+PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_gemessen';
+
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 %PATH = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder\pf';
 
@@ -94,6 +96,10 @@ end
 %prepare data for plotting and plot
 photopicLMK_Image_Set_Statistics.gatherData();
 photopicLMK_Image_Set_Statistics.plotVL( PATH );
+photopicLMK_Image_Set_Statistics.plotThresholdContrast( PATH );
+photopicLMK_Image_Set_Statistics.plotThresholdDeltaL( PATH );
+photopicLMK_Image_Set_Statistics.plotContrast( PATH );
+photopicLMK_Image_Set_Statistics.plotLtLB( PATH );
 
 %save images
 photopicLMK_Image_Set_Statistics.saveVisualisationImage( PATH );
