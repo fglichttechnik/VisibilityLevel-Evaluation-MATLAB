@@ -95,9 +95,11 @@ photopicLMK_Image_Set_Statistics.plotStrongestEdgeContrast( PATH );
 %save images
 photopicLMK_Image_Set_Statistics.saveVisualisationImage( PATH );
 
+%save dataset
+save( [ PATH, DELIMITER, 'photopicSetStatistics', '.mat' ], 'photopicLMK_Image_Set_Statistics' );
+
 %disp('');
 
 
 
 return;
-%%end of new evaluateDataset method
