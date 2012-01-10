@@ -340,10 +340,9 @@ classdef LMK_Image_Set_Statistics < handle
         function plotLtLB( obj, savePath )
             
             figHandle = figure();
-            
-            obj.plotLB( savePath );
             hold on;
-            obj.plotLt( savePath );
+            obj.plotLB( savePath, figHandle );            
+            obj.plotLt( savePath, figHandle );
             hold off;
             
             axis('tight');
