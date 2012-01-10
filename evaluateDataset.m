@@ -13,7 +13,7 @@ XMLNAME = 'pos';
 %this is the path to the datasets xml file
 %PATH = 'C:\Dokumente und
 %Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_RP8_30';
+PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_RP8_99';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 
 %2° field for current lens (8mm)
@@ -29,7 +29,7 @@ PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowst
 AGE = 60;		%age of observer for adrians model
 T = 0.2;			%observing time of visual object
 K = 2.6;		%k factor of adrians model
-CONTRAST_CALCULATION_METHOD = 'RP800'   %can be STRONGEST, RP800
+CONTRAST_CALCULATION_METHOD = 'RP800';   %can be STRONGEST, RP800
 
 %visual object preferences
 %%TODO: these values should be read from the xml file!!!
@@ -90,12 +90,15 @@ end
 
 %prepare data for plotting and plot
 photopicLMK_Image_Set_Statistics.gatherData();
-photopicLMK_Image_Set_Statistics.plotStrongestEdgeContrast( PATH );
+photopicLMK_Image_Set_Statistics.plotVL( PATH );
 
 %save images
 photopicLMK_Image_Set_Statistics.saveVisualisationImage( PATH );
 
 %save dataset
+%we don't want to save the visImages (makes the dataset too big...)
+photopicLMK_Image_Set_Statistics.visualisationImageArray = 0;
+photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray = 0;
 save( [ PATH, DELIMITER, 'photopicSetStatistics', '.mat' ], 'photopicLMK_Image_Set_Statistics' );
 
 %disp('');

@@ -64,7 +64,7 @@ classdef LMK_Image_Set_Statistics < handle
             %create arrays with Lt , LB and d
             for currentIndex = 1 : length( meanTargetArray )
                 currentStatistics = currentStatisticsArray{ currentIndex };
-                meanTargetArray( currentIndex ) = currentStatistics.strongestEdgeMeanTarget;                
+                meanTargetArray( currentIndex ) = currentStatistics.strongestEdgeMeanTarget;
                 distanceArray( currentIndex ) = currentStatistics.imageMetadata.rectPosition;
                 visualisationImageArray{ currentIndex } = currentStatistics.visualisationImage;
                 
@@ -111,88 +111,252 @@ classdef LMK_Image_Set_Statistics < handle
         function saveVisualisationImage( obj, savePath )
             mkdir( savePath, 'visImages' );
             for currentIndex = 1 : length( obj.visualisationImageArray )
-                image = obj.visualisationImageArray{ currentIndex };                
+                image = obj.visualisationImageArray{ currentIndex };
                 filename = sprintf( '%s/visImages/%d.png', savePath, currentIndex );
                 imwrite( image, filename );
             end
         end
         
-        function plotStrongestEdgeContrast( obj, savePath )
+        function plotContrast( obj, savePath, figHandle, color )
             
-            mkdir( savePath, 'plots' );
+            %set standard color
+            if ( nargin < 4 )
+                color = 'r';
+            end
             
-            %plot weber contrast
-            figure();
-            plot( obj.distanceArray, obj.weberContrastArray, 'o-r' );
-            hold on;
-            plot( obj.distanceArray, zeros( size( obj.distanceArray ) ), ':b' );
-            hold off;
+            if ( nargin < 3 )
+                figHandle = figure();
+            end 
+            
+            savePath = [savePath, 'plots'];
+            if( ~exist( savePath, 'dir') )
+                mkdir( savePath );
+            end
+            
+            %activate corresponding figure
+            set(0, 'CurrentFigure', figHandle);
+            
+            %hax = axes('Parent',figHandle);
+            colorSettings = sprintf( 'o-%s', color );
+            plot( obj.distanceArray, obj.weberContrastArray, colorSettings );
+            
+            %plot 0 contrast            
+            %hold on;
+            %plot( obj.distanceArray, zeros( size( obj.distanceArray ) ), ':b' );
+            %hold off;
             %legend('L_{photopisch}');
             axis('tight');
             xlabel('d in m');
             ylabel('C');
             title( strcat( 'Weber Contrast' ) ) ;
-            filename = sprintf( '%s/plots/weberContrastPlot', savePath );
-            saveas(gcf, filename, 'epsc');
-            saveas(gcf, filename, 'fig');
+            filename = sprintf( '%s/weberContrastPlot', savePath );
+            
+            if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                saveas(figHandle, filename, 'epsc');
+                saveas(figHandle, filename, 'fig');
+            end
+            
+        end
+        
+        function plotThresholdContrast( obj, savePath, figHandle, color )
+            
+            %set standard color
+            if ( nargin < 4 )
+                color = 'gr';
+            end
+            
+            if ( nargin < 3 )
+                figHandle = figure();
+            end 
+            
+            savePath = [savePath, 'plots'];
+            if( ~exist( savePath, 'dir') )
+                mkdir( savePath );
+            end
+            
+            %activate corresponding figure
+            set(0, 'CurrentFigure', figHandle);
             
             %plot delta L thresh
             deltaLArray = obj.thresholdContrastArray .* obj.meanBackgroundArray;
-            figure();
-            hold on
-            plot( obj.distanceArray, deltaLArray, 'o-gr' );
-            hold off
+            colorSettings = sprintf( 'o-%s', color );
+            plot( obj.distanceArray, deltaLArray, colorSettings );
             %legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
             axis('tight');
             xlabel('d in m');
             ylabel('\Delta L in cd/m^2');
             title(strcat('\Delta L_{th} '));
-            filename = sprintf( '%s/plots/deltaLPlot', savePath );
-            saveas(gcf, filename, 'epsc');
-            saveas(gcf, filename, 'fig');
+            filename = sprintf( '%s/deltaLPlot', savePath );
+            
+            if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                saveas(figHandle, filename, 'epsc');
+                saveas(figHandle, filename, 'fig');
+            end
+            
+        end
+        
+        function plotThresholdDeltaL( obj, savePath, figHandle, color )
+            
+            %set standard color
+            if ( nargin < 4 )
+                color = 'gr';
+            end
+            
+            if ( nargin < 3 )
+                figHandle = figure();
+            end 
+            
+            savePath = [savePath, 'plots'];
+            if( ~exist( savePath, 'dir') )
+                mkdir( savePath );
+            end
+            
+            %activate corresponding figure
+            set(0, 'CurrentFigure', figHandle);
             
             %plot C thresh
-            figure();
-            hold on
-            plot( obj.distanceArray, obj.thresholdContrastArray, 'o-gr' );
-            hold off
+            colorSettings = sprintf( 'o-%s', color );
+            plot( obj.distanceArray, obj.thresholdContrastArray, colorSettings );
             %legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
             axis('tight');
             xlabel('d in m');
             ylabel('C_{th}');
             title(strcat('Threshold Contrast '));
-            filename = sprintf( '%s/plots/CthPlot', savePath );
-            saveas(gcf, filename, 'epsc');
-            saveas(gcf, filename, 'fig');
+            filename = sprintf( '%s/CthPlot', savePath );
+            
+            if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                saveas(figHandle, filename, 'epsc');
+                saveas(figHandle, filename, 'fig');
+            end
+            
+        end
+        
+        function plotVL( obj, savePath, figHandle, color )
+                        
+            %set standard color
+            if ( nargin < 4 )
+                color = 'r';
+            end
+            
+            if ( nargin < 3 )
+                figHandle = figure();
+            end          
+            
+            savePath = [savePath, 'plots'];
+            if( ~exist( savePath, 'dir') )
+                mkdir( savePath );
+            end
+            
+            %activate corresponding figure
+            set(0, 'CurrentFigure', figHandle);
             
             %plot visibility level
-            figure();
-            plot( obj.distanceArray, obj.visibilityLevelArray,'o-r' );
+            colorSettings = sprintf( 'o-%s', color );
+            plot( obj.distanceArray, obj.visibilityLevelArray, colorSettings );
             %legend('L_{photopisch}');
             axis('tight');
             xlabel('d in m');
             ylabel('VL');
             title( strcat('Visibility Level ') );
-            filename = sprintf( '%s/plots/VLPlot', savePath );
-            saveas(gcf, filename, 'epsc');
-            saveas(gcf, filename, 'fig');
+            filename = sprintf( '%s/VLPlot', savePath );
+            
+            if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                saveas(figHandle, filename, 'epsc');
+                saveas(figHandle, filename, 'fig');
+            end
+            
+        end
+        
+        function plotLt( obj, savePath, figHandle, color )
+            
+            %set standard color
+            if ( nargin < 4 )
+                color = 'b';
+            end
+            
+            if ( nargin < 3 )
+                figHandle = figure();
+            end
+            
+            savePath = [savePath, 'plots'];
+            if( ~exist( savePath, 'dir') )
+                mkdir( savePath );
+            end
+            
+            %activate corresponding figure
+            set(0, 'CurrentFigure', figHandle);
             
             %plot Lt and Lb
-            figure();
-            hold on
-            plot( obj.distanceArray, obj.meanTargetArray ,'ob:' );
-            plot( obj.distanceArray, obj.meanBackgroundArray ,'or:' );
-            hold off
-            legend('L_t','L_B');
+            colorSettings = sprintf( 'o:%s', color );
+            plot( obj.distanceArray, obj.meanTargetArray , colorSettings );
+            %legend('L_t','L_B');
             axis('tight');
             xlabel('d in m');
             ylabel('L in cd/m^2');
-            title(strcat('mean L_t vs mean L_B ') );
-            filename = sprintf( '%s/plots/LtLbPlot', savePath );
-            saveas(gcf, filename, 'epsc');
-            saveas(gcf, filename, 'fig');
+            title(strcat('mean L_t') );
+            filename = sprintf( '%s/LtPlot', savePath );
             
-        end   
+            if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                saveas(figHandle, filename, 'epsc');
+                saveas(figHandle, filename, 'fig');
+            end
+        end
+        
+        function plotLB( obj, savePath, figHandle, color )
+            
+            %set standard color
+            if ( nargin < 4 )
+                color = 'r';
+            end
+            
+            if ( nargin < 3 )
+                figHandle = figure();
+            end
+            
+            savePath = [savePath, 'plots'];
+            if( ~exist( savePath, 'dir') )
+                mkdir( savePath );
+            end
+            
+            %activate corresponding figure
+            set(0, 'CurrentFigure', figHandle);
+            
+            %plot Lt and Lb
+            colorSettings = sprintf( 'o:%s', color );
+            plot( obj.distanceArray, obj.meanBackgroundArray , colorSettings );
+            %legend('L_t','L_B');
+            axis('tight');
+            xlabel('d in m');
+            ylabel('L in cd/m^2');
+            title(strcat('mean L_B ') );
+            filename = sprintf( '%s/LbPlot', savePath );
+            
+            if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                saveas(figHandle, filename, 'epsc');
+                saveas(figHandle, filename, 'fig');
+            end
+        end
+        
+        function plotLtLB( obj, savePath )
+            
+            figHandle = figure();
+            
+            obj.plotLB( savePath );
+            hold on;
+            obj.plotLt( savePath );
+            hold off;
+            
+            axis('tight');
+            legend('L_t','L_B');
+            title(strcat('mean L_t vs mean L_B ') );
+            
+            filename = sprintf( '%s/LtPlot', savePath );
+            
+            if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                saveas(figHandle, filename, 'epsc');
+                saveas(figHandle, filename, 'fig');
+            end
+        end
         
     end % methods
 end
