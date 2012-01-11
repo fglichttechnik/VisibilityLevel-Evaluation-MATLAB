@@ -14,6 +14,9 @@ XMLNAME = 'Treskowstr_lmkXML';
 %this is the path to the datasets xml file
 %PATH = 'C:\Dokumente und
 %Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_newTarget';
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3';
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_fixedDistance';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert';
 PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_gemessen';
 
@@ -96,6 +99,7 @@ end
 %prepare data for plotting and plot
 photopicLMK_Image_Set_Statistics.gatherData();
 photopicLMK_Image_Set_Statistics.plotVL( PATH );
+photopicLMK_Image_Set_Statistics.plotVLFixedDistance( PATH );
 photopicLMK_Image_Set_Statistics.plotThresholdContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotThresholdDeltaL( PATH );
 photopicLMK_Image_Set_Statistics.plotContrast( PATH );

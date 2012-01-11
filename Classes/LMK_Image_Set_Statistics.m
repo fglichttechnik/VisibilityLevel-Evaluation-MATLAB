@@ -18,6 +18,7 @@ classdef LMK_Image_Set_Statistics < handle
         weberContrastAbsArray          %array with weber contrasts of current set
         thresholdContrastArray      %array with threshold contrasts of current set
         visibilityLevelArray        %array with visibility levels of current set
+        visibilityLevelFixedDistanceArray        %array with visibility levels of current set (distance is assumed to be the samefor all target positions)
         distanceArray               %array with distances of current set
         visualisationImageArray     %array with visualisation images of current set
         
@@ -58,6 +59,7 @@ classdef LMK_Image_Set_Statistics < handle
             meanTargetArray = zeros( size( currentStatisticsArray ) );
             meanBackgroundArray = zeros( size( currentStatisticsArray ) );
             thresholdContrastArray = zeros( size( currentStatisticsArray ) );
+            thresholdContrastFixedDistanceArray = zeros( size( currentStatisticsArray ) );
             distanceArray = zeros( size( currentStatisticsArray ) );
             visualisationImageArray = cell( size( currentStatisticsArray ) );
             
@@ -91,11 +93,17 @@ classdef LMK_Image_Set_Statistics < handle
                 alphaMinutes = obj.alphaArray( currentIndex );
                 deltaL = calcDeltaL(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
                 thresholdContrastArray( currentIndex ) = deltaL / Lb;
+                
+                %calc the same for fixed distance (we take the first index)
+                alphaMinutes = obj.alphaArray( 1 );
+                deltaLFixedDistance = calcDeltaL(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
+                thresholdContrastFixedDistanceArray( currentIndex ) = deltaLFixedDistance / Lb;
             end
             
             %calculate visibility level
             %VL is always positive
             visibilityLevelArray = abs(weberContrastArray ./ thresholdContrastArray);
+            visibilityLevelFixedDistanceArray = abs(weberContrastArray ./ thresholdContrastFixedDistanceArray);
             
             %set instance values
             obj.visualisationImageArray = visualisationImageArray;
@@ -106,13 +114,22 @@ classdef LMK_Image_Set_Statistics < handle
             obj.weberContrastAbsArray = weberContrastAbsArray;
             obj.thresholdContrastArray = thresholdContrastArray;
             obj.visibilityLevelArray = visibilityLevelArray;
+            obj.visibilityLevelFixedDistanceArray = visibilityLevelFixedDistanceArray;
         end
         
         function saveVisualisationImage( obj, savePath )
-            mkdir( savePath, 'visImages' );
+            
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            mkdir( [savePath, DELIMITER], 'visImages' );
             for currentIndex = 1 : length( obj.visualisationImageArray )
                 image = obj.visualisationImageArray{ currentIndex };
-                filename = sprintf( '%s/visImages/%d.png', savePath, currentIndex );
+                filename = sprintf( '%s%svisImages%s%d.png', savePath, DELIMITER, DELIMITER, currentIndex );
                 imwrite( image, filename );
             end
         end
@@ -126,9 +143,16 @@ classdef LMK_Image_Set_Statistics < handle
             
             if ( nargin < 3 )
                 figHandle = figure();
-            end 
+            end
             
-            savePath = [savePath, 'plots'];
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
             if( ~exist( savePath, 'dir') )
                 mkdir( savePath );
             end
@@ -140,7 +164,7 @@ classdef LMK_Image_Set_Statistics < handle
             colorSettings = sprintf( 'o-%s', color );
             plot( obj.distanceArray, obj.weberContrastArray, colorSettings );
             
-            %plot 0 contrast            
+            %plot 0 contrast
             %hold on;
             %plot( obj.distanceArray, zeros( size( obj.distanceArray ) ), ':b' );
             %hold off;
@@ -149,7 +173,8 @@ classdef LMK_Image_Set_Statistics < handle
             xlabel('d in m');
             ylabel('C');
             title( strcat( 'Weber Contrast' ) ) ;
-            filename = sprintf( '%s/weberContrastPlot', savePath );
+
+            filename = sprintf( '%sweberContrastPlot', savePath );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -167,9 +192,16 @@ classdef LMK_Image_Set_Statistics < handle
             
             if ( nargin < 3 )
                 figHandle = figure();
-            end 
+            end
             
-            savePath = [savePath, 'plots'];
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
             if( ~exist( savePath, 'dir') )
                 mkdir( savePath );
             end
@@ -186,7 +218,8 @@ classdef LMK_Image_Set_Statistics < handle
             xlabel('d in m');
             ylabel('\Delta L in cd/m^2');
             title(strcat('\Delta L_{th} '));
-            filename = sprintf( '%s/deltaLPlot', savePath );
+            
+            filename = sprintf( '%sdeltaLPlot', savePath );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -204,9 +237,16 @@ classdef LMK_Image_Set_Statistics < handle
             
             if ( nargin < 3 )
                 figHandle = figure();
-            end 
+            end
             
-            savePath = [savePath, 'plots'];
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
             if( ~exist( savePath, 'dir') )
                 mkdir( savePath );
             end
@@ -222,7 +262,8 @@ classdef LMK_Image_Set_Statistics < handle
             xlabel('d in m');
             ylabel('C_{th}');
             title(strcat('Threshold Contrast '));
-            filename = sprintf( '%s/CthPlot', savePath );
+
+            filename = sprintf( '%sCthPlot', savePath );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -232,7 +273,7 @@ classdef LMK_Image_Set_Statistics < handle
         end
         
         function plotVL( obj, savePath, figHandle, color )
-                        
+            
             %set standard color
             if ( nargin < 4 )
                 color = 'r';
@@ -240,9 +281,16 @@ classdef LMK_Image_Set_Statistics < handle
             
             if ( nargin < 3 )
                 figHandle = figure();
-            end          
+            end
             
-            savePath = [savePath, 'plots'];
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
             if( ~exist( savePath, 'dir') )
                 mkdir( savePath );
             end
@@ -257,8 +305,53 @@ classdef LMK_Image_Set_Statistics < handle
             axis('tight');
             xlabel('d in m');
             ylabel('VL');
-            title( strcat('Visibility Level ') );
-            filename = sprintf( '%s/VLPlot', savePath );
+            title( strcat('Visibility Level ') );           
+            
+            filename = sprintf( '%sVLPlot', savePath );
+            
+            if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                saveas(figHandle, filename, 'epsc');
+                saveas(figHandle, filename, 'fig');
+            end
+            
+        end
+        
+        function plotVLFixedDistance( obj, savePath, figHandle, color )
+            
+            %set standard color
+            if ( nargin < 4 )
+                color = 'r';
+            end
+            
+            if ( nargin < 3 )
+                figHandle = figure();
+            end
+            
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            if( ~exist( savePath, 'dir') )
+                mkdir( savePath );
+            end
+            
+            %activate corresponding figure
+            set(0, 'CurrentFigure', figHandle);
+            
+            %plot visibility level
+            colorSettings = sprintf( 'o-%s', color );
+            plot( obj.distanceArray, obj.visibilityLevelFixedDistanceArray, colorSettings );
+            %legend('L_{photopisch}');
+            axis('tight');
+            xlabel('d in m');
+            ylabel('VL');
+            title( strcat('Visibility Level (Fixed Distance)') );           
+            
+            filename = sprintf( '%sVLFixedDistancePlot', savePath );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -278,7 +371,14 @@ classdef LMK_Image_Set_Statistics < handle
                 figHandle = figure();
             end
             
-            savePath = [savePath, 'plots'];
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
             if( ~exist( savePath, 'dir') )
                 mkdir( savePath );
             end
@@ -294,7 +394,8 @@ classdef LMK_Image_Set_Statistics < handle
             xlabel('d in m');
             ylabel('L in cd/m^2');
             title(strcat('mean L_t') );
-            filename = sprintf( '%s/LtPlot', savePath );
+
+            filename = sprintf( '%sLtPlot', savePath );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -313,7 +414,14 @@ classdef LMK_Image_Set_Statistics < handle
                 figHandle = figure();
             end
             
-            savePath = [savePath, 'plots'];
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
             if( ~exist( savePath, 'dir') )
                 mkdir( savePath );
             end
@@ -328,8 +436,9 @@ classdef LMK_Image_Set_Statistics < handle
             axis('tight');
             xlabel('d in m');
             ylabel('L in cd/m^2');
-            title(strcat('mean L_B ') );
-            filename = sprintf( '%s/LbPlot', savePath );
+            title(strcat('mean L_B ') );            
+            
+            filename = sprintf( '%sLbPlot', savePath );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -341,7 +450,7 @@ classdef LMK_Image_Set_Statistics < handle
             
             figHandle = figure();
             hold on;
-            obj.plotLB( savePath, figHandle );            
+            obj.plotLB( savePath, figHandle );
             obj.plotLt( savePath, figHandle );
             hold off;
             
@@ -349,7 +458,15 @@ classdef LMK_Image_Set_Statistics < handle
             legend('L_t','L_B');
             title(strcat('mean L_t vs mean L_B ') );
             
-            filename = sprintf( '%s/LtPlot', savePath );
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            
+            filename = sprintf( '%s%splots%sLtPlot', savePath, DELIMITER, DELIMITER );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');

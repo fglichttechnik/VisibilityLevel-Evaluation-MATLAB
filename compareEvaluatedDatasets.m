@@ -13,12 +13,18 @@
 
 pathesForDatasets = {
     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_gemessen',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert'
+    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert',
+    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3',
+    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_fixedDistance'
+    %'/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_newTarget'
     };
 
 legendsForDatasets = {
     'measured',
-    'simulated'
+    'simulated',
+    'simulated R3',
+    'simulated R3 fixedDistance'
+    %'simulated R3 newTarget'
     };
 
 
@@ -26,8 +32,10 @@ legendsForDatasets = {
 %can be any number of alternating colors
 colorArrayForPlots = {
     'r',
-    'g',
-    'b'
+    'gr',
+    'b',
+    'c',
+    'm'
     };
 
 SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_Comparison';
@@ -49,6 +57,7 @@ arrayWithSetStatistics = cell( numberOfDatasets, 1 );
 
 figHandleContrast = figure();
 figHandleVL = figure();
+figHandleVLFixedDistance = figure();
 figHandleLt = figure();
 figHandleLB = figure();
 
@@ -75,7 +84,10 @@ for currentDatasetIndex = 1 : numberOfDatasets
     
     currentSetStatistics = arrayWithSetStatistics{ currentDatasetIndex };
     
-    currentColorIndex = mod( currentDatasetIndex, numberOfColors ) + 1;    
+    currentColorIndex = mod( currentDatasetIndex, numberOfColors );  
+    if ( currentColorIndex == 0 )
+        currentColorIndex = numberOfColors;
+    end
     
     %contrast
     set(0, 'CurrentFigure', figHandleContrast);
@@ -87,6 +99,12 @@ for currentDatasetIndex = 1 : numberOfDatasets
     set(0, 'CurrentFigure', figHandleVL);
     hold on;
     currentSetStatistics.plotVL( SAVEPATH, figHandleVL, colorArrayForPlots{ currentColorIndex } );
+    hold off;
+    
+    %VL fixed distance
+    set(0, 'CurrentFigure', figHandleVLFixedDistance);
+    hold on;
+    currentSetStatistics.plotVLFixedDistance( SAVEPATH, figHandleVLFixedDistance, colorArrayForPlots{ currentColorIndex } );
     hold off;
     
     %Lt
@@ -108,11 +126,34 @@ legend( legendsForDatasets, 'Location', 'Best' );
 set(0, 'CurrentFigure', figHandleVL);
 legend( legendsForDatasets, 'Location', 'Best' );
 
+set(0, 'CurrentFigure', figHandleVLFixedDistance);
+legend( legendsForDatasets, 'Location', 'Best' );
+
 set(0, 'CurrentFigure', figHandleLt);
 legend( legendsForDatasets, 'Location', 'Best' );
 
 set(0, 'CurrentFigure', figHandleLB);
 legend( legendsForDatasets, 'Location', 'Best' );
 
+%save images
+
+filename = sprintf( '%sweberContrastPlot', SAVEPATH );
+saveas(figHandleContrast, filename, 'epsc');
+saveas(figHandleContrast, filename, 'fig');
+
+filename = sprintf( '%sVLPlot', SAVEPATH );
+saveas(figHandleVL, filename, 'epsc');
+saveas(figHandleVL, filename, 'fig');
+
+filename = sprintf( '%sVLFixedDistancePlot', SAVEPATH );
+saveas(figHandleVLFixedDistance, filename, 'epsc');
+saveas(figHandleVLFixedDistance, filename, 'fig');
 
 
+filename = sprintf( '%sLtPlot', SAVEPATH );
+saveas(figHandleLt, filename, 'epsc');
+saveas(figHandleLt, filename, 'fig');
+
+filename = sprintf( '%sLBPlot', SAVEPATH );
+saveas(figHandleLB, filename, 'epsc');
+saveas(figHandleLB, filename, 'fig');
