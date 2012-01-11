@@ -27,6 +27,8 @@ legendsForDatasets = {
     %'simulated R3 newTarget'
     };
 
+originalIndex = 1;
+compareIndex = 3;
 
 
 %can be any number of alternating colors
@@ -157,3 +159,6 @@ saveas(figHandleLt, filename, 'fig');
 filename = sprintf( '%sLBPlot', SAVEPATH );
 saveas(figHandleLB, filename, 'epsc');
 saveas(figHandleLB, filename, 'fig');
+
+%compare data
+plotDifferenceOfDatasets( arrayWithSetStatistics{ originalIndex }, arrayWithSetStatistics{ compareIndex } );
