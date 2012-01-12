@@ -6,6 +6,9 @@
 
 classdef LMK_Image_Metadata < handle
     properties
+        sceneTitle
+        focalLength
+        distance
         dataSRCMat
         dataTypeMat
         dataSRCPhotopic
@@ -14,12 +17,14 @@ classdef LMK_Image_Metadata < handle
         dataTypeScotopic
         rect
         rectPosition
+        targetSize
         quadrangle
         border
         dataImageScotopic
         dataImagePhotopic
         dataImageMesopic
         imageMetaData % currently not in use
+        SPRatio
         comments
         lightSource
         Name
@@ -44,6 +49,7 @@ classdef LMK_Image_Metadata < handle
         end% constructor
         
         %lazy loading of image data
+        
         function value = get.dataImagePhotopic(obj)
             if(isempty(obj.dataImagePhotopic))
                 if ~(isempty(obj.dataSRCPhotopic))

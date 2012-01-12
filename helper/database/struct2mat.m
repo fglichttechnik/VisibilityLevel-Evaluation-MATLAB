@@ -29,9 +29,60 @@ end
 elements = cell(childSize,1);
 currentElementPointer = 1;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% READ Desciption object
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+for i = 1 : childSize 
+    % browse children
+    childMatch = strmatch('Description', str.Children(1,i).Name);
+    if (childMatch == 1)
+        % get the number of children of 'Description'
+        [~, grandchildSize] = size(str.Children(1,i).Children);
+        % browse the children of 'Description'
+        for j = 1 : grandchildSize
+            % search for children named 'sceneTitle'
+            grandchildMatch = strmatch('SceneTitle', str.Children...
+                (1,i).Children(1,j).Name);
+            if grandchildMatch == 1
+                sceneTitle = str.Children(1,i).Children(1,j).Attributes.Value;
+                continue % there should be only one sceneTitle
+            end
+            % search for children named 'FocalLength'
+            grandchildMatch = strmatch('FocalLength', str.Children...
+                (1,i).Children(1,j).Name);
+            if grandchildMatch == 1
+                focalLength = str2double(str.Children(1,i).Children(1,j).Attributes.Value);
+                continue
+            end
+            % search for children named 'ViewPoint'
+            grandchildMatch = strmatch('ViewPoint', str.Children...
+                (1,i).Children(1,j).Name);
+            if grandchildMatch == 1
+                distance = str2double(str.Children(1,i).Children(1,j).Attributes.Value);
+                continue
+            end
+            % search for children named 'Target'
+            grandchildMatch = strmatch('Target', str.Children...
+                (1,i).Children(1,j).Name);
+            if grandchildMatch == 1
+                targetSize = str2double(str.Children(1,i).Children(1,j).Attributes.Value); 
+                continue
+            end
+            % search for children named 'PhotopicToScotopicRatio'
+            grandchildMatch = strmatch('PhotopicToScotopicRatio', str.Children...
+                (1,i).Children(1,j).Name);
+            if grandchildMatch == 1
+                SPRatio = str2double(str.Children(1,i).Children(1,j).Attributes.Value);
+                continue
+            end            
+        end        
+        break;
+    end
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% READ StreetLuminance object
+% READ StreetSurface object
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 matchCounter = 0;
 for i = 1 : childSize 
@@ -302,6 +353,15 @@ for i = 1 : childSize
 %         end
         
         
+        
+        % put descriptions into obj
+        evaluatedData.sceneTitle = sceneTitle;
+        evaluatedData.focalLength = focalLength;
+        evaluatedData.distance = distance;
+        evaluatedData.targetSize = targetSize;
+        evaluatedData.SPRatio = SPRatio;
+
+
         % put quadrangle into obj
         if(exist('quadrangle','var'))
             evaluatedData.quadrangle = quadrangle;
