@@ -3,19 +3,8 @@
 <!ATTLIST dataSetName
     src CDATA #REQUIRED
 >
-<!ELEMENT Description (SceneTitle, FocalLength, DistanceToMeasuringField)>
-<!ELEMENT SceneTitle (#PCDATA)>
-<!ATTLIST SceneTitle
-    title CDATA #REQUIRED
->
-<!ELEMENT FocalLength (#PCDATA)>
-<!ATTLIST FocalLength
-    f CDATA #REQUIRED
->
-<!ELEMENT DistanceToMeasuringField (#PCDATA)>
-<!ATTLIST DistanceToMeasuringField
-    d CDATA #REQUIRED
->
+<!ELEMENT Description (SceneTitle, FocalLength, Distance
+
 <!ELEMENT StreetSurface (QuadrangleObject)>
 <!ELEMENT QuadrangleObject (upperLeft, upperRight, lowerLeft, lowerRight)>
 <!ELEMENT upperLeft (#PCDATA)>

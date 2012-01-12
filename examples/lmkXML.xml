@@ -2,6 +2,12 @@
 <!DOCTYPE LMKSet SYSTEM "LMKSet.dtd">
 
 <LMKSet>  
+    <Description>
+        <SceneTitle title="StreetXY"/>
+        <focalLength fl="30"/>
+        <distanceToMeasuringField d="10"/>
+    </Description>
+    
     <StreetSurface>
         <QuadrangleObject>
 			<upperLeft x="590" y="505"/>

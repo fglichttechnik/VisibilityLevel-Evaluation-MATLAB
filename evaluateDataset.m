@@ -11,9 +11,11 @@
 %XMLNAME = 'Treskowstr_lmkXML';
 XMLNAME = 'pos';
 
+
 %this is the path to the datasets xml file
 %PATH = 'C:\Dokumente und
 %Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	
+
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_newTarget';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_fixedDistance';
@@ -23,9 +25,11 @@ PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowst
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 %PATH = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder\pf';
 
-%2° field for current lens (8mm)
-%TODO: define 2° field for other lenses (25mm / 50mm)
-%RADIUS = 100;	%number of pixels which correspond to 2°
+
+%2? field for current lens (8mm)
+%TODO: define 2? field for other lenses (25mm / 50mm)
+%RADIUS = 100;	%number of pixels which correspond to 2?
+
 
 %CURRENTLY NOT IMPLEMENTED!!!
 
@@ -35,15 +39,15 @@ PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowst
 %K = 2.6;		%k factor of adrians model
 %as seen in (ANSI IESNA RP 8 00)
 AGE = 60;		%age of observer for adrians model
-T = 0.2;			%observing time of visual object
+T = 0.2;		%observing time of visual object
 K = 2.6;		%k factor of adrians model
 CONTRAST_CALCULATION_METHOD = 'RP800';   %can be STRONGEST, RP800
 
 %visual object preferences
 %%TODO: these values should be read from the xml file!!!
-DISTANCE_TO_MEASUREMENT_FIELD = 11;	%distance between camera and first measurement position of visual object
-SIZE_OF_OBJECT = 0.30;	%size of visual object
-TITLE = '';
+%DISTANCE_TO_MEASUREMENT_FIELD = 11;	%distance between camera and first measurement position of visual object
+%SIZE_OF_OBJECT = 0.30;	%size of visual object
+%TITLE = '';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %no adjustments have to be done below
@@ -60,6 +64,7 @@ end
 %THIS CAUSES A LOT OF PROBLEMS!!!
 %if ~exist([PATH,DELIMITER,XMLNAME, '.mat'], 'file');
     %load xml file and read all pf images
+    
     str = parseXML([PATH, DELIMITER, XMLNAME,'.xml']);
     imageset = struct2mat(str, PATH);
     %save([PATH,DELIMITER,XMLNAME, '.mat'], 'imageset');
@@ -75,7 +80,8 @@ disp('Calculating...');
 
 
 %prepare result class
-photopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Photopic', lengthOfSet, AGE, T, K, TITLE, CONTRAST_CALCULATION_METHOD );
+title =  imageset{1,1}.sceneTitle;
+photopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Photopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD );
 
 
 %analyse each image
@@ -87,7 +93,10 @@ for currentIndex = 1 : lengthOfSet
     %%TODO: move this calculation to class!
     %current visual size of object
     d = currentLMK_Image_Metadata.rectPosition;
-    gammaRad = 2 * atan(SIZE_OF_OBJECT / 2 ./ (d + DISTANCE_TO_MEASUREMENT_FIELD));
+    dis = currentLMK_Image_Metadata.distance;
+    objSize = currentLMK_Image_Metadata.targetSize;
+    
+    gammaRad = 2 * atan(objSize / 2 ./ (d + dis));
     alphaMinutes = (gammaRad / pi * 180 * 60);
     
     %calculate all necessary values
