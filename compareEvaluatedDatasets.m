@@ -13,17 +13,19 @@
 
 pathesForDatasets = {
     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_gemessen',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert',
+    %'/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert',
     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_fixedDistance'
+    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_2200'
+    %'/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_fixedDistance'
     %'/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_newTarget'
     };
 
 legendsForDatasets = {
     'measured',
-    'simulated',
-    'simulated R3',
-    'simulated R3 fixedDistance'
+    %'simulated',
+    'simulated R3 1000lm',
+    'simulated R3 2200lm'
+    %'simulated R3 fixedDistance'
     %'simulated R3 newTarget'
     };
 
@@ -40,7 +42,7 @@ colorArrayForPlots = {
     'm'
     };
 
-SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_Comparison';
+SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_Comparison2200';
 
 
 %%no changes have to be done below

@@ -8,8 +8,8 @@
 
 %file path preferences
 %XMLNAME = 'FlurweglmkXML';
-XMLNAME = 'Treskowstr_lmkXML';
-%XMLNAME = 'pos';
+%XMLNAME = 'Treskowstr_lmkXML';
+XMLNAME = 'pos';
 
 %this is the path to the datasets xml file
 %PATH = 'C:\Dokumente und
@@ -18,7 +18,7 @@ XMLNAME = 'Treskowstr_lmkXML';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_fixedDistance';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert';
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_gemessen';
+PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_2200';
 
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 %PATH = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder\pf';
