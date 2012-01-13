@@ -166,9 +166,9 @@ classdef LMK_Image_Statistics < handle
             if( strcmp( obj.dataType, 'Photopic') )
                 dataImage = obj.imageMetadata.dataImagePhotopic;
             elseif( strcmp( obj.dataType, 'Scotopic') )
-                dataImage = obj.imageMetadata.dataImagePhotopic;
+                dataImage = obj.imageMetadata.dataImageScotopic;
             elseif( strcmp( obj.dataType, 'Mesopic') )
-                dataImage = obj.imageMetadata.dataImagePhotopic;
+                dataImage = obj.imageMetadata.dataImageMesopic;
             else
                 disp( sprintf( 'unknown dataType:%s', obj.dataType ) );
                 disp( 'dataType has to be Photopic, Scotopic or Mesopic' );

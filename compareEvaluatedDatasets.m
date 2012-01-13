@@ -1,6 +1,6 @@
-SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonLumenVsCMultiplier';
+SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonPhotopicMesopic';
 
-XMLFILENAME = 'CompareSet.xml'
+XMLFILENAME = 'CompareSet.xml'; %best to name all sets the same
 
 CONVERT_TO_PDF = 1; %set this to 0 if you don't have epstopdf
 
@@ -29,18 +29,21 @@ end
 
 
 for k = 0 : allDataSetItemsLength - 1
-    thisDataSetItem = allDataSetItems.item(k);
+    thisDataSetsItem = allDataSetItems.item(k);
     
     
     % Get the label element. In this file, each
     % listitem contains only one label.
-    thisDataSet = thisDataSetItem.getElementsByTagName('DataSet');
+    thisDataSet = thisDataSetsItem.getElementsByTagName('DataSet');
     thisDataSetLength = thisDataSet.getLength;
     
     %prepare data
-pathesForDatasets = cell( thisDataSetLength, 1 );
-legendsForDatasets = cell( thisDataSetLength, 1 );
-colorArrayForPlots = cell( thisDataSetLength, 1 );
+    pathesForDatasets = cell( thisDataSetLength, 1 );
+    subPathesForDatasets = cell( thisDataSetLength, 1 );
+    legendsForDatasets = cell( thisDataSetLength, 1 );
+    colorArrayForPlots = cell( thisDataSetLength, 1 );
+    typeArrayForPlots = cell( thisDataSetLength, 1 );
+    customCodeString = '';
     
     for elementsIndex = 0 : thisDataSetLength - 1
         
@@ -57,9 +60,24 @@ colorArrayForPlots = cell( thisDataSetLength, 1 );
                 legendsForDatasets{ elementsIndex + 1 } = currentAttribute.Value;
             elseif( strcmp( currentAttribute.Name, 'Color' ) )
                 colorArrayForPlots{ elementsIndex + 1 } = currentAttribute.Value;
+            elseif( strcmp( currentAttribute.Name, 'SubPath' ) )
+                subPathesForDatasets{ elementsIndex + 1 } = currentAttribute.Value;
+            elseif( strcmp( currentAttribute.Name, 'Type' ) )
+                typeArrayForPlots{ elementsIndex + 1 } = currentAttribute.Value;
             end
         end
     end
+end
+
+%get custom code
+allCustomCodeItems = xDoc.getElementsByTagName('CustomCode');
+allCustomCodeItemsLength = allCustomCodeItems.getLength;
+
+for k = 0 : allCustomCodeItemsLength - 1
+    thisCustomCodeItem = allCustomCodeItems.item(k);
+    %thisCustomCode = thisDataSetsItem.getElementsByTagName('CustomCode');
+    thisElement = thisCustomCodeItem.item(0);
+    customCodeString = char( thisElement.getData );
 end
 
 %%PLOTTING
@@ -77,11 +95,18 @@ figHandleLB = figure();
 %load data
 for currentDatasetIndex = 1 : numberOfDatasets
     
-    currentPath = pathesForDatasets{ currentDatasetIndex };
-    filePath = sprintf( '%s%sphotopicSetStatistics.mat', currentPath, DELIMITER );
+    currentPath = sprintf( '%s%s', pathesForDatasets{ currentDatasetIndex }, subPathesForDatasets{ currentDatasetIndex } );
+    currentType = typeArrayForPlots{ currentDatasetIndex };
+    if( strcmp(currentType, 'Mesopic') )
+        filePath = sprintf( '%s%smesopicSetStatistics.mat', currentPath, DELIMITER );
+        arrayWithSetStatistics{ currentDatasetIndex } = mesopicLMK_Image_Set_Statistics;
+    else
+        filePath = sprintf( '%s%sphotopicSetStatistics.mat', currentPath, DELIMITER );
+        arrayWithSetStatistics{ currentDatasetIndex } = photopicLMK_Image_Set_Statistics;
+    end
     load( filePath );
     
-    arrayWithSetStatistics{ currentDatasetIndex } = photopicLMK_Image_Set_Statistics;
+    
     
     %we don't like too much data in memory
     photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray = 0;
@@ -148,6 +173,11 @@ legend( legendsForDatasets, 'Location', 'Best' );
 set(0, 'CurrentFigure', figHandleLB);
 legend( legendsForDatasets, 'Location', 'Best' );
 
+%apply custom code
+if( ~isempty( customCodeString ) )%~strcmp( customCodeString, '') )
+    eval( customCodeString );
+end
+
 %save images
 %plot data
 if ( ~exist( sprintf( '%s%sComparePlot', SAVEPATH, DELIMITER ), 'dir' ) )
@@ -166,7 +196,6 @@ filename = sprintf( '%s%sComparePlot%sVLFixedDistancePlot', SAVEPATH, DELIMITER,
 saveas(figHandleVLFixedDistance, filename, 'epsc');
 saveas(figHandleVLFixedDistance, filename, 'fig');
 
-
 filename = sprintf( '%s%sComparePlot%sLtPlot', SAVEPATH, DELIMITER, DELIMITER );
 saveas(figHandleLt, filename, 'epsc');
 saveas(figHandleLt, filename, 'fig');
@@ -178,7 +207,7 @@ saveas(figHandleLB, filename, 'fig');
 %compare data
 %plotDifferenceOfDatasets( arrayWithSetStatistics{ originalIndex }, arrayWithSetStatistics{ compareIndex } );
 
-%convert to pdf 
+%convert to pdf
 %convert all files to pdf
 if( CONVERT_TO_PDF )
     pathToEPSFiles = sprintf( '%s%sComparePlot%s', SAVEPATH, DELIMITER, DELIMITER );

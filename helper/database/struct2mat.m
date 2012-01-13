@@ -59,7 +59,7 @@ for i = 1 : childSize
             grandchildMatch = strmatch('ViewPoint', str.Children...
                 (1,i).Children(1,j).Name);
             if grandchildMatch == 1
-                distance = str2double(str.Children(1,i).Children(1,j).Attributes.Value);
+                distanceToMeasField = str2double(str.Children(1,i).Children(1,j).Attributes.Value);
                 continue
             end
             % search for children named 'Target'
@@ -70,7 +70,7 @@ for i = 1 : childSize
                 continue
             end
             % search for children named 'PhotopicToScotopicRatio'
-            grandchildMatch = strmatch('PhotopicToScotopicRatio', str.Children...
+            grandchildMatch = strmatch('ScotopicToPhotopicRatio', str.Children...
                 (1,i).Children(1,j).Name);
             if grandchildMatch == 1
                 SPRatio = str2double(str.Children(1,i).Children(1,j).Attributes.Value);
@@ -355,13 +355,19 @@ for i = 1 : childSize
         
         
         % put descriptions into obj
+        distanceToObject = distanceToMeasField + evaluatedData.rectPosition;
         evaluatedData.sceneTitle = sceneTitle;
         evaluatedData.focalLength = focalLength;
-        evaluatedData.distance = distance;
-        %evaluatedData.targetSize = targetSize;
-        %evaluatedData.SPRatio = SPRatio;
-
-
+        evaluatedData.distanceToObject = distanceToObject;
+        evaluatedData.targetSize = targetSize;
+        evaluatedData.SPRatio = SPRatio;
+        evaluatedData.calcAlpha();
+        
+        %set scotopic image if needed and possible
+        if( evaluatedData.SPRatio && ~strcmp( evaluatedData.dataSRCScotopic, '' ) )
+            evaluatedData.dataImageScotopic = evaluatedData.SPRatio * evaluatedData.dataImagePhotopic;
+        end
+        
         % put quadrangle into obj
         if(exist('quadrangle','var'))
             evaluatedData.quadrangle = quadrangle;

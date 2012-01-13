@@ -8,7 +8,8 @@ classdef LMK_Image_Metadata < handle
     properties
         sceneTitle
         focalLength
-        distance
+        distanceToObject
+        targetAlphaMinutes
         dataSRCMat
         dataTypeMat
         dataSRCPhotopic
@@ -34,7 +35,7 @@ classdef LMK_Image_Metadata < handle
         %constructor
         function obj = LMK_Image_Metadata(dataSRCPhotopic, dataTypePhotopic, ...
                 dataSRCScotopic, dataTypeScotopic, rect, ...
-                rectPosition, border, dataImagePhotopic, dataImageScotopic)
+                rectPosition, border, dataImagePhotopic, dataImageScotopic, distanceToObject, targetSize)
             if nargin > 0 % Support calling with 0 arguments
                 obj.dataSRCPhotopic = dataSRCPhotopic;
                 obj.dataTypePhotopic = dataTypePhotopic;
@@ -45,6 +46,8 @@ classdef LMK_Image_Metadata < handle
                 obj.border = border;
                 obj.dataImageScotopic = dataImageScotopic;
                 obj.dataImagePhotopic = dataImagePhotopic;
+                obj.distanceToObject = distanceToObject;
+                obj.targetSize = targetSize;
             end
         end% constructor
         
@@ -127,5 +130,14 @@ classdef LMK_Image_Metadata < handle
             end
             value = obj.Name;
         end%lazy loading of measurement series name
+        
+        function calcAlpha(obj)
+            dis = obj.distanceToObject;
+            objSize = obj.targetSize;
+            alphaRad = 2 * atan(objSize / 2 ./ dis);
+            alphaMinutes = (alphaRad / pi * 180 * 60);
+            obj.targetAlphaMinutes = alphaMinutes;
+        end
+        
     end % methods
 end

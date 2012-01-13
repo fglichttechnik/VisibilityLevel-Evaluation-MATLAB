@@ -129,7 +129,7 @@ classdef LMK_Image_Set_Statistics < handle
             mkdir( [savePath, DELIMITER], 'visImages' );
             for currentIndex = 1 : length( obj.visualisationImageArray )
                 image = obj.visualisationImageArray{ currentIndex };
-                filename = sprintf( '%s%svisImages%s%d.png', savePath, DELIMITER, DELIMITER, currentIndex );
+                filename = sprintf( '%s%svisImages%s%s_%d.png', savePath, DELIMITER, DELIMITER, obj.type, currentIndex );
                 imwrite( image, filename );
             end
         end
@@ -174,7 +174,7 @@ classdef LMK_Image_Set_Statistics < handle
             ylabel('C');
             title( strcat( 'Weber Contrast' ) ) ;
 
-            filename = sprintf( '%sweberContrastPlot', savePath );
+            filename = sprintf( '%s%s_weberContrastPlot', savePath, obj.type );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -219,7 +219,7 @@ classdef LMK_Image_Set_Statistics < handle
             ylabel('\Delta L in cd/m^2');
             title(strcat('\Delta L_{th} '));
             
-            filename = sprintf( '%sdeltaLPlot', savePath );
+            filename = sprintf( '%s%s_deltaLPlot', savePath, obj.type  );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -263,7 +263,7 @@ classdef LMK_Image_Set_Statistics < handle
             ylabel('C_{th}');
             title(strcat('Threshold Contrast '));
 
-            filename = sprintf( '%sCthPlot', savePath );
+            filename = sprintf( '%s%s_CthPlot', savePath, obj.type  );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -307,7 +307,7 @@ classdef LMK_Image_Set_Statistics < handle
             ylabel('VL');
             title( strcat('Visibility Level ') );           
             
-            filename = sprintf( '%sVLPlot', savePath );
+            filename = sprintf( '%s%s_VLPlot', savePath, obj.type  );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -351,7 +351,7 @@ classdef LMK_Image_Set_Statistics < handle
             ylabel('VL');
             title( strcat('Visibility Level (Fixed Distance)') );           
             
-            filename = sprintf( '%sVLFixedDistancePlot', savePath );
+            filename = sprintf( '%s%s_VLFixedDistancePlot', savePath, obj.type  );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -395,7 +395,7 @@ classdef LMK_Image_Set_Statistics < handle
             ylabel('L in cd/m^2');
             title(strcat('mean L_t') );
 
-            filename = sprintf( '%sLtPlot', savePath );
+            filename = sprintf( '%s%s_LtPlot', savePath, obj.type  );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -438,7 +438,7 @@ classdef LMK_Image_Set_Statistics < handle
             ylabel('L in cd/m^2');
             title(strcat('mean L_B ') );            
             
-            filename = sprintf( '%sLbPlot', savePath );
+            filename = sprintf( '%s%s_LbPlot', savePath, obj.type  );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');
@@ -466,7 +466,7 @@ classdef LMK_Image_Set_Statistics < handle
             end
             
             
-            filename = sprintf( '%s%splots%sLtPlot', savePath, DELIMITER, DELIMITER );
+            filename = sprintf( '%s%splots%s%s_LtPlot', savePath, DELIMITER, DELIMITER, obj.type  );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 saveas(figHandle, filename, 'epsc');

@@ -1,37 +1,28 @@
-%function evaluateDataset
+function evaluateDataset( PATH )
 %author Sandy Buschmann, Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 %this script evaluates a set of images with a graycard corresponding to Adrians 1989
 %model of contrast threshold
 
+disp( sprintf( 'evaluating %s', PATH ) );
+
 %clear all; %this will clear all breakpoints as well
 
 CONVERT_TO_PDF = 1; %set this to 0 if you don't have epstopdf
+ANALYZE_MESOPIC = 1; %set this to 0 if you don't like mesopic shit
 
 %file path preferences
-%XMLNAME = 'FlurweglmkXML';
-%XMLNAME = 'Treskowstr_lmkXML';
-XMLNAME = 'LMKSetMat';
+XMLNAME = 'LMKSetMat';  %best if you name all xmls like that
 
 
 %this is the path to the datasets xml file
-%PATH = 'C:\Dokumente und
-%Einstellungen\jaw\Desktop\LMK\LMK\LMK_data_evaluation\database';	
-
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_newTarget';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_fixedDistance';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert';
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3';
-
+%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 %PATH = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder\pf';
-
-
-%2? field for current lens (8mm)
-%TODO: define 2? field for other lenses (25mm / 50mm)
-%RADIUS = 100;	%number of pixels which correspond to 2?
-%CURRENTLY NOT IMPLEMENTED!!!
 
 %adrian threshold model parameter
 %AGE = 24;		%age of observer for adrians model
@@ -63,15 +54,15 @@ end
 %load data
 %THIS CAUSES A LOT OF PROBLEMS!!!
 %if ~exist([PATH,DELIMITER,XMLNAME, '.mat'], 'file');
-    %load xml file and read all pf images
-    
-    str = parseXML([PATH, DELIMITER, XMLNAME,'.xml']);
-    imageset = struct2mat(str, PATH);
-    %save([PATH,DELIMITER,XMLNAME, '.mat'], 'imageset');
+%load xml file and read all pf images
+
+str = parseXML([PATH, DELIMITER, XMLNAME,'.xml']);
+imageset = struct2mat(str, PATH);
+%save([PATH,DELIMITER,XMLNAME, '.mat'], 'imageset');
 %else
-    %load image data set
+%load image data set
 %    disp(['Loading dataset ', XMLNAME, '.mat ...']);
- %   load(XMLNAME);    
+%   load(XMLNAME);
 %end
 
 lengthOfSet = length(imageset);
@@ -82,6 +73,7 @@ disp('Calculating...');
 %prepare result class
 title =  imageset{1,1}.sceneTitle;
 photopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Photopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD );
+mesopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Mesopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD );
 
 
 %analyse each image
@@ -90,21 +82,15 @@ for currentIndex = 1 : lengthOfSet
     %get current element
     currentLMK_Image_Metadata = imageset{ currentIndex };
     
-    %%TODO: move this calculation to class!
-    %current visual size of object
-    d = currentLMK_Image_Metadata.rectPosition;
-    dis = currentLMK_Image_Metadata.distance;
-    %objSize = currentLMK_Image_Metadata.targetSize;
-    objSize = 0.3;
-    
-    gammaRad = 2 * atan(objSize / 2 ./ (d + dis));
-    alphaMinutes = (gammaRad / pi * 180 * 60);
-    
     %calculate all necessary values
     currentPhotopic_LMK_Image_Statistics = LMK_Image_Statistics( currentLMK_Image_Metadata, photopicLMK_Image_Set_Statistics.type );
     photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentPhotopic_LMK_Image_Statistics;
-    photopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = alphaMinutes;
-end  
+    photopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentLMK_Image_Metadata.targetAlphaMinutes;
+    
+    currentMesopic_LMK_Image_Statistics = LMK_Image_Statistics( currentLMK_Image_Metadata, mesopicLMK_Image_Set_Statistics.type );
+    mesopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentMesopic_LMK_Image_Statistics;
+    mesopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentLMK_Image_Metadata.targetAlphaMinutes;
+end
 
 %prepare data for plotting and plot
 photopicLMK_Image_Set_Statistics.gatherData();
@@ -115,9 +101,19 @@ photopicLMK_Image_Set_Statistics.plotThresholdDeltaL( PATH );
 photopicLMK_Image_Set_Statistics.plotContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotLtLB( PATH );
 
+if( ANALYZE_MESOPIC )
+    mesopicLMK_Image_Set_Statistics.gatherData();
+    mesopicLMK_Image_Set_Statistics.plotVL( PATH );
+    mesopicLMK_Image_Set_Statistics.plotVLFixedDistance( PATH );
+    mesopicLMK_Image_Set_Statistics.plotThresholdContrast( PATH );
+    mesopicLMK_Image_Set_Statistics.plotThresholdDeltaL( PATH );
+    mesopicLMK_Image_Set_Statistics.plotContrast( PATH );
+    mesopicLMK_Image_Set_Statistics.plotLtLB( PATH );
+end
+
 %convert all files to pdf
 if( CONVERT_TO_PDF )
-    pathToEPSFiles = sprintf( '%s%s%splots%s', PATH, DELIMITER, DELIMITER );
+    pathToEPSFiles = sprintf( '%s%splots%s', PATH, DELIMITER, DELIMITER );
     system( sprintf( 'apply /usr/texbin/epstopdf %s*.eps', pathToEPSFiles ) );
     system( sprintf( 'rm %s*.eps', pathToEPSFiles ) );
 end
@@ -125,13 +121,16 @@ end
 %save images
 photopicLMK_Image_Set_Statistics.saveVisualisationImage( PATH );
 
-%save dataset
+%save dataset for compareEvaluatedDatasets
 %we don't want to save the visImages (makes the dataset too big...)
 photopicLMK_Image_Set_Statistics.visualisationImageArray = 0;
 photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray = 0;
+mesopicLMK_Image_Set_Statistics.visualisationImageArray = 0;
+mesopicLMK_Image_Set_Statistics.lmkImageStatisticsArray = 0;
 save( [ PATH, DELIMITER, 'photopicSetStatistics', '.mat' ], 'photopicLMK_Image_Set_Statistics' );
+save( [ PATH, DELIMITER, 'mesopicSetStatistics', '.mat' ], 'mesopicLMK_Image_Set_Statistics' );
 
-%disp('');
+disp('done');
 
 
 
