@@ -1,51 +1,12 @@
-%adjust this manually
-% pathesForDatasets = {
-%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_RP8_06',
-%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_RP8_30',
-%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_RP8_99'
-%     };
-% 
-% legendsForDatasets = {
-%     '6%',
-%     '30%',
-%     '99%'
-%     };
+SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonLumenVsCMultiplier';
 
-pathesForDatasets = {
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_gemessen',
-    %'/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_2200'
-    %'/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_fixedDistance'
-    %'/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_newTarget'
-    };
+XMLFILENAME = 'CompareSet.xml'
 
-legendsForDatasets = {
-    'measured',
-    %'simulated',
-    'simulated R3 1000lm',
-    'simulated R3 2200lm'
-    %'simulated R3 fixedDistance'
-    %'simulated R3 newTarget'
-    };
+CONVERT_TO_PDF = 1; %set this to 0 if you don't have epstopdf
 
-originalIndex = 1;
-compareIndex = 3;
-
-
-%can be any number of alternating colors
-colorArrayForPlots = {
-    'r',
-    'gr',
-    'b',
-    'c',
-    'm'
-    };
-
-SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_Comparison2200';
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%no changes have to be done below
+
 
 %platform specific path delimiter
 if(ispc)
@@ -54,6 +15,54 @@ elseif(isunix)
     DELIMITER = '/';
 end
 
+%%READ XML
+fileName = sprintf( '%s%s%s', SAVEPATH, DELIMITER, XMLFILENAME );
+xDoc = xmlread( fileName );
+
+allDataSetItems = xDoc.getElementsByTagName('DataSets');
+allDataSetItemsLength = allDataSetItems.getLength;
+
+if (~allDataSetItemsLength)
+    disp('NO DATA FOUND, QUITTING');
+end
+
+
+
+for k = 0 : allDataSetItemsLength - 1
+    thisDataSetItem = allDataSetItems.item(k);
+    
+    
+    % Get the label element. In this file, each
+    % listitem contains only one label.
+    thisDataSet = thisDataSetItem.getElementsByTagName('DataSet');
+    thisDataSetLength = thisDataSet.getLength;
+    
+    %prepare data
+pathesForDatasets = cell( thisDataSetLength, 1 );
+legendsForDatasets = cell( thisDataSetLength, 1 );
+colorArrayForPlots = cell( thisDataSetLength, 1 );
+    
+    for elementsIndex = 0 : thisDataSetLength - 1
+        
+        thisElement = thisDataSet.item(elementsIndex);
+        
+        attributes = parseAttributes( thisElement );
+        
+        attributeslength = length(attributes);
+        for attIndex = 1 : attributeslength
+            currentAttribute = attributes( attIndex );
+            if( strcmp( currentAttribute.Name, 'Path' ) )
+                pathesForDatasets{ elementsIndex + 1 } = currentAttribute.Value;
+            elseif( strcmp( currentAttribute.Name, 'Legend' ) )
+                legendsForDatasets{ elementsIndex + 1 } = currentAttribute.Value;
+            elseif( strcmp( currentAttribute.Name, 'Color' ) )
+                colorArrayForPlots{ elementsIndex + 1 } = currentAttribute.Value;
+            end
+        end
+    end
+end
+
+%%PLOTTING
 numberOfDatasets = length( pathesForDatasets );
 numberOfColors = length( colorArrayForPlots );
 
@@ -88,7 +97,7 @@ for currentDatasetIndex = 1 : numberOfDatasets
     
     currentSetStatistics = arrayWithSetStatistics{ currentDatasetIndex };
     
-    currentColorIndex = mod( currentDatasetIndex, numberOfColors );  
+    currentColorIndex = mod( currentDatasetIndex, numberOfColors );
     if ( currentColorIndex == 0 )
         currentColorIndex = numberOfColors;
     end
@@ -140,27 +149,44 @@ set(0, 'CurrentFigure', figHandleLB);
 legend( legendsForDatasets, 'Location', 'Best' );
 
 %save images
+%plot data
+if ( ~exist( sprintf( '%s%sComparePlot', SAVEPATH, DELIMITER ), 'dir' ) )
+    mkdir( sprintf( '%s%sComparePlot', SAVEPATH, DELIMITER ) );
+end
 
-filename = sprintf( '%sweberContrastPlot', SAVEPATH );
+filename = sprintf( '%s%sComparePlot%sweberContrastPlot', SAVEPATH, DELIMITER, DELIMITER );
 saveas(figHandleContrast, filename, 'epsc');
 saveas(figHandleContrast, filename, 'fig');
 
-filename = sprintf( '%sVLPlot', SAVEPATH );
+filename = sprintf( '%s%sComparePlot%sVLPlot', SAVEPATH, DELIMITER, DELIMITER );
 saveas(figHandleVL, filename, 'epsc');
 saveas(figHandleVL, filename, 'fig');
 
-filename = sprintf( '%sVLFixedDistancePlot', SAVEPATH );
+filename = sprintf( '%s%sComparePlot%sVLFixedDistancePlot', SAVEPATH, DELIMITER, DELIMITER );
 saveas(figHandleVLFixedDistance, filename, 'epsc');
 saveas(figHandleVLFixedDistance, filename, 'fig');
 
 
-filename = sprintf( '%sLtPlot', SAVEPATH );
+filename = sprintf( '%s%sComparePlot%sLtPlot', SAVEPATH, DELIMITER, DELIMITER );
 saveas(figHandleLt, filename, 'epsc');
 saveas(figHandleLt, filename, 'fig');
 
-filename = sprintf( '%sLBPlot', SAVEPATH );
+filename = sprintf( '%s%sComparePlot%sLBPlot', SAVEPATH, DELIMITER, DELIMITER );
 saveas(figHandleLB, filename, 'epsc');
 saveas(figHandleLB, filename, 'fig');
 
 %compare data
-plotDifferenceOfDatasets( arrayWithSetStatistics{ originalIndex }, arrayWithSetStatistics{ compareIndex } );
+%plotDifferenceOfDatasets( arrayWithSetStatistics{ originalIndex }, arrayWithSetStatistics{ compareIndex } );
+
+%convert to pdf 
+%convert all files to pdf
+if( CONVERT_TO_PDF )
+    pathToEPSFiles = sprintf( '%s%sComparePlot%s', SAVEPATH, DELIMITER, DELIMITER );
+    system( sprintf( 'apply /usr/texbin/epstopdf %s*.eps', pathToEPSFiles ) );
+    system( sprintf( 'rm %s*.eps', pathToEPSFiles ) );
+    
+    %delete tmp plots
+    pathToTMPFiles = sprintf( '%s%splots%s', SAVEPATH, DELIMITER, DELIMITER );
+    system( sprintf( 'rm -r %s', pathToTMPFiles ) );
+end
+

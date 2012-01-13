@@ -6,10 +6,12 @@
 
 %clear all; %this will clear all breakpoints as well
 
+CONVERT_TO_PDF = 1; %set this to 0 if you don't have epstopdf
+
 %file path preferences
 %XMLNAME = 'FlurweglmkXML';
 %XMLNAME = 'Treskowstr_lmkXML';
-XMLNAME = 'pos';
+XMLNAME = 'LMKSetMat';
 
 
 %this is the path to the datasets xml file
@@ -20,7 +22,7 @@ XMLNAME = 'pos';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_fixedDistance';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert';
-PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_2200';
+PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3';
 
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 %PATH = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder\pf';
@@ -29,8 +31,6 @@ PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowst
 %2? field for current lens (8mm)
 %TODO: define 2? field for other lenses (25mm / 50mm)
 %RADIUS = 100;	%number of pixels which correspond to 2?
-
-
 %CURRENTLY NOT IMPLEMENTED!!!
 
 %adrian threshold model parameter
@@ -94,7 +94,8 @@ for currentIndex = 1 : lengthOfSet
     %current visual size of object
     d = currentLMK_Image_Metadata.rectPosition;
     dis = currentLMK_Image_Metadata.distance;
-    objSize = currentLMK_Image_Metadata.targetSize;
+    %objSize = currentLMK_Image_Metadata.targetSize;
+    objSize = 0.3;
     
     gammaRad = 2 * atan(objSize / 2 ./ (d + dis));
     alphaMinutes = (gammaRad / pi * 180 * 60);
@@ -113,6 +114,13 @@ photopicLMK_Image_Set_Statistics.plotThresholdContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotThresholdDeltaL( PATH );
 photopicLMK_Image_Set_Statistics.plotContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotLtLB( PATH );
+
+%convert all files to pdf
+if( CONVERT_TO_PDF )
+    pathToEPSFiles = sprintf( '%s%s%splots%s', PATH, DELIMITER, DELIMITER );
+    system( sprintf( 'apply /usr/texbin/epstopdf %s*.eps', pathToEPSFiles ) );
+    system( sprintf( 'rm %s*.eps', pathToEPSFiles ) );
+end
 
 %save images
 photopicLMK_Image_Set_Statistics.saveVisualisationImage( PATH );

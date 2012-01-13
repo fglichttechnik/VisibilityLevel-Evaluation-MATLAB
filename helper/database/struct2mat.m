@@ -358,8 +358,8 @@ for i = 1 : childSize
         evaluatedData.sceneTitle = sceneTitle;
         evaluatedData.focalLength = focalLength;
         evaluatedData.distance = distance;
-        evaluatedData.targetSize = targetSize;
-        evaluatedData.SPRatio = SPRatio;
+        %evaluatedData.targetSize = targetSize;
+        %evaluatedData.SPRatio = SPRatio;
 
 
         % put quadrangle into obj

@@ -12,6 +12,12 @@
 <!ATTLIST FocalLength
     f CDATA #REQUIRED
 >
+
+<!ELEMENT Target (#PCDATA)>
+<!ATTLIST Target
+    f CDATA #REQUIRED
+>
+
 <!ELEMENT DistanceToMeasuringField (#PCDATA)>
 <!ATTLIST DistanceToMeasuringField
     d CDATA #REQUIRED
