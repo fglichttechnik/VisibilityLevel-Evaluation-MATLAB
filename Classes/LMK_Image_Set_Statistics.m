@@ -22,7 +22,10 @@ classdef LMK_Image_Set_Statistics < handle
         distanceArray               %array with distances of current set
         visualisationImageArray     %array with visualisation images of current set
         
-        settitle                    %t = title for this set
+
+        smallTargetVL               %small target visibility level; weighted average of all VL
+        
+        setTitle                    %title for this set
         
         contrastCalculationMethod   %can be STRONGEST, RP800, or other to be implemented methods
         
@@ -32,7 +35,7 @@ classdef LMK_Image_Set_Statistics < handle
     end % properties
     methods
         %constructor
-        function obj = LMK_Image_Set_Statistics( type, lengthOfSet, ageVL, tVL, kVL, settitle, contrastCalculationMethod )
+        function obj = LMK_Image_Set_Statistics( type, lengthOfSet, ageVL, tVL, kVL, setTitle, contrastCalculationMethod )
             if nargin > 0 % Support calling with 0 arguments
                 
                 %check if type is valid
@@ -50,12 +53,12 @@ classdef LMK_Image_Set_Statistics < handle
                 obj.tVL = tVL;
                 obj.kVL = kVL;
                 obj.lmkImageStatisticsArray = cell( lengthOfSet, 1 );
-                obj.settitle = settitle;
+                obj.setTitle = setTitle;
                 obj.contrastCalculationMethod = contrastCalculationMethod;
             end
             
-            obj.FONTSIZE = 14
-            obj.LINEWIDTH = 1.2
+            obj.FONTSIZE = 14;
+            obj.LINEWIDTH = 1.1;
             
         end% constructor
         
@@ -109,9 +112,12 @@ classdef LMK_Image_Set_Statistics < handle
             end
             
             %calculate visibility level
-            %VL is always positive
-            visibilityLevelArray = abs(weberContrastArray ./ thresholdContrastArray);
-            visibilityLevelFixedDistanceArray = abs(weberContrastArray ./ thresholdContrastFixedDistanceArray);
+            %VL is always positive (not in RP800) was abs()
+            visibilityLevelArray = (weberContrastArray ./ thresholdContrastArray);
+            visibilityLevelFixedDistanceArray = (weberContrastArray ./ thresholdContrastFixedDistanceArray);
+            
+            %calculate small target visibility level
+            stv = calcSTVfromArray(visibilityLevelArray);
             
             %set instance values
             obj.visualisationImageArray = visualisationImageArray;
@@ -123,6 +129,7 @@ classdef LMK_Image_Set_Statistics < handle
             obj.thresholdContrastArray = thresholdContrastArray;
             obj.visibilityLevelArray = visibilityLevelArray;
             obj.visibilityLevelFixedDistanceArray = visibilityLevelFixedDistanceArray;
+            obj.smallTargetVL = stv;
         end
         
         %% saveVisualisationImage
@@ -326,8 +333,10 @@ classdef LMK_Image_Set_Statistics < handle
             %activate corresponding figure
             set(0, 'CurrentFigure', figHandle);
             
+            %for better comparison we show the abs of the VL
+            
             %plot visibility level
-            p = plot( obj.distanceArray, obj.visibilityLevelArray, color );
+            p = plot( obj.distanceArray, abs( obj.visibilityLevelArray ), color );
             %legend('L_{photopisch}');
             axis('tight');
             x = xlabel('d in m');
@@ -376,14 +385,20 @@ classdef LMK_Image_Set_Statistics < handle
             %activate corresponding figure
             set(0, 'CurrentFigure', figHandle);
             
+            %for better comparison we show the abs of the VL
+            
             %plot visibility level
-            p = plot( obj.distanceArray, obj.visibilityLevelFixedDistanceArray, color );
+            p = plot( obj.distanceArray, abs( obj.visibilityLevelFixedDistanceArray ), color );
             %legend('L_{photopisch}');
             axis('tight');
             x = xlabel('d in m');
             y = ylabel('VL');
             t = title( strcat('Visibility Level (Fixed Distance)') );           
-            			
+            		
+            %set STV
+            tx = text( 'units', 'normalized', 'position', [0.01 0.9], 'string', sprintf( 'STV = %3.1f', obj.smallTargetVL ) );
+            %set(tx,'Interpreter','LaTeX','FontSize',12);
+            
 			%adjust plot
 			set( p, 'LineWidth', obj.LINEWIDTH );
             set( x, 'FontSize', obj.FONTSIZE );
