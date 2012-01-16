@@ -1,4 +1,4 @@
-function [Lmes, imgVisualization] = mesopicLuminance_recommended(Lp,Ls)
+function [ Lmes, mFactor ] = mesopicLuminance_recommended( Lp, Ls, Lap, Las )
 %author Jan Winter, Sandy Buschmann TU Berlin
 %email j.winter@tu-berlin.de
 %calculates the mesopic luminance according to the CIE RECOMMENDED SYSTEM
@@ -7,6 +7,9 @@ function [Lmes, imgVisualization] = mesopicLuminance_recommended(Lp,Ls)
 %Lp = photopic luminance
 %Ls = scotopic luminance
 %implemented regarding to CIE Report TC1-58
+%Lap = photopic adaption luminance
+%Las = scotopic adaption luminance
+%mFactor = by iteration calcuted factor for mesopic luminance calculation
 
 %hack: remove zero pixels
 % Lp = Lp(1:end-2,1:end-2);
@@ -14,8 +17,6 @@ function [Lmes, imgVisualization] = mesopicLuminance_recommended(Lp,Ls)
 
 %preferences
 STARTWERT = 0.5;
-NUMBER_OF_ITERATIONS = 10;  %10 looks to be a good value, as it converges fast
-
 
 %nothing needs to be modified below
 UPPER_VALUE_FOR_MESOPIC = 5;       %values above will be photopic luminances
@@ -26,6 +27,14 @@ if(size(Lp) ~= size(Ls))
     return;
 end
 
+%make calling without adaption luminance possible
+if nargin < 3
+    for currentIndex = 1 : size(Lp)
+        Lap = mean( Lp );
+        Las = mean( Ls );
+    end   
+end
+
 %variables
 a = 0.767;
 b = 0.3334;
@@ -33,28 +42,41 @@ Kp = 683;
 Ks = 1699;
 V_strich_lambda0 = Kp / Ks;
 
-m_20 = ones(size(Lp)) * STARTWERT;
-Lmes_n = zeros(size(Lp));
 
 %calc mesopic luminance
-m_2n_1 = m_20;
-for i = 1 : NUMBER_OF_ITERATIONS
-    numerator = m_2n_1 .* Lp + (1 - m_2n_1) .* Ls .* V_strich_lambda0;
-    denominator = m_2n_1 + (1 - m_2n_1) .* V_strich_lambda0;
-    Lmes_n = numerator ./ denominator;
+m_2n_1 = 0;
+m_2n = STARTWERT;
+
+
+for i = 1 : 100
     
-    m_2n = a + b * log10(Lmes_n);
+    if abs( m_2n_1 - m_2n ) <= 0.001 
+        break
+    end
+    
     m_2n_1 = m_2n;
     
+    numerator = m_2n_1 * Lap + ( 1 - m_2n_1 ) * Las * V_strich_lambda0;
+    denominator = m_2n_1 + (1 - m_2n_1) * V_strich_lambda0;
+    Lmes_n = numerator / denominator;
+    
+    m_2n = a + b * log10(Lmes_n);
+    
     %keep photopic luminances above UPPER_VALUE_FOR_MESOPIC
-    valuesAbove = (Lmes_n >= UPPER_VALUE_FOR_MESOPIC);
-    m_2n_1(valuesAbove) = 1;
+    if Lmes_n >= UPPER_VALUE_FOR_MESOPIC
+        m_2n = 1;
+    end
     
     %keep scotopic luminances below LOWER_VALUE_FOR_MESOPIC
-    valuesBelow = (Lmes_n <= LOWER_VALUE_FOR_MESOPIC);
-    m_2n_1(valuesBelow) = 0;
+    if Lmes_n <= LOWER_VALUE_FOR_MESOPIC
+        m_2n = 0;
+    end
+    
 end
 
+num = m_2n .* Lp + ( 1 - m_2n ) .* Ls * V_strich_lambda0;
+denom = m_2n + (1 - m_2n) * V_strich_lambda0;
+Lmes_n = num / denom;
 Lmes = abs(Lmes_n);
 
 %keep photopic luminances above UPPER_VALUE_FOR_MESOPIC
@@ -69,24 +91,8 @@ Ls_keep = Ls .* valuesBelow;
 Lmes(valuesAbove) = Lp_keep(valuesAbove);
 Lmes(valuesBelow) = Ls_keep(valuesBelow);
 
-%%%
-% visual output of luminance type
-% unneeded for normal use...
+mFactor = m_2n;
 
-%prepare visualization image
-imgVisualization = ones(size(Lp)) * 2;
-imgVisualization(valuesAbove) = 1;
-imgVisualization(valuesBelow) = 3;
-
-%photopic luminances are red
-%mesopic luminances are green
-%scotopic luminances are blue
-map = [1.0,0,0;0,1.0,0;0,0,1.0];
-imgVisualization = ind2rgb(imgVisualization, map);
-% imshow(imgVisualization);
-% colormap(map);
-% colorbar('YTick',[1;2;3],'YTickLabel',...
-%     {'Photopic','Mesopic','Scotopic'});
 
 
 

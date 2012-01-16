@@ -27,8 +27,8 @@ classdef LMK_Image_Statistics < handle
         strongestEdgeMeanTarget
         strongestEdgeMeanBackground
         
-        %visualisation (the areas for calculation are marked in that image)
         visualisationImage
+        
         
         %currently not necessary values
         minTarget
@@ -173,7 +173,7 @@ classdef LMK_Image_Statistics < handle
                 disp( sprintf( 'unknown dataType:%s', obj.dataType ) );
                 disp( 'dataType has to be Photopic, Scotopic or Mesopic' );
             end
-            
+                        
             %set visualisation image as RGB image
             [ width, height ] = size( dataImage );
             visImagePrototype = zeros( width, height, 3 );

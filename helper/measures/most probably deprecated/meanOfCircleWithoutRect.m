@@ -1,4 +1,4 @@
-function [meanTarget, meanBackground] = meanOfCircleWithoutRect(img, radius, x1, x2, y1, y2, border)
+function meanBackground = meanOfCircleWithoutRect(img, obj)
 %author Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 %DEPRECATED: superseeded by statisticsOfCircle...
@@ -12,15 +12,19 @@ SAVEIMAGE = 0;  %0 or 1
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %NO ADJUSTMENTS NEED TO BE DONE BELOW
 
-meanTarget = mean2(img(x1 : x2, y1 : y2));
-
 %save original values for later use
+x1 = obj.rect.upperLeft.x;
+x2 = obj.rect.lowerRight.x;
+y1 = obj.rect.upperLeft.y;
+y2 = obj.rect.lowerRight.y;
+
 originalX1 = x1;
 originalX2 = x2;
 originalY1 = y1;
 originalY2 = y2;
 
 %calc background mean not within the border region of object
+border = obj.border;
 x1 = x1 - border;
 x2 = x2 + border;
 y1 = y1 - border;
@@ -30,6 +34,7 @@ y2 = y2 + border;
 centerX = round((x1 + x2) / 2);
 centerY = round((y1 + y2) / 2);
 
+radius = obj.twoDegreeRadiusPix;
 fromX = centerX - radius;
 fromY = centerY - radius;
 toX = centerX + radius;
