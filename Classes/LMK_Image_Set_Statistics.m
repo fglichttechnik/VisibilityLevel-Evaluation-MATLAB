@@ -22,6 +22,8 @@ classdef LMK_Image_Set_Statistics < handle
         distanceArray               %array with distances of current set
         visualisationImageArray     %array with visualisation images of current set
         
+        smallTargetVL               %small target visibility level; weighted average of all VL
+        
         setTitle                    %title for this set
         
         contrastCalculationMethod   %can be STRONGEST, RP800, or other to be implemented methods
@@ -105,6 +107,9 @@ classdef LMK_Image_Set_Statistics < handle
             visibilityLevelArray = abs(weberContrastArray ./ thresholdContrastArray);
             visibilityLevelFixedDistanceArray = abs(weberContrastArray ./ thresholdContrastFixedDistanceArray);
             
+            %calculate small target visibility level
+            stv = calcSTVfromArray(visibilityLevelArray);
+            
             %set instance values
             obj.visualisationImageArray = visualisationImageArray;
             obj.distanceArray = distanceArray;
@@ -115,6 +120,7 @@ classdef LMK_Image_Set_Statistics < handle
             obj.thresholdContrastArray = thresholdContrastArray;
             obj.visibilityLevelArray = visibilityLevelArray;
             obj.visibilityLevelFixedDistanceArray = visibilityLevelFixedDistanceArray;
+            obj.smallTargetVL = stv;
         end
         
         function saveVisualisationImage( obj, savePath )

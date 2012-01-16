@@ -64,7 +64,7 @@ for i = 1 : childSize
             end
             % search for children named 'Target'
             grandchildMatch = strmatch('Target', str.Children...
-                (1,i).Children(1,j).Name);
+                (1,i).Children(1,j).Name)
             if grandchildMatch == 1
                 targetSize = str2double(str.Children(1,i).Children(1,j).Attributes.Value); 
                 continue

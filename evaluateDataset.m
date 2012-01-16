@@ -21,6 +21,8 @@ XMLNAME = 'LMKSetMat';  %best if you name all xmls like that
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_fixedDistance';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3';
+%PATH = '/Volumes/server/Postfach/Transfer zu Winter/2010_10_07 - Treskowstr/Leuchtdichtebilder/pf';
+%PATH = '/Users/sandy/Desktop/Development/RoadRad/RoadRad/scenes/sceneXY/LMKSetMat';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 %PATH = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder\pf';
 
