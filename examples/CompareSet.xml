@@ -1,7 +1,7 @@
 <CompareSet>
 	<DataSets>
-		<DataSet Legend="S4" Color="k" SubPath="Treskowstr_LED_R3_2070" Path="/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/"/>
-		<DataSet Legend="S5" Color="r" SubPath="Treskowstr_LED_R3_1449" Path="/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/"/>
+		<DataSet Type="Mesopic" Legend="S5" Color="k" SubPath="Treskowstr_LED_R3_1449" Path="/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/"/>
+		<DataSet Type="Mesopic" Legend="S6" Color="r" SubPath="Treskowstr_LED_R3_1035" Path="/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/"/>
 	</DataSets>
 	<CustomCode>
 		set(0, 'CurrentFigure', figHandleLB);

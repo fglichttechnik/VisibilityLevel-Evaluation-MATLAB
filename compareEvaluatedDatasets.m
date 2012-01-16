@@ -1,6 +1,6 @@
-%SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonPhotopicMesopic';
-%SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonAllLumensMesopic';
-SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonFixedDistance_vs_FixedVP';
+SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonS5toS6';
+%SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_Comparison_HS_vs_LED';
+%SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonDimVs2ndOff';
 
 XMLFILENAME = 'CompareSet.xml'; %best to name all sets the same
 
@@ -89,6 +89,7 @@ numberOfColors = length( colorArrayForPlots );
 arrayWithSetStatistics = cell( numberOfDatasets, 1 );
 
 figHandleContrast = figure();
+figHandleAbsContrast = figure();
 figHandleVL = figure();
 figHandleVLFixedDistance = figure();
 figHandleLt = figure();
@@ -108,11 +109,9 @@ for currentDatasetIndex = 1 : numberOfDatasets
         load( filePath );
         arrayWithSetStatistics{ currentDatasetIndex } = photopicLMK_Image_Set_Statistics;
     end
-    
-    
-    
-    
+
     %we don't like too much data in memory
+    %shouldn't have been saved in the first place...
     photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray = 0;
     
 end
@@ -137,6 +136,12 @@ for currentDatasetIndex = 1 : numberOfDatasets
     currentSetStatistics.plotContrast( SAVEPATH, figHandleContrast, colorArrayForPlots{ currentColorIndex } );
     hold off;
     
+    %abscontrast
+    set(0, 'CurrentFigure', figHandleAbsContrast);
+    hold on;
+    currentSetStatistics.plotAbsContrast( SAVEPATH, figHandleAbsContrast, colorArrayForPlots{ currentColorIndex } );
+    hold off;
+    
     %VL
     set(0, 'CurrentFigure', figHandleVL);
     hold on;
@@ -147,6 +152,9 @@ for currentDatasetIndex = 1 : numberOfDatasets
     set(0, 'CurrentFigure', figHandleVLFixedDistance);
     hold on;
     currentSetStatistics.plotVLFixedDistance( SAVEPATH, figHandleVLFixedDistance, colorArrayForPlots{ currentColorIndex } );
+    tx = text( 'units', 'normalized', 'position', [0.01 1.0 - ( currentDatasetIndex / 10 )], 'string', ...
+        sprintf( 'STV_{%s} = %3.1f', legendsForDatasets{ currentDatasetIndex }, currentSetStatistics.smallTargetVL ) );
+    set( tx, 'FontSize', 12 ); %'Interpreter','LaTeX',
     hold off;
     
     %Lt
@@ -163,6 +171,9 @@ for currentDatasetIndex = 1 : numberOfDatasets
 end
 
 set(0, 'CurrentFigure', figHandleContrast);
+legend( legendsForDatasets, 'Location', 'Best' );
+
+set(0, 'CurrentFigure', figHandleAbsContrast);
 legend( legendsForDatasets, 'Location', 'Best' );
 
 set(0, 'CurrentFigure', figHandleVL);
@@ -191,6 +202,10 @@ end
 filename = sprintf( '%s%sComparePlot%sweberContrastPlot', SAVEPATH, DELIMITER, DELIMITER );
 saveas(figHandleContrast, filename, 'epsc');
 saveas(figHandleContrast, filename, 'fig');
+
+filename = sprintf( '%s%sComparePlot%sAbsWeberContrastPlot', SAVEPATH, DELIMITER, DELIMITER );
+saveas(figHandleAbsContrast, filename, 'epsc');
+saveas(figHandleAbsContrast, filename, 'fig');
 
 filename = sprintf( '%s%sComparePlot%sVLPlot', SAVEPATH, DELIMITER, DELIMITER );
 saveas(figHandleVL, filename, 'epsc');

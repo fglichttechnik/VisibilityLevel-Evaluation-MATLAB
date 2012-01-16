@@ -101,6 +101,7 @@ photopicLMK_Image_Set_Statistics.plotVLFixedDistance( PATH );
 photopicLMK_Image_Set_Statistics.plotThresholdContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotThresholdDeltaL( PATH );
 photopicLMK_Image_Set_Statistics.plotContrast( PATH );
+photopicLMK_Image_Set_Statistics.plotAbsContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotLtLB( PATH );
 
 if( ANALYZE_MESOPIC )
@@ -110,6 +111,7 @@ if( ANALYZE_MESOPIC )
     mesopicLMK_Image_Set_Statistics.plotThresholdContrast( PATH );
     mesopicLMK_Image_Set_Statistics.plotThresholdDeltaL( PATH );
     mesopicLMK_Image_Set_Statistics.plotContrast( PATH );
+    mesopicLMK_Image_Set_Statistics.plotAbsContrast( PATH );
     mesopicLMK_Image_Set_Statistics.plotLtLB( PATH );
 end
 
