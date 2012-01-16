@@ -53,6 +53,7 @@ classdef LMK_Image_Metadata < handle
         
         %lazy loading of image data
         
+        %% get.dataImagePhotopic(obj)
         function value = get.dataImagePhotopic(obj)
             if(isempty(obj.dataImagePhotopic))
                 if ~(isempty(obj.dataSRCPhotopic))
@@ -77,6 +78,7 @@ classdef LMK_Image_Metadata < handle
             value = obj.dataImagePhotopic;
         end%lazy loading of photopic data
         
+        %% value = get.dataImageScotopic(obj)
         function value = get.dataImageScotopic(obj)
             if(isempty(obj.dataImageScotopic))
                 if ~(isempty(obj.dataSRCScotopic))
@@ -103,6 +105,7 @@ classdef LMK_Image_Metadata < handle
         
         function value = get.dataImageMesopic(obj)
             if (isempty(obj.dataImageMesopic))
+                
                 [obj.dataImageMesopic, ~] = ...
                     mesopicLuminance_recommended(obj.dataImagePhotopic,...
                     obj.dataImageScotopic);

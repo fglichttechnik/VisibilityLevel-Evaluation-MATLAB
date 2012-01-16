@@ -1,4 +1,6 @@
-SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonPhotopicMesopic';
+%SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonPhotopicMesopic';
+%SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonAllLumensMesopic';
+SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonFixedDistance_vs_FixedVP';
 
 XMLFILENAME = 'CompareSet.xml'; %best to name all sets the same
 
@@ -99,12 +101,14 @@ for currentDatasetIndex = 1 : numberOfDatasets
     currentType = typeArrayForPlots{ currentDatasetIndex };
     if( strcmp(currentType, 'Mesopic') )
         filePath = sprintf( '%s%smesopicSetStatistics.mat', currentPath, DELIMITER );
+        load( filePath );
         arrayWithSetStatistics{ currentDatasetIndex } = mesopicLMK_Image_Set_Statistics;
     else
         filePath = sprintf( '%s%sphotopicSetStatistics.mat', currentPath, DELIMITER );
+        load( filePath );
         arrayWithSetStatistics{ currentDatasetIndex } = photopicLMK_Image_Set_Statistics;
     end
-    load( filePath );
+    
     
     
     

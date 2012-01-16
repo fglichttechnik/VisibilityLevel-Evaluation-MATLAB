@@ -16,6 +16,7 @@ function [Lmes, imgVisualization] = mesopicLuminance_recommended(Lp,Ls)
 STARTWERT = 0.5;
 NUMBER_OF_ITERATIONS = 10;  %10 looks to be a good value, as it converges fast
 
+
 %nothing needs to be modified below
 UPPER_VALUE_FOR_MESOPIC = 5;       %values above will be photopic luminances
 LOWER_VALUE_FOR_MESOPIC = 0.005;    %values below will be scotopic luminances

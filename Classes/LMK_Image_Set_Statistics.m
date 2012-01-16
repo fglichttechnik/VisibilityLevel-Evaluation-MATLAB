@@ -22,14 +22,17 @@ classdef LMK_Image_Set_Statistics < handle
         distanceArray               %array with distances of current set
         visualisationImageArray     %array with visualisation images of current set
         
-        setTitle                    %title for this set
+        settitle                    %t = title for this set
         
         contrastCalculationMethod   %can be STRONGEST, RP800, or other to be implemented methods
+        
+        FONTSIZE
+        LINEWIDTH
         
     end % properties
     methods
         %constructor
-        function obj = LMK_Image_Set_Statistics( type, lengthOfSet, ageVL, tVL, kVL, setTitle, contrastCalculationMethod )
+        function obj = LMK_Image_Set_Statistics( type, lengthOfSet, ageVL, tVL, kVL, settitle, contrastCalculationMethod )
             if nargin > 0 % Support calling with 0 arguments
                 
                 %check if type is valid
@@ -47,11 +50,16 @@ classdef LMK_Image_Set_Statistics < handle
                 obj.tVL = tVL;
                 obj.kVL = kVL;
                 obj.lmkImageStatisticsArray = cell( lengthOfSet, 1 );
-                obj.setTitle = setTitle;
+                obj.settitle = settitle;
                 obj.contrastCalculationMethod = contrastCalculationMethod;
             end
+            
+            obj.FONTSIZE = 14
+            obj.LINEWIDTH = 1.2
+            
         end% constructor
         
+        %% gatherData
         %fills data arrays from statistic array
         function gatherData( obj )
             currentStatisticsArray = obj.lmkImageStatisticsArray;
@@ -117,6 +125,7 @@ classdef LMK_Image_Set_Statistics < handle
             obj.visibilityLevelFixedDistanceArray = visibilityLevelFixedDistanceArray;
         end
         
+        %% saveVisualisationImage
         function saveVisualisationImage( obj, savePath )
             
             %platform specific path delimiter
@@ -134,11 +143,12 @@ classdef LMK_Image_Set_Statistics < handle
             end
         end
         
+        %% plotContrast
         function plotContrast( obj, savePath, figHandle, color )
             
             %set standard color
             if ( nargin < 4 )
-                color = 'r';
+                color = 'o-r';
             end
             
             if ( nargin < 3 )
@@ -161,8 +171,7 @@ classdef LMK_Image_Set_Statistics < handle
             set(0, 'CurrentFigure', figHandle);
             
             %hax = axes('Parent',figHandle);
-            colorSettings = sprintf( 'o-%s', color );
-            plot( obj.distanceArray, obj.weberContrastArray, colorSettings );
+            p = plot( obj.distanceArray, obj.weberContrastArray, color );
             
             %plot 0 contrast
             %hold on;
@@ -170,9 +179,15 @@ classdef LMK_Image_Set_Statistics < handle
             %hold off;
             %legend('L_{photopisch}');
             axis('tight');
-            xlabel('d in m');
-            ylabel('C');
-            title( strcat( 'Weber Contrast' ) ) ;
+            x = xlabel('d in m');
+            y = ylabel('C');
+            t = title( strcat( 'Weber Contrast' ) ) ;
+			
+			%adjust plot
+			set( p, 'LineWidth', obj.LINEWIDTH );
+            set( x, 'FontSize', obj.FONTSIZE );
+            set( y, 'FontSize', obj.FONTSIZE );
+            set( t, 'FontSize', obj.FONTSIZE );
 
             filename = sprintf( '%s%s_weberContrastPlot', savePath, obj.type );
             
@@ -183,11 +198,12 @@ classdef LMK_Image_Set_Statistics < handle
             
         end
         
+        %% plotThresholdContrast
         function plotThresholdContrast( obj, savePath, figHandle, color )
             
             %set standard color
             if ( nargin < 4 )
-                color = 'gr';
+                color = 'o-gr';
             end
             
             if ( nargin < 3 )
@@ -211,13 +227,18 @@ classdef LMK_Image_Set_Statistics < handle
             
             %plot delta L thresh
             deltaLArray = obj.thresholdContrastArray .* obj.meanBackgroundArray;
-            colorSettings = sprintf( 'o-%s', color );
-            plot( obj.distanceArray, deltaLArray, colorSettings );
+            p = plot( obj.distanceArray, deltaLArray, color );
             %legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
             axis('tight');
-            xlabel('d in m');
-            ylabel('\Delta L in cd/m^2');
-            title(strcat('\Delta L_{th} '));
+            x = xlabel('d in m');
+            y = ylabel('\Delta L in cd/m^2');
+            t = title(strcat('\Delta L_{th} '));
+            
+			%adjust plot
+			set( p, 'LineWidth', obj.LINEWIDTH );
+            set( x, 'FontSize', obj.FONTSIZE );
+            set( y, 'FontSize', obj.FONTSIZE );
+            set( t, 'FontSize', obj.FONTSIZE );
             
             filename = sprintf( '%s%s_deltaLPlot', savePath, obj.type  );
             
@@ -228,11 +249,12 @@ classdef LMK_Image_Set_Statistics < handle
             
         end
         
+        %% plotThresholdDeltaL
         function plotThresholdDeltaL( obj, savePath, figHandle, color )
             
             %set standard color
             if ( nargin < 4 )
-                color = 'gr';
+                color = 'o-gr';
             end
             
             if ( nargin < 3 )
@@ -255,14 +277,19 @@ classdef LMK_Image_Set_Statistics < handle
             set(0, 'CurrentFigure', figHandle);
             
             %plot C thresh
-            colorSettings = sprintf( 'o-%s', color );
-            plot( obj.distanceArray, obj.thresholdContrastArray, colorSettings );
+            p = plot( obj.distanceArray, obj.thresholdContrastArray, color );
             %legend('L_{photopisch}','L_{mesopisch}','L_{skotopisch}');
             axis('tight');
-            xlabel('d in m');
-            ylabel('C_{th}');
-            title(strcat('Threshold Contrast '));
-
+            x = xlabel('d in m');
+            y = ylabel('C_{th}');
+            t = title(strcat('Threshold Contrast '));
+			
+			%adjust plot
+			set( p, 'LineWidth', obj.LINEWIDTH );
+            set( x, 'FontSize', obj.FONTSIZE );
+            set( y, 'FontSize', obj.FONTSIZE );
+            set( t, 'FontSize', obj.FONTSIZE );
+            
             filename = sprintf( '%s%s_CthPlot', savePath, obj.type  );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
@@ -272,11 +299,12 @@ classdef LMK_Image_Set_Statistics < handle
             
         end
         
+        %% plotVL
         function plotVL( obj, savePath, figHandle, color )
             
             %set standard color
             if ( nargin < 4 )
-                color = 'r';
+                color = 'o-r';
             end
             
             if ( nargin < 3 )
@@ -299,13 +327,18 @@ classdef LMK_Image_Set_Statistics < handle
             set(0, 'CurrentFigure', figHandle);
             
             %plot visibility level
-            colorSettings = sprintf( 'o-%s', color );
-            plot( obj.distanceArray, obj.visibilityLevelArray, colorSettings );
+            p = plot( obj.distanceArray, obj.visibilityLevelArray, color );
             %legend('L_{photopisch}');
             axis('tight');
-            xlabel('d in m');
-            ylabel('VL');
-            title( strcat('Visibility Level ') );           
+            x = xlabel('d in m');
+            y = ylabel('VL');
+            t = title( strcat('Visibility Level ') );           
+            			
+			%adjust plot
+			set( p, 'LineWidth', obj.LINEWIDTH );
+            set( x, 'FontSize', obj.FONTSIZE );
+            set( y, 'FontSize', obj.FONTSIZE );
+            set( t, 'FontSize', obj.FONTSIZE );
             
             filename = sprintf( '%s%s_VLPlot', savePath, obj.type  );
             
@@ -316,11 +349,12 @@ classdef LMK_Image_Set_Statistics < handle
             
         end
         
+        %% plotVLFixedDistance
         function plotVLFixedDistance( obj, savePath, figHandle, color )
             
             %set standard color
             if ( nargin < 4 )
-                color = 'r';
+                color = 'o-r';
             end
             
             if ( nargin < 3 )
@@ -343,13 +377,18 @@ classdef LMK_Image_Set_Statistics < handle
             set(0, 'CurrentFigure', figHandle);
             
             %plot visibility level
-            colorSettings = sprintf( 'o-%s', color );
-            plot( obj.distanceArray, obj.visibilityLevelFixedDistanceArray, colorSettings );
+            p = plot( obj.distanceArray, obj.visibilityLevelFixedDistanceArray, color );
             %legend('L_{photopisch}');
             axis('tight');
-            xlabel('d in m');
-            ylabel('VL');
-            title( strcat('Visibility Level (Fixed Distance)') );           
+            x = xlabel('d in m');
+            y = ylabel('VL');
+            t = title( strcat('Visibility Level (Fixed Distance)') );           
+            			
+			%adjust plot
+			set( p, 'LineWidth', obj.LINEWIDTH );
+            set( x, 'FontSize', obj.FONTSIZE );
+            set( y, 'FontSize', obj.FONTSIZE );
+            set( t, 'FontSize', obj.FONTSIZE );
             
             filename = sprintf( '%s%s_VLFixedDistancePlot', savePath, obj.type  );
             
@@ -360,11 +399,12 @@ classdef LMK_Image_Set_Statistics < handle
             
         end
         
+        %% plotLt
         function plotLt( obj, savePath, figHandle, color )
             
             %set standard color
             if ( nargin < 4 )
-                color = 'b';
+                color = 'o:b';
             end
             
             if ( nargin < 3 )
@@ -387,14 +427,19 @@ classdef LMK_Image_Set_Statistics < handle
             set(0, 'CurrentFigure', figHandle);
             
             %plot Lt and Lb
-            colorSettings = sprintf( 'o:%s', color );
-            plot( obj.distanceArray, obj.meanTargetArray , colorSettings );
+            %'LineWidth', 1.2
+            p = plot( obj.distanceArray, obj.meanTargetArray , color );
             %legend('L_t','L_B');
             axis('tight');
-            xlabel('d in m');
-            ylabel('L in cd/m^2');
-            title(strcat('mean L_t') );
-
+            x = xlabel('d in m');
+            y = ylabel('L in cd/m^2');
+            t = title(strcat('mean L_t') );
+			
+			%adjust plot
+			set( p, 'LineWidth', obj.LINEWIDTH );
+            set( x, 'FontSize', obj.FONTSIZE );
+            set( y, 'FontSize', obj.FONTSIZE );
+            set( t, 'FontSize', obj.FONTSIZE );
             filename = sprintf( '%s%s_LtPlot', savePath, obj.type  );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
@@ -403,11 +448,12 @@ classdef LMK_Image_Set_Statistics < handle
             end
         end
         
+        %% plotLB
         function plotLB( obj, savePath, figHandle, color )
             
             %set standard color
             if ( nargin < 4 )
-                color = 'r';
+                color = 'o:r';
             end
             
             if ( nargin < 3 )
@@ -430,13 +476,18 @@ classdef LMK_Image_Set_Statistics < handle
             set(0, 'CurrentFigure', figHandle);
             
             %plot Lt and Lb
-            colorSettings = sprintf( 'o:%s', color );
-            plot( obj.distanceArray, obj.meanBackgroundArray , colorSettings );
+            p = plot( obj.distanceArray, obj.meanBackgroundArray , color );
             %legend('L_t','L_B');
             axis('tight');
-            xlabel('d in m');
-            ylabel('L in cd/m^2');
-            title(strcat('mean L_B ') );            
+            x = xlabel('d in m');
+            y = ylabel('L in cd/m^2');
+            t = title(strcat('mean L_B ') );            
+            			
+			%adjust plot
+			set( p, 'LineWidth', obj.LINEWIDTH );
+            set( x, 'FontSize', obj.FONTSIZE );
+            set( y, 'FontSize', obj.FONTSIZE );
+            set( t, 'FontSize', obj.FONTSIZE );
             
             filename = sprintf( '%s%s_LbPlot', savePath, obj.type  );
             
@@ -446,6 +497,7 @@ classdef LMK_Image_Set_Statistics < handle
             end
         end
         
+        %% plotLtLB
         function plotLtLB( obj, savePath )
             
             figHandle = figure();
@@ -455,8 +507,12 @@ classdef LMK_Image_Set_Statistics < handle
             hold off;
             
             axis('tight');
-            legend('L_t','L_B');
-            title(strcat('mean L_t vs mean L_B ') );
+            l = legend('L_t','L_B');
+            t = title( strcat(' mean L_t vs mean L_B ') );
+            			
+			%adjust plot
+			set( l, 'FontSize', obj.FONTSIZE );
+            set( t, 'FontSize', obj.FONTSIZE );
             
             %platform specific path delimiter
             if(ispc)
