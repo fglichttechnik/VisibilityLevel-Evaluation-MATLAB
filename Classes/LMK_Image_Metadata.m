@@ -8,6 +8,7 @@ classdef LMK_Image_Metadata < handle
     properties
         sceneTitle
         focalLength
+        twoDegreeRadiusPix
         distanceToObject
         targetAlphaMinutes
         dataSRCMat
@@ -24,6 +25,8 @@ classdef LMK_Image_Metadata < handle
         dataImageScotopic
         dataImagePhotopic
         dataImageMesopic
+        factorForMesopicLumCalc
+        %visualisationImage
         imageMetaData % currently not in use
         SPRatio
         comments
@@ -48,6 +51,7 @@ classdef LMK_Image_Metadata < handle
                 obj.dataImagePhotopic = dataImagePhotopic;
                 obj.distanceToObject = distanceToObject;
                 obj.targetSize = targetSize;
+                %visImageCalculation(obj);
             end
         end% constructor
         
@@ -103,16 +107,42 @@ classdef LMK_Image_Metadata < handle
             value = obj.dataImageScotopic;
         end%lazy loading of scotopic data
         
-        function value = get.dataImageMesopic(obj)
-            if (isempty(obj.dataImageMesopic))
+        
+        %% get.dataImageMesopic
+        function value = get.dataImageMesopic( obj )
+            if ( isempty( obj.dataImageMesopic ) )  
                 
-                [obj.dataImageMesopic, ~] = ...
-                    mesopicLuminance_recommended(obj.dataImagePhotopic,...
-                    obj.dataImageScotopic);
+                %calc background luminance
+                LbPhotopic = meanOfCircleWithoutRect( obj.dataImagePhotopic, obj );                
+                LbScotopic = meanOfCircleWithoutRect( obj.dataImageScotopic, obj );
+                
+                %calc adaption luminance
+                %To do: calculate with veiling luminance as published in
+                %ANSI IESNA RP 8 0 0 
+                LaPhotopic = LbPhotopic;
+                LaScotopic = LbScotopic;
+                
+                %calc mesopic luminances
+                [ obj.dataImageMesopic, obj.factorForMesopicLumCalc ] = ...
+                    mesopicLuminance_recommended( obj.dataImagePhotopic,...
+                    obj.dataImageScotopic, LaPhotopic, LaScotopic );
             end
             value = obj.dataImageMesopic;
         end%lazy loading of mesopic data
         
+
+        
+        %% get.twoDegreeRadiusPix
+        function value = get.twoDegreeRadiusPix(obj)
+            if( isempty( obj.twoDegreeRadiusPix ) )
+                %To do: calculate with focalLength
+                obj.twoDegreeRadiusPix = 100; % 100 for focalLength of 25 mm 
+            end
+            value = obj.twoDegreeRadiusPix;
+        end
+
+        
+        %% get.comments
         function value = get.comments(obj)
             if (isempty(obj.comments))
                 obj.comments = 'No comments';
@@ -120,6 +150,7 @@ classdef LMK_Image_Metadata < handle
             value = obj.comments;
         end%lazy loading of comments
         
+        %% get.lightSource
         function value = get.lightSource(obj)
             if (isempty(obj.lightSource))
                 obj.lightSource = 'Unknown light source';
@@ -127,6 +158,7 @@ classdef LMK_Image_Metadata < handle
             value = obj.lightSource;
         end%lazy loading of light source
         
+        %% get.Name
         function value = get.Name(obj)
             if (isempty(obj.Name))
                 obj.Name = 'LMKSet';
@@ -134,6 +166,7 @@ classdef LMK_Image_Metadata < handle
             value = obj.Name;
         end%lazy loading of measurement series name
         
+        %% calcAlpha
         function calcAlpha(obj)
             dis = obj.distanceToObject;
             objSize = obj.targetSize;
@@ -141,6 +174,26 @@ classdef LMK_Image_Metadata < handle
             alphaMinutes = (alphaRad / pi * 180 * 60);
             obj.targetAlphaMinutes = alphaMinutes;
         end
+        
+%         function visImageCalculation(obj)          
+% 
+%             
+%             %set visualisation image as RGB image
+%             [ width, height ] = size( obj.dataImagePhotopic );
+%             visImagePrototype = zeros( width, height, 3 );
+%             %visImage = mat2gray( adapthisteq( dataImage ) );
+%             visImagePhotopic = imadjust( obj.dataImagePhotopic, stretchlim(dataImage),[] ); %contrast stretch image for better viewing
+%             visImagePrototype(:, :, 1) = visImagePhotopic;
+%             visImagePrototype(:, :, 2) = visImagePhotopic;
+%             visImagePrototype(:, :, 3) = visImagePhotopic;
+%             obj.visualisationImage = visImagePrototype;
+%             
+%             %calc mean of target
+%             calcMeanOfTarget( dataImagePhotopic , obj );
+%             
+%             %calc mean of background
+%             calcMeanOfTargetEdges( dataImagePhotopic , obj );
+%         end
         
     end % methods
 end
