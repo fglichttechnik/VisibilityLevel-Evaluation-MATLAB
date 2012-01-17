@@ -11,7 +11,7 @@ function [ stv ] = calcSTVfromArray( visibilityLevelArray )
 visibilityLevelArray = visibilityLevelArray( : );
 
 % calc relative weighted visibility level for all grid points:
-relativeWeightedVL = 10.^( -1 .* abs( visibilityLevelArray ) );
+relativeWeightedVL = 10.^( -0.1 .* abs( visibilityLevelArray ) );
 
 % calc the average relative weighted visibility level:
 averageRWVL = mean( relativeWeightedVL );

@@ -1,6 +1,6 @@
 %SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_ComparisonS5toS6';
 %SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_Comparison_HS_vs_LED';
-SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_ComparisonMeasVsSim';
+SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_Comparison_TargetReflectancySmallMesopic';
 
 XMLFILENAME = 'CompareSet.xml'; %best to name all sets the same
 
@@ -173,15 +173,24 @@ for currentDatasetIndex = 1 : numberOfDatasets
 end
 
 set(0, 'CurrentFigure', figHandleContrast);
+hold on;
+plot( currentSetStatistics.distanceArray, zeros( length( currentSetStatistics.distanceArray ), 1 ), 'k--' );
+hold off;
 legend( legendsForDatasets, 'Location', 'Best' );
 
 set(0, 'CurrentFigure', figHandleAbsContrast);
 legend( legendsForDatasets, 'Location', 'Best' );
 
 set(0, 'CurrentFigure', figHandleVL);
+hold on;
+plot( currentSetStatistics.distanceArray, zeros( length( currentSetStatistics.distanceArray ), 1 ), 'k--' );
+hold off;
 legend( legendsForDatasets, 'Location', 'Best' );
 
 set(0, 'CurrentFigure', figHandleVLFixedDistance);
+hold on;
+plot( currentSetStatistics.distanceArray, ones( length( currentSetStatistics.distanceArray ), 1 ), 'k--' );
+hold off;
 legend( legendsForDatasets, 'Location', 'Best' );
 
 set(0, 'CurrentFigure', figHandleLt);
