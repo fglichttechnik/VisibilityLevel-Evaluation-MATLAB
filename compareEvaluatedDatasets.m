@@ -1,6 +1,6 @@
-SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonS5toS6';
-%SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_Comparison_HS_vs_LED';
-%SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_ComparisonDimVs2ndOff';
+%SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_ComparisonS5toS6';
+%SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_Comparison_HS_vs_LED';
+SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_ComparisonDimVs2ndOff_50';
 
 XMLFILENAME = 'CompareSet.xml'; %best to name all sets the same
 
@@ -9,13 +9,15 @@ CONVERT_TO_PDF = 1; %set this to 0 if you don't have epstopdf
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%no changes have to be done below
 
-
 %platform specific path delimiter
 if(ispc)
     DELIMITER = '\';
 elseif(isunix)
     DELIMITER = '/';
 end
+
+%we need the last path component for filename of plots
+[ firstPath, lastPathComponent, fileExtension ] = fileparts( SAVEPATH );
 
 %%READ XML
 fileName = sprintf( '%s%s%s', SAVEPATH, DELIMITER, XMLFILENAME );
@@ -199,27 +201,27 @@ if ( ~exist( sprintf( '%s%sComparePlot', SAVEPATH, DELIMITER ), 'dir' ) )
     mkdir( sprintf( '%s%sComparePlot', SAVEPATH, DELIMITER ) );
 end
 
-filename = sprintf( '%s%sComparePlot%sweberContrastPlot', SAVEPATH, DELIMITER, DELIMITER );
+filename = sprintf( '%s%sComparePlot%sweberContrastPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleContrast, filename, 'epsc');
 saveas(figHandleContrast, filename, 'fig');
 
-filename = sprintf( '%s%sComparePlot%sAbsWeberContrastPlot', SAVEPATH, DELIMITER, DELIMITER );
+filename = sprintf( '%s%sComparePlot%sAbsWeberContrastPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleAbsContrast, filename, 'epsc');
 saveas(figHandleAbsContrast, filename, 'fig');
 
-filename = sprintf( '%s%sComparePlot%sVLPlot', SAVEPATH, DELIMITER, DELIMITER );
+filename = sprintf( '%s%sComparePlot%sVLPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleVL, filename, 'epsc');
 saveas(figHandleVL, filename, 'fig');
 
-filename = sprintf( '%s%sComparePlot%sVLFixedDistancePlot', SAVEPATH, DELIMITER, DELIMITER );
+filename = sprintf( '%s%sComparePlot%sVLFixedDistancePlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleVLFixedDistance, filename, 'epsc');
 saveas(figHandleVLFixedDistance, filename, 'fig');
 
-filename = sprintf( '%s%sComparePlot%sLtPlot', SAVEPATH, DELIMITER, DELIMITER );
+filename = sprintf( '%s%sComparePlot%sLtPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleLt, filename, 'epsc');
 saveas(figHandleLt, filename, 'fig');
 
-filename = sprintf( '%s%sComparePlot%sLBPlot', SAVEPATH, DELIMITER, DELIMITER );
+filename = sprintf( '%s%sComparePlot%sLBPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleLB, filename, 'epsc');
 saveas(figHandleLB, filename, 'fig');
 

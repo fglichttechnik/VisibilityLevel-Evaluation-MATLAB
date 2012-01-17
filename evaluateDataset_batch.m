@@ -10,9 +10,12 @@ evaluateBatchSet = {
     %'/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_R3_7245_fd'
    % '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_HS_RP8_1449',
    % '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_RP8_1449',
-   % '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_RP8_dim',
-   % '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_RP8_ds',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_RP8_1035'
+    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_RP8_dim',
+    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_RP8_ds',
+    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_RP8_undim',
+    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_RP8_4_dim',
+    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_RP8_4_ds',
+    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_RP8_4_undim'
     };
 
 

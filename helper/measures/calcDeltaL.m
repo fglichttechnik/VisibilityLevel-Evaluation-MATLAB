@@ -4,6 +4,8 @@ function deltaL = calcDeltaL(Lb, Lt, alpha, age, t, k)
 % function deltaL = calcDeltaL(Lb, Lt, alpha, age, t, k)
 %	This function calculates the contrast threshold as published in Adrian89.
 %	Lb: background luminance in cd/m^2
+%   Lt: target luminance, this values is needed to check if we have a
+%   positive or a negative delta only
 %	alpha: object size as percepted by a test person in minutes '
 %	age: age of test person
 %	t: presentation time of object in s

@@ -1,17 +1,9 @@
 <CompareSet>
 	<DataSets>
-		<DataSet Type="Mesopic" Legend="S5" Color="k" SubPath="Treskowstr_LED_R3_1449" Path="/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/"/>
-		<DataSet Type="Mesopic" Legend="S6" Color="r" SubPath="Treskowstr_LED_R3_1035" Path="/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/"/>
+		<DataSet Type="Mesopic" Legend="original" Color="gr-o" SubPath="Treskowstr_LED_RP8_4_undim" Path="/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/"/>
+		<DataSet Type="Mesopic" Legend="dimmed" Color="k-o" SubPath="Treskowstr_LED_RP8_4_dim" Path="/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/"/>
+		<DataSet Type="Mesopic" Legend="every 2nd off" Color="r-o" SubPath="Treskowstr_LED_RP8_4_ds" Path="/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/"/>
 	</DataSets>
 	<CustomCode>
-		set(0, 'CurrentFigure', figHandleLB);
-   		hold on;
-    	currentSetStatistics.plotLB( SAVEPATH, figHandleLB, colorArrayForPlots{ currentColorIndex } );
-    	hold off;
-    	S4 = arrayWithSetStatistics{ 1 };
-    	S5 = arrayWithSetStatistics{ 2 };
-    	diffLt = S5.meanTargetArray ./ S4.meanTargetArray;
-    	diffLB = S5.meanBackgroundArray ./ S4.meanBackgroundArray;
-    	diffVL = S5.visibilityLevelArray ./ S4.visibilityLevelArray;
 	</CustomCode>
 </CompareSet>

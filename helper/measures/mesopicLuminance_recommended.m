@@ -22,6 +22,7 @@ STARTWERT = 0.5;
 UPPER_VALUE_FOR_MESOPIC = 5;       %values above will be photopic luminances
 LOWER_VALUE_FOR_MESOPIC = 0.005;    %values below will be scotopic luminances
 
+BREAK_CRITERION = 0.001;    %we stop if m hasn't changed more than that value in one iteration
 MAX_NUMBER_OF_ITERATIONS = 100;
 
 if(size(Lp) ~= size(Ls))
@@ -50,7 +51,7 @@ m_2n = STARTWERT;
 
 for i = 1 : MAX_NUMBER_OF_ITERATIONS
     
-    if abs( m_2n_1 - m_2n ) <= 0.001 
+    if abs( m_2n_1 - m_2n ) <= BREAK_CRITERION 
         disp( sprintf( '%d iterations needed, m is %f', i, m_2n ) );
         break
     end

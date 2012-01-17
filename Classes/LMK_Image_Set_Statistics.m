@@ -208,9 +208,12 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
-            filename = sprintf( '%s%s_weberContrastPlot', savePath, obj.type );
-            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                filename = sprintf( '%s%s_weberContrastPlot_%s', savePath, obj.type, lastPathComponent );
+                
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
             end
@@ -268,9 +271,12 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
-            filename = sprintf( '%s%s_weberContrastAbsPlot', savePath, obj.type );
-            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                filename = sprintf( '%s%s_weberContrastAbsPlot_%s', savePath, obj.type, lastPathComponent );
+                
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
             end
@@ -323,9 +329,13 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
-            filename = sprintf( '%s%s_deltaLPlot', savePath, obj.type  );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                filename = sprintf( '%s%s_deltaLPlot_%s', savePath, obj.type, lastPathComponent  );
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
             end
@@ -376,9 +386,12 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
-            filename = sprintf( '%s%s_CthPlot', savePath, obj.type  );
-            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                filename = sprintf( '%s%s_CthPlot_%s', savePath, obj.type, lastPathComponent  );
+                
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
             end
@@ -430,10 +443,13 @@ classdef LMK_Image_Set_Statistics < handle
             set( x, 'FontSize', obj.FONTSIZE );
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
-            
-            filename = sprintf( '%s%s_VLPlot', savePath, obj.type  );
-            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                filename = sprintf( '%s%s_VLPlot_%s', savePath, obj.type, lastPathComponent  );
+                
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
             end
@@ -495,9 +511,12 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
-            filename = sprintf( '%s%s_VLFixedDistancePlot', savePath, obj.type  );
-            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                filename = sprintf( '%s%s_VLFixedDistancePlot_%s', savePath, obj.type, lastPathComponent  );
+                
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
             end
@@ -548,9 +567,13 @@ classdef LMK_Image_Set_Statistics < handle
             set( x, 'FontSize', obj.FONTSIZE );
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
-            filename = sprintf( '%s%s_LtPlot', savePath, obj.type  );
             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                filename = sprintf( '%s%s_LtPlot_%s', savePath, obj.type, lastPathComponent  );
+                
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
             end
@@ -600,9 +623,12 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
-            filename = sprintf( '%s%s_LbPlot', savePath, obj.type  );
-            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                filename = sprintf( '%s%s_LbPlot_%s', savePath, obj.type, lastPathComponent  );
+                
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
             end
@@ -632,27 +658,29 @@ classdef LMK_Image_Set_Statistics < handle
                 DELIMITER = '/';
             end
             
-            
-            filename = sprintf( '%s%splots%s%s_LtLBPlot', savePath, DELIMITER, DELIMITER, obj.type  );
-            
             if( strcmp( savePath, '' ) )
                 savePath = 'DO_NOT_SAVE'
             end
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                filename = sprintf( '%s%splots%s%s_LtLBPlot_%s', savePath, DELIMITER, DELIMITER, obj.type, lastPathComponent  );
+                
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
             end
         end
         
         %% plotCthArea
-        function plotCthAreay( obj, savePath, figHandle, color )
+        function plotCthArray( obj, savePath, figHandle, color )
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             % cthresh over Lb for several alpha
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             
             %set standard color
             if ( nargin < 4 )
-                color = 'o:r';
+                color = 'r';
             end
             
             if ( nargin < 3 )
@@ -672,47 +700,94 @@ classdef LMK_Image_Set_Statistics < handle
             savePath = [savePath, DELIMITER, 'plots', DELIMITER];
             if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 mkdir( savePath );
-            end            
+            end
             
             
+            Lt = 10000001;  %only necessary to indicate positive or negative delta (therefore higher or lower than max / min Lb
             Lb_continuous = logspace(-1,1,100);
+            alphaMinutes = obj.alphaArray( 3 );
             
-            deltaL = calcDeltaL(Lb_continuous, Lt, alphaArray( 3 ), obj.ageVL, obj.tVL , obj.kVL );
+            deltaLpos = calcDeltaL( Lb_continuous, max( Lb_continuous + 1), alphaMinutes, obj.ageVL, obj.tVL , obj.kVL );
+            contrastThresholdpos = deltaLpos ./ Lb_continuous;
             
-            contrastThreshold = deltaL ./ Lb_continuous;           
+            deltaLneg = calcDeltaL( Lb_continuous, min( Lb_continuous - min( Lb_continuous ) ), alphaMinutes, obj.ageVL, obj.tVL , obj.kVL );
+            contrastThresholdneg = deltaLneg ./ Lb_continuous;
             
-            minLb = min( meanBackgroundArray );
-            maxLb = max( meanBackgroundArray );
-            minCth = min( contrastThreshold );
-            maxCth = max( contrastThreshold );
+            minLb = min( obj.meanBackgroundArray );
+            maxLb = max( obj.meanBackgroundArray );
+            minCthpos = min( contrastThresholdpos );
+            maxCthpos = max( contrastThresholdpos );
+            minCthneg = min( contrastThresholdneg );
+            maxCthneg = max( contrastThresholdneg );
+            minC = min( obj.weberContrastAbsArray );
+            maxC = max( obj.weberContrastAbsArray );
+            mini = minCthpos;
+            if ( minC < mini )
+                mini = minC;
+            end
+            if ( minCthneg < mini )
+                mini = minCthneg;
+            end
+            maxi = maxCthpos;
+            if( maxC > maxi )
+                maxi = maxC;
+            end
+            if( maxCthneg > maxi )
+                maxi = maxCthneg;
+            end
+            verticalLine = [ mini; maxi ];
             
-            pP = loglog( Lb_continuous, contrastThreshold, 'LineWidth', obj.LINEWIDTH );
+            posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
+            negContrasts = ~posContrasts;
+            
+            pP1 = loglog( Lb_continuous, contrastThresholdpos, color );
             hold on;
-            loglog( minLb, minCth : maxCth, 'r:' );
-            loglog( maxCth, minCth : maxCth, 'r:' );
+            pP1a = loglog( Lb_continuous, contrastThresholdneg, 'b' );
+            %actual contrasts
+            pP2 = loglog( obj.meanBackgroundArray( posContrasts ), obj.weberContrastAbsArray( posContrasts ), 'ro' );
+            pP2a = loglog( obj.meanBackgroundArray( negContrasts ), obj.weberContrastAbsArray( negContrasts ), 'bo' );
+            %vertical lines
+            pP3 = loglog( [ minLb; minLb ], verticalLine, 'gr:' );
+            pP4 = loglog( [ maxLb; maxLb ], verticalLine, 'gr:' );
             hold off;
+            set( pP1, 'LineWidth', obj.LINEWIDTH );
+            set( pP1a, 'LineWidth', obj.LINEWIDTH );
+            set( pP2, 'LineWidth', obj.LINEWIDTH );
+            set( pP3, 'LineWidth', obj.LINEWIDTH );
+            set( pP4, 'LineWidth', obj.LINEWIDTH );
             
-            pT = title(strcat('Contrast Threshold'));
-            set(pT,'FontSize',FONTSIZE);
-            pX = xlabel('$$L_{B} \hspace{5pt}[\frac{cd}{m^2}]$$');
-            set(pX,'interpreter','LaTeX','FontSize', obj.FONTSIZE);
-            pY = ylabel('$$C_{thresh}$$');
-            set(pY,'interpreter','LaTeX','FontSize', obj.FONTSIZE);
+            pT = title(strcat('Contrast Threshold vs. Actual Contrast'));
+            set(pT,'FontSize', obj.FONTSIZE);
+            pX = xlabel('L_{B} in cd / m^2');
+            set(pX, 'FontSize', obj.FONTSIZE);
+            pY = ylabel('C');
+            set(pY, 'FontSize', obj.FONTSIZE);
             
             
             %prepare legend
-%             alphaStrings = cell(length(alphaDegrees),1);
-%             for i = 1 : length(alphaDegrees)
-%                 alphaStrings{i} = strcat(num2str(alphaDegrees(i)),'$$ [^{\circ}]$$');
-%             end
-%             pL = legend(alphaStrings,'Location','SouthWest');
-%             set(pL,'interpreter','LaTeX');
-%             v = get(pL,'title');
-%             set(v,'string','alpha');
-
-%                 saveas(gcf,'contrast_LBVL','epsc');
-%                 saveas(gcf,'contrast_LBVL','fig');
-
+            %alphaStrings = cell(length(alphaDegrees),1);
+            %for i = 1 : length(alphaDegrees)
+            legendString{ 1 } = sprintf( 'C_{th, pos} for alpha (%s ^{''})', num2str( alphaMinutes ) );
+            legendString{ 2 } = sprintf( 'C_{th, neg} for alpha (%s ^{''})', num2str( alphaMinutes ) );
+            legendString{ 3 } = 'actual pos contrasts';
+            legendString{ 4 } = 'actual neg contrasts';
+            %end
+            pL = legend( legendString, 'Location', 'Best' );
+            %set(pL,'interpreter','LaTeX');
+            %v = get( pL, 'title' );
+            %set( v, 'string', 'alpha' );
+            
+            if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                
+                filename = sprintf( '%s%s_CthvsCPlot_%s', savePath, obj.type, lastPathComponent );
+                
+                saveas(figHandle, filename, 'epsc');
+                saveas(figHandle, filename, 'fig');
+            end
+            
         end
         
     end % methods
