@@ -115,7 +115,7 @@ classdef LMK_Image_Set_Statistics < handle
             %VL is always positive (not in RP800) was abs()
             visibilityLevelArray = (weberContrastArray ./ thresholdContrastArray);
             visibilityLevelFixedDistanceArray = (weberContrastArray ./ thresholdContrastFixedDistanceArray);
-
+            
             %set instance values
             obj.visualisationImageArray = visualisationImageArray;
             obj.distanceArray = distanceArray;
@@ -614,7 +614,7 @@ classdef LMK_Image_Set_Statistics < handle
             figHandle = figure();
             hold on;
             obj.plotLt( savePath, figHandle );
-            obj.plotLB( savePath, figHandle );            
+            obj.plotLB( savePath, figHandle );
             hold off;
             
             axis('tight');
@@ -642,6 +642,77 @@ classdef LMK_Image_Set_Statistics < handle
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
             end
+        end
+        
+        %% plotCthArea
+        function plotCthAreay( obj, savePath, figHandle, color )
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            % cthresh over Lb for several alpha
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+            %set standard color
+            if ( nargin < 4 )
+                color = 'o:r';
+            end
+            
+            if ( nargin < 3 )
+                figHandle = figure();
+            end
+            
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            if( strcmp( savePath, '' ) )
+                savePath = 'DO_NOT_SAVE'
+            end
+            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                mkdir( savePath );
+            end            
+            
+            
+            Lb_continuous = logspace(-1,1,100);
+            
+            deltaL = calcDeltaL(Lb_continuous, Lt, alphaArray( 3 ), obj.ageVL, obj.tVL , obj.kVL );
+            
+            contrastThreshold = deltaL ./ Lb_continuous;           
+            
+            minLb = min( meanBackgroundArray );
+            maxLb = max( meanBackgroundArray );
+            minCth = min( contrastThreshold );
+            maxCth = max( contrastThreshold );
+            
+            pP = loglog( Lb_continuous, contrastThreshold, 'LineWidth', obj.LINEWIDTH );
+            hold on;
+            loglog( minLb, minCth : maxCth, 'r:' );
+            loglog( maxCth, minCth : maxCth, 'r:' );
+            hold off;
+            
+            pT = title(strcat('Contrast Threshold'));
+            set(pT,'FontSize',FONTSIZE);
+            pX = xlabel('$$L_{B} \hspace{5pt}[\frac{cd}{m^2}]$$');
+            set(pX,'interpreter','LaTeX','FontSize', obj.FONTSIZE);
+            pY = ylabel('$$C_{thresh}$$');
+            set(pY,'interpreter','LaTeX','FontSize', obj.FONTSIZE);
+            
+            
+            %prepare legend
+%             alphaStrings = cell(length(alphaDegrees),1);
+%             for i = 1 : length(alphaDegrees)
+%                 alphaStrings{i} = strcat(num2str(alphaDegrees(i)),'$$ [^{\circ}]$$');
+%             end
+%             pL = legend(alphaStrings,'Location','SouthWest');
+%             set(pL,'interpreter','LaTeX');
+%             v = get(pL,'title');
+%             set(v,'string','alpha');
+
+%                 saveas(gcf,'contrast_LBVL','epsc');
+%                 saveas(gcf,'contrast_LBVL','fig');
+
         end
         
     end % methods

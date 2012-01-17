@@ -22,6 +22,8 @@ STARTWERT = 0.5;
 UPPER_VALUE_FOR_MESOPIC = 5;       %values above will be photopic luminances
 LOWER_VALUE_FOR_MESOPIC = 0.005;    %values below will be scotopic luminances
 
+MAX_NUMBER_OF_ITERATIONS = 100;
+
 if(size(Lp) ~= size(Ls))
     disp('mesopicLuminance: Lp and Ls must have the same size!');
     return;
@@ -29,10 +31,10 @@ end
 
 %make calling without adaption luminance possible
 if nargin < 3
-    for currentIndex = 1 : size(Lp)
+    %for currentIndex = 1 : size(Lp)
         Lap = mean( Lp );
         Las = mean( Ls );
-    end   
+    %end   
 end
 
 %variables
@@ -42,15 +44,14 @@ Kp = 683;
 Ks = 1699;
 V_strich_lambda0 = Kp / Ks;
 
-
 %calc mesopic luminance
 m_2n_1 = 0;
 m_2n = STARTWERT;
 
-
-for i = 1 : 100
+for i = 1 : MAX_NUMBER_OF_ITERATIONS
     
     if abs( m_2n_1 - m_2n ) <= 0.001 
+        disp( sprintf( '%d iterations needed, m is %f', i, m_2n ) );
         break
     end
     
@@ -77,19 +78,19 @@ end
 num = m_2n .* Lp + ( 1 - m_2n ) .* Ls * V_strich_lambda0;
 denom = m_2n + (1 - m_2n) * V_strich_lambda0;
 Lmes_n = num / denom;
-Lmes = abs(Lmes_n);
+Lmes = abs( Lmes_n );
 
 %keep photopic luminances above UPPER_VALUE_FOR_MESOPIC
 valuesAbove = (Lmes >= UPPER_VALUE_FOR_MESOPIC);
-Lp_keep = Lp .* valuesAbove;
+%Lp_keep = Lp .* valuesAbove;
 
 %keep scotopic luminances below LOWER_VALUE_FOR_MESOPIC
 valuesBelow = (Lmes <= LOWER_VALUE_FOR_MESOPIC);
-Ls_keep = Ls .* valuesBelow;
+%Ls_keep = Ls .* valuesBelow;
 
 %merge into mesopic values
-Lmes(valuesAbove) = Lp_keep(valuesAbove);
-Lmes(valuesBelow) = Ls_keep(valuesBelow);
+Lmes(valuesAbove) = Lp(valuesAbove);
+Lmes(valuesBelow) = Ls(valuesBelow);
 
 mFactor = m_2n;
 
