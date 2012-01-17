@@ -212,6 +212,7 @@ classdef LMK_Image_Set_Statistics < handle
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 filename = sprintf( '%s%s_weberContrastPlot_%s', savePath, obj.type, lastPathComponent );
                 
                 saveas(figHandle, filename, 'epsc');
@@ -275,6 +276,7 @@ classdef LMK_Image_Set_Statistics < handle
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 filename = sprintf( '%s%s_weberContrastAbsPlot_%s', savePath, obj.type, lastPathComponent );
                 
                 saveas(figHandle, filename, 'epsc');
@@ -335,6 +337,7 @@ classdef LMK_Image_Set_Statistics < handle
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 filename = sprintf( '%s%s_deltaLPlot_%s', savePath, obj.type, lastPathComponent  );
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
@@ -389,6 +392,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 filename = sprintf( '%s%s_CthPlot_%s', savePath, obj.type, lastPathComponent  );
                 
@@ -447,6 +451,7 @@ classdef LMK_Image_Set_Statistics < handle
                 
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 filename = sprintf( '%s%s_VLPlot_%s', savePath, obj.type, lastPathComponent  );
                 
@@ -515,6 +520,7 @@ classdef LMK_Image_Set_Statistics < handle
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 filename = sprintf( '%s%s_VLFixedDistancePlot_%s', savePath, obj.type, lastPathComponent  );
                 
                 saveas(figHandle, filename, 'epsc');
@@ -572,6 +578,7 @@ classdef LMK_Image_Set_Statistics < handle
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 filename = sprintf( '%s%s_LtPlot_%s', savePath, obj.type, lastPathComponent  );
                 
                 saveas(figHandle, filename, 'epsc');
@@ -627,6 +634,7 @@ classdef LMK_Image_Set_Statistics < handle
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 filename = sprintf( '%s%s_LbPlot_%s', savePath, obj.type, lastPathComponent  );
                 
                 saveas(figHandle, filename, 'epsc');
@@ -664,7 +672,6 @@ classdef LMK_Image_Set_Statistics < handle
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
-                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 filename = sprintf( '%s%splots%s%s_LtLBPlot_%s', savePath, DELIMITER, DELIMITER, obj.type, lastPathComponent  );
                 
                 saveas(figHandle, filename, 'epsc');
@@ -780,6 +787,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
                 
                 filename = sprintf( '%s%s_CthvsCPlot_%s', savePath, obj.type, lastPathComponent );
