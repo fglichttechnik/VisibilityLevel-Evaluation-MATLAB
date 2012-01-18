@@ -1,6 +1,6 @@
 %SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_ComparisonS5toS6';
 %SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_Comparison_HS_vs_LED';
-SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_Comparison_TargetReflectancySmallMesopic';
+SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_ComparisonDimVs2ndOff_4';
 
 XMLFILENAME = 'CompareSet.xml'; %best to name all sets the same
 

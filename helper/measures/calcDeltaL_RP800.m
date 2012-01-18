@@ -29,7 +29,7 @@ function deltaL_RP800 = calcDeltaL_RP800(Lb, Lt, alpha, age, T, k)
 % La = Lb + Lv
 % Lv: Veiling luminance
 La = Lb;
-LLa = log10(La);
+LLa = log10( La );
 %A = arctan( targetSize / distanceOfObserverToTarget ) * 60;
 A = alpha;
 
@@ -37,7 +37,7 @@ A = alpha;
 % Third step: determine sensivity of visual system
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if La >= 0.6
-    F = ( log10( 4.284 * La^0.1556 ) + ( 0.1684 * La^0.5867 ) )^2;
+    F = ( log10( 4.2841 * La^0.1556 ) + ( 0.1684 * La^0.5867 ) )^2;
     L = ( 0.05946 * La^0.466)^2;
 elseif La < 0.00418
     F = 10^( 0.346 * LLa + 0.056 );
@@ -60,14 +60,14 @@ DL1 = k * ( ( sqrt( F ) / A ) + sqrt( L ) )^2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fifth step: calc M factor
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-TGB = -0.6 * La^0.1488;
+TGB = -0.6 * La^( -0.1488 );
 if LLa >= -1
-    M = 10^-10^( ( 0.125 * ( LLa +1 )^2 ) + 0.0245 );
+    M = 10^( -10^( -( ( 0.125 * ( LLa + 1 )^2 ) + 0.0245 ) ) );
     FCP = 1 - ( ( M * A^TGB ) / ( 2.4 * DL1 * ( AZ + 2 ) / 2 ) );
 elseif LLa <= -2.4
     FCP = 0.5;
 else
-    M = 10^-10^( ( 0.075 * ( LLa +1 )^2 ) + 0.0245 );
+    M = 10^( -10^( -( ( 0.075 * ( LLa + 1 )^2 ) + 0.0245 ) ) );
     FCP = 1 - ( ( M * A^TGB ) / ( 2.4 * DL1 * ( AZ + 2 ) / 2 ) );    
 end
 

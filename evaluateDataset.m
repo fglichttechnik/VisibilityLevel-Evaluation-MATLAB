@@ -98,17 +98,20 @@ end
 photopicLMK_Image_Set_Statistics.gatherData();
 photopicLMK_Image_Set_Statistics.plotVL( PATH );
 photopicLMK_Image_Set_Statistics.plotVLFixedDistance( PATH );
+photopicLMK_Image_Set_Statistics.plotVLFixedDistanceScaled( PATH );
 photopicLMK_Image_Set_Statistics.plotThresholdContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotThresholdDeltaL( PATH );
 photopicLMK_Image_Set_Statistics.plotContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotAbsContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotLtLB( PATH );
 photopicLMK_Image_Set_Statistics.plotCthArray( PATH );
+%photopicLMK_Image_Set_Statistics.plotLtLBWithImages( PATH ) ;
 
 if( ANALYZE_MESOPIC )
     mesopicLMK_Image_Set_Statistics.gatherData();
     mesopicLMK_Image_Set_Statistics.plotVL( PATH );
     mesopicLMK_Image_Set_Statistics.plotVLFixedDistance( PATH );
+    mesopicLMK_Image_Set_Statistics.plotVLFixedDistanceScaled( PATH );
     mesopicLMK_Image_Set_Statistics.plotThresholdContrast( PATH );
     mesopicLMK_Image_Set_Statistics.plotThresholdDeltaL( PATH );
     mesopicLMK_Image_Set_Statistics.plotContrast( PATH );

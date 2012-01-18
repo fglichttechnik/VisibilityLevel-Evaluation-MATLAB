@@ -76,10 +76,15 @@ classdef LMK_Image_Set_Statistics < handle
             
             %create arrays with Lt , LB and d
             for currentIndex = 1 : length( meanTargetArray )
-                currentStatistics = currentStatisticsArray{ currentIndex };
-                meanTargetArray( currentIndex ) = currentStatistics.strongestEdgeMeanTarget;
+                currentStatistics = currentStatisticsArray{ currentIndex };                
                 distanceArray( currentIndex ) = currentStatistics.imageMetadata.rectPosition;
                 visualisationImageArray{ currentIndex } = currentStatistics.imageMetadata.visualisationImagePhotopic;
+                
+                if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST' ) )
+                    meanTargetArray( currentIndex ) = currentStatistics.strongestEdgeMeanTarget;
+                elseif ( strcmp( obj.contrastCalculationMethod, 'RP800' ) )
+                    meanTargetArray( currentIndex ) = currentStatistics.meanTarget;
+                end
                 
                 if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST' ) )
                     meanBackgroundArray( currentIndex ) = currentStatistics.strongestEdgeMeanBackground;
@@ -104,11 +109,13 @@ classdef LMK_Image_Set_Statistics < handle
                 alphaMinutes = obj.alphaArray( currentIndex );
                 deltaL = calcDeltaL(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
                 deltaL_RP800 = calcDeltaL_RP800(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
-                thresholdContrastArray( currentIndex ) = deltaL / Lb;
+                thresholdContrastArray( currentIndex ) = deltaL_RP800 / Lb;
+                
+                disp( sprintf( 'deltaLAdrian: %f deltaLRP800: %f', deltaL, deltaL_RP800 ) );
                 
                 %calc the same for fixed distance (we take the first distance in the measurement field, that's currently object 3)
                 alphaMinutes = obj.alphaArray( 3 );
-                deltaLFixedDistance = calcDeltaL(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
+                deltaLFixedDistance = calcDeltaL_RP800(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
                 thresholdContrastFixedDistanceArray( currentIndex ) = deltaLFixedDistance / Lb;
             end
             
@@ -152,7 +159,9 @@ classdef LMK_Image_Set_Statistics < handle
                 DELIMITER = '/';
             end
             
-            mkdir( [savePath, DELIMITER], 'visImages' );
+            if( ~exist( [savePath, DELIMITER, 'visImages'], 'dir') )
+                mkdir( [savePath, DELIMITER], 'visImages' );
+            end
             for currentIndex = 1 : length( obj.visualisationImageArray )
                 image = obj.visualisationImageArray{ currentIndex };
                 filename = sprintf( '%s%svisImages%s%s_%d.png', savePath, DELIMITER, DELIMITER, obj.type, currentIndex );
@@ -530,6 +539,74 @@ classdef LMK_Image_Set_Statistics < handle
             
         end
         
+          %% plotVLFixedDistanceScaled
+        function plotVLFixedDistanceScaled( obj, savePath, figHandle, color )
+            
+            %set standard color
+            if ( nargin < 4 )
+                color = 'o-r';
+            end
+            
+            if ( nargin < 3 )
+                figHandle = figure();
+                figHandleWasGiven = 0;
+            else
+                figHandleWasGiven = 1;
+            end
+            
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            if( strcmp( savePath, '' ) )
+                savePath = 'DO_NOT_SAVE'
+            end
+            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                mkdir( savePath );
+            end
+            
+            %activate corresponding figure
+            set(0, 'CurrentFigure', figHandle);
+            
+            %for better comparison we show the abs of the VL
+            
+            %plot visibility level
+            p = plot( obj.distanceArray, 10.^( -0.1 * abs( obj.visibilityLevelFixedDistanceArray ) ) , color );
+            %legend('L_{photopisch}');
+            axis('tight');
+            x = xlabel('d in m');
+            y = ylabel('VL');
+            t = title( strcat('Visibility Level Scaled (Fixed Distance)') );
+            
+            %set STV
+            if( ~figHandleWasGiven )
+                tx = text( 'units', 'normalized', 'position', [0.01 0.9], 'string', sprintf( 'STV = %3.1f', obj.smallTargetVL ) );
+                set( tx, 'FontSize', 12 ); %'Interpreter','LaTeX',
+            end
+            
+            %adjust plot
+            set( p, 'LineWidth', obj.LINEWIDTH );
+            set( x, 'FontSize', obj.FONTSIZE );
+            set( y, 'FontSize', obj.FONTSIZE );
+            set( t, 'FontSize', obj.FONTSIZE );
+            
+            if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                filename = sprintf( '%s%s_VLFixedDistanceScaledPlot_%s', savePath, obj.type, lastPathComponent  );
+                
+                saveas(figHandle, filename, 'epsc');
+                saveas(figHandle, filename, 'fig');
+            end
+            
+        end
+        
         %% plotLt
         function plotLt( obj, savePath, figHandle, color )
             
@@ -680,6 +757,56 @@ classdef LMK_Image_Set_Statistics < handle
             end
         end
         
+        %% plotLtLBWithImages
+        function plotLtLBWithImages( obj, savePath )          
+            
+            len = length( obj.meanBackgroundArray );
+            len = len - 1;
+            
+            figHandle = figure();
+            
+            %showLtLB
+            subplot( 2, len, [1 : len] );
+            hold on;
+            obj.plotLt( savePath, figHandle );
+            obj.plotLB( savePath, figHandle );
+            hold off;
+            
+            axis('tight');
+            l = legend('L_t','L_B');
+            t = title( strcat(' mean L_t vs mean L_B ') );
+            
+            %show images
+            for i = 1 : len
+                subplot( 2, len, len + i );
+                imshow( obj.visualisationImageArray{ i } );
+                set( gca,'xtick',[],'ytick',[] );
+            end
+            
+            %adjust plot
+            set( l, 'FontSize', obj.FONTSIZE );
+            set( t, 'FontSize', obj.FONTSIZE );
+            
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            if( strcmp( savePath, '' ) )
+                savePath = 'DO_NOT_SAVE'
+            end
+            if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                filename = sprintf( '%s%splots%s%s_LtLBWithImagesPlot_%s', savePath, DELIMITER, DELIMITER, obj.type, lastPathComponent  );
+                
+                saveas(figHandle, filename, 'epsc');
+                saveas(figHandle, filename, 'fig');
+            end
+        end
+        
         %% plotCthArea
         function plotCthArray( obj, savePath, figHandle, color )
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -712,13 +839,18 @@ classdef LMK_Image_Set_Statistics < handle
             
             
             Lt = 10000001;  %only necessary to indicate positive or negative delta (therefore higher or lower than max / min Lb
-            Lb_continuous = logspace(-1,1,100);
+            Lb_continuous = logspace(-2,1,100);
             alphaMinutes = obj.alphaArray( 3 );
             
-            deltaLpos = calcDeltaL( Lb_continuous, max( Lb_continuous + 1), alphaMinutes, obj.ageVL, obj.tVL , obj.kVL );
-            contrastThresholdpos = deltaLpos ./ Lb_continuous;
+            %bad but we have it currently in that way
+            len = length( Lb_continuous );
+            deltaLpos = zeros( size( Lb_continuous ) );
+            for i = 1 : len
+                deltaLpos( i ) = calcDeltaL_RP800( Lb_continuous( i ), max( Lb_continuous + 1), alphaMinutes, obj.ageVL, obj.tVL , obj.kVL );
+                deltaLneg( i ) = calcDeltaL_RP800( Lb_continuous( i ), min( Lb_continuous - min( Lb_continuous ) ), alphaMinutes, obj.ageVL, obj.tVL , obj.kVL );
+            end
             
-            deltaLneg = calcDeltaL( Lb_continuous, min( Lb_continuous - min( Lb_continuous ) ), alphaMinutes, obj.ageVL, obj.tVL , obj.kVL );
+            contrastThresholdpos = deltaLpos ./ Lb_continuous;
             contrastThresholdneg = deltaLneg ./ Lb_continuous;
             
             minLb = min( obj.meanBackgroundArray );
@@ -777,10 +909,10 @@ classdef LMK_Image_Set_Statistics < handle
             %for i = 1 : length(alphaDegrees)
             legendString{ 1 } = sprintf( 'C_{th, pos} for alpha (%s ^{''})', num2str( alphaMinutes ) );
             legendString{ 2 } = sprintf( 'C_{th, neg} for alpha (%s ^{''})', num2str( alphaMinutes ) );
-            if( length( posContrasts ) )
+            if( length( sum( posContrasts ) ) )
                 legendString{ length( legendString ) + 1 } = 'actual pos contrasts';
             end
-            if( length( negContrasts ) )
+            if( length( sum( negContrasts ) ) )
                 legendString{ length( legendString ) + 1 } = 'actual neg contrasts';
             end
             %end
@@ -789,6 +921,13 @@ classdef LMK_Image_Set_Statistics < handle
             %v = get( pL, 'title' );
             %set( v, 'string', 'alpha' );
             
+            %adjust size:
+%             mini = min( obj.meanBackgroundArray );
+%             miniLog = log10( mini )
+%             miniLog = floor( miniLog )
+%             currentAxis = axis( figHandle );
+%             axis( figHandle, [ 10^miniLog currentAxis(2) currentAxis(3) currentAxis(4) ] );
+%             
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );

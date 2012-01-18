@@ -46,38 +46,39 @@ Ks = 1699;
 V_strich_lambda0 = Kp / Ks;
 
 %calc mesopic luminance
-m_2n_1 = 0;
-m_2n = STARTWERT;
+m_n_1 = 0;
+m_n = STARTWERT;
 
 for i = 1 : MAX_NUMBER_OF_ITERATIONS
     
-    if abs( m_2n_1 - m_2n ) <= BREAK_CRITERION 
-        disp( sprintf( '%d iterations needed, m is %f', i, m_2n ) );
+    if abs( m_n_1 - m_n ) <= BREAK_CRITERION         
         break
     end
     
-    m_2n_1 = m_2n;
+    m_n_1 = m_n;
     
-    numerator = m_2n_1 * Lap + ( 1 - m_2n_1 ) * Las * V_strich_lambda0;
-    denominator = m_2n_1 + (1 - m_2n_1) * V_strich_lambda0;
+    numerator = m_n_1 * Lap + ( 1 - m_n_1 ) * Las * V_strich_lambda0;
+    denominator = m_n_1 + (1 - m_n_1) * V_strich_lambda0;
     Lmes_n = numerator / denominator;
     
-    m_2n = a + b * log10(Lmes_n);
+    m_n = a + b * log10(Lmes_n);
     
     %keep photopic luminances above UPPER_VALUE_FOR_MESOPIC
     if Lmes_n >= UPPER_VALUE_FOR_MESOPIC
-        m_2n = 1;
+        m_n = 1;
     end
     
     %keep scotopic luminances below LOWER_VALUE_FOR_MESOPIC
     if Lmes_n <= LOWER_VALUE_FOR_MESOPIC
-        m_2n = 0;
+        m_n = 0;
     end
     
 end
 
-num = m_2n .* Lp + ( 1 - m_2n ) .* Ls * V_strich_lambda0;
-denom = m_2n + (1 - m_2n) * V_strich_lambda0;
+disp( sprintf( '%d iterations needed, m is %f', i, m_n ) );
+
+num = m_n .* Lp + ( 1 - m_n ) .* Ls * V_strich_lambda0;
+denom = m_n + (1 - m_n) * V_strich_lambda0;
 Lmes_n = num / denom;
 Lmes = abs( Lmes_n );
 
@@ -93,7 +94,7 @@ valuesBelow = (Lmes <= LOWER_VALUE_FOR_MESOPIC);
 Lmes(valuesAbove) = Lp(valuesAbove);
 Lmes(valuesBelow) = Ls(valuesBelow);
 
-mFactor = m_2n;
+mFactor = m_n;
 
 
 
