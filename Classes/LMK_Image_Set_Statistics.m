@@ -79,7 +79,7 @@ classdef LMK_Image_Set_Statistics < handle
                 currentStatistics = currentStatisticsArray{ currentIndex };
                 meanTargetArray( currentIndex ) = currentStatistics.strongestEdgeMeanTarget;
                 distanceArray( currentIndex ) = currentStatistics.imageMetadata.rectPosition;
-                visualisationImageArray{ currentIndex } = currentStatistics.visualisationImage;
+                visualisationImageArray{ currentIndex } = currentStatistics.imageMetadata.visualisationImagePhotopic;
                 
                 if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST' ) )
                     meanBackgroundArray( currentIndex ) = currentStatistics.strongestEdgeMeanBackground;
@@ -155,6 +155,7 @@ classdef LMK_Image_Set_Statistics < handle
             for currentIndex = 1 : length( obj.visualisationImageArray )
                 image = obj.visualisationImageArray{ currentIndex };
                 filename = sprintf( '%s%svisImages%s%s_%d.png', savePath, DELIMITER, DELIMITER, obj.type, currentIndex );
+                imshow(image);
                 imwrite( image, filename );
             end
         end
