@@ -31,9 +31,9 @@ XMLNAME = 'LMKSetMat';  %best if you name all xmls like that
 %T = 1;			%observing time of visual object
 %K = 2.6;		%k factor of adrians model
 %as seen in (ANSI IESNA RP 8 00)
-AGE = 60;		%age of observer for adrians model
-T = 0.2;		%observing time of visual object
-K = 2.6;		%k factor of adrians model
+AGE = 60;		%age of observer for adrians model & RP800 model
+T = 0.2;		%observing time of visual object (constant 0.2 for RP800 model)
+K = 2.6;		%k factor of adrians model & of RP800 model
 CONTRAST_CALCULATION_METHOD = 'RP800';   %can be STRONGEST, RP800
 
 %visual object preferences

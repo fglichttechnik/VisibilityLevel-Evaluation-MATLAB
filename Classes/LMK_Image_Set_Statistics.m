@@ -103,6 +103,7 @@ classdef LMK_Image_Set_Statistics < handle
                 Lt = meanTargetArray( currentIndex );
                 alphaMinutes = obj.alphaArray( currentIndex );
                 deltaL = calcDeltaL(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
+                deltaL_RP800 = calcDeltaL_RP800(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
                 thresholdContrastArray( currentIndex ) = deltaL / Lb;
                 
                 %calc the same for fixed distance (we take the first distance in the measurement field, that's currently object 3)
@@ -155,7 +156,6 @@ classdef LMK_Image_Set_Statistics < handle
             for currentIndex = 1 : length( obj.visualisationImageArray )
                 image = obj.visualisationImageArray{ currentIndex };
                 filename = sprintf( '%s%svisImages%s%s_%d.png', savePath, DELIMITER, DELIMITER, obj.type, currentIndex );
-                imshow(image);
                 imwrite( image, filename );
             end
         end
