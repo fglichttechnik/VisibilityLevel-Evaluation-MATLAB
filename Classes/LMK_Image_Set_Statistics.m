@@ -909,10 +909,10 @@ classdef LMK_Image_Set_Statistics < handle
             %for i = 1 : length(alphaDegrees)
             legendString{ 1 } = sprintf( 'C_{th, pos} for alpha (%s ^{''})', num2str( alphaMinutes ) );
             legendString{ 2 } = sprintf( 'C_{th, neg} for alpha (%s ^{''})', num2str( alphaMinutes ) );
-            if( length( sum( posContrasts ) ) )
+            if( sum( posContrasts ) )
                 legendString{ length( legendString ) + 1 } = 'actual pos contrasts';
             end
-            if( length( sum( negContrasts ) ) )
+            if( sum( negContrasts ) )
                 legendString{ length( legendString ) + 1 } = 'actual neg contrasts';
             end
             %end
