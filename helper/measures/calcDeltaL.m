@@ -77,11 +77,11 @@ function Fcp = calcNegativeContrastFcp (alpha, Lb, deltaLpos)
 
 %assert(Lb > 0.004)
 if(Lb >= 0.1)
-    factor = 0.125;     %Lb >= 0.1 cd/m^2
+    fcpFactor = 0.125;     %Lb >= 0.1 cd/m^2
 elseif(Lb > 0.004)
-    factor = 0.075;    %Lb > 0.004 cd/m^2
+    fcpFactor = 0.075;    %Lb > 0.004 cd/m^2
 end
-m = 10.^(- (factor .* (log10(Lb) + 1).^2 + 0.0245));
+m = 10.^(- (fcpFactor .* (log10(Lb) + 1).^2 + 0.0245));
 m = 10.^(-m);
 beta = 0.6 .* Lb.^(-0.1488);
 Fcp = 1 - (m .* alpha.^(-beta) ./ (2.4 .* deltaLpos));

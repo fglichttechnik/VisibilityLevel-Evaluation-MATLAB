@@ -104,9 +104,10 @@ photopicLMK_Image_Set_Statistics.plotThresholdDeltaL( PATH );
 photopicLMK_Image_Set_Statistics.plotContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotAbsContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotLtLB( PATH );
-photopicLMK_Image_Set_Statistics.plotCthArrayContrastThresholds( PATH );
-photopicLMK_Image_Set_Statistics.plotCthArrayCurrentData( PATH );
-photopicLMK_Image_Set_Statistics.plotCthArrayLBBorderAndSave( PATH );
+figHandleCth = figure();
+photopicLMK_Image_Set_Statistics.plotCthArrayContrastThresholds( figHandleCth );
+photopicLMK_Image_Set_Statistics.plotCthArrayCurrentData( figHandleCth );
+photopicLMK_Image_Set_Statistics.plotCthArrayLBBorderAndSave( PATH, figHandleCth );
 
 
 %photopicLMK_Image_Set_Statistics.plotLtLBWithImages( PATH ) ;
@@ -121,9 +122,10 @@ if( ANALYZE_MESOPIC )
     mesopicLMK_Image_Set_Statistics.plotContrast( PATH );
     mesopicLMK_Image_Set_Statistics.plotAbsContrast( PATH );
     mesopicLMK_Image_Set_Statistics.plotLtLB( PATH );
-    mesopicLMK_Image_Set_Statistics.plotCthArrayContrastThresholds( PATH );
-    mesopicLMK_Image_Set_Statistics.plotCthArrayCurrentData( PATH );
-    mesopicLMK_Image_Set_Statistics.plotCthArrayLBBorderAndSave( PATH );
+    figHandleCth = figure();
+    mesopicLMK_Image_Set_Statistics.plotCthArrayContrastThresholds( figHandleCth );
+    mesopicLMK_Image_Set_Statistics.plotCthArrayCurrentData( figHandleCth );
+    mesopicLMK_Image_Set_Statistics.plotCthArrayLBBorderAndSave( PATH, figHandleCth );
 end
 
 %convert all files to pdf

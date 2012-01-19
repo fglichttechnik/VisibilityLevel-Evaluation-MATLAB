@@ -889,16 +889,16 @@ classdef LMK_Image_Set_Statistics < handle
                 color = 1;
             end
             
-            if ( color == 1 )
-                color1 = sprintf( 'r%s', plotsign );
-                color2 = sprintf( 'k%s', plotsign );
-            elseif ( color == 2 )
-                color1 = sprintf( 'gr%s', plotsign );
-                color2 = sprintf( 'b%s', plotsign );
-            else
-                color1 = sprintf( 'c%s', plotsign );
-                color2 = sprintf( 'm%s', plotsign );
-            end
+%             if ( color == 1 )
+%                 color1 = sprintf( 'r%s', plotsign );
+%                 color2 = sprintf( 'k%s', plotsign );
+%             elseif ( color == 2 )
+%                 color1 = sprintf( 'gr%s', plotsign );
+%                 color2 = sprintf( 'b%s', plotsign );
+%             else
+                color1 = sprintf( 'b%s', plotsign );
+                color2 = sprintf( 'r%s', plotsign );
+            %end
             
             posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
             negContrasts = ~posContrasts;
@@ -953,12 +953,6 @@ classdef LMK_Image_Set_Statistics < handle
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             % cthresh over Lb for several alpha
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            
-            %set standard color
-            
-            if ( nargin < 2 )
-                figHandle = figure();
-            end
             
             %platform specific path delimiter
             if(ispc)
