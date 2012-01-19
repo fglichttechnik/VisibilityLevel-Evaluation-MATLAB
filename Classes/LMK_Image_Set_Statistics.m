@@ -58,7 +58,7 @@ classdef LMK_Image_Set_Statistics < handle
             end
             
             obj.FONTSIZE = 14;
-            obj.LINEWIDTH = 1.1;
+            obj.LINEWIDTH = 1.8;
             
         end% constructor
         
@@ -889,15 +889,15 @@ classdef LMK_Image_Set_Statistics < handle
                 color = 1;
             end
             
-%             if ( color == 1 )
-%                 color1 = sprintf( 'r%s', plotsign );
-%                 color2 = sprintf( 'k%s', plotsign );
-%             elseif ( color == 2 )
-%                 color1 = sprintf( 'gr%s', plotsign );
-%                 color2 = sprintf( 'b%s', plotsign );
-%             else
-                color1 = sprintf( 'r%s', plotsign );
-                color2 = sprintf( 'b%s', plotsign );
+            %             if ( color == 1 )
+            %                 color1 = sprintf( 'r%s', plotsign );
+            %                 color2 = sprintf( 'k%s', plotsign );
+            %             elseif ( color == 2 )
+            %                 color1 = sprintf( 'gr%s', plotsign );
+            %                 color2 = sprintf( 'b%s', plotsign );
+            %             else
+            color1 = sprintf( 'r%s', plotsign );
+            color2 = sprintf( 'b%s', plotsign );
             %end
             
             posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
@@ -949,7 +949,7 @@ classdef LMK_Image_Set_Statistics < handle
         end
         
         %% plotCthArrayLBBorderAndSave
-        function plotCthArrayLBBorderAndSave( obj, savePath, figHandle )
+        function plotCthArrayLBBorderAndSave( obj, savePath, figHandle, minLb, maxLb )
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             % cthresh over Lb for several alpha
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -986,8 +986,10 @@ classdef LMK_Image_Set_Statistics < handle
             contrastThresholdpos = deltaLpos ./ Lb_continuous;
             contrastThresholdneg = deltaLneg ./ Lb_continuous;
             
-            minLb = min( obj.meanBackgroundArray );
-            maxLb = max( obj.meanBackgroundArray );
+            if( nargin < 4 )
+                minLb = min( obj.meanBackgroundArray );
+                maxLb = max( obj.meanBackgroundArray );
+            end
             minCthpos = min( contrastThresholdpos );
             maxCthpos = max( contrastThresholdpos );
             minCthneg = min( contrastThresholdneg );
@@ -1008,6 +1010,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( maxCthneg > maxi )
                 maxi = maxCthneg;
             end
+            
             verticalLine = [ mini; maxi ];
             
             posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;

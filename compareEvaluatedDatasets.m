@@ -241,12 +241,15 @@ saveas(figHandleLB, filename, 'fig');
 figHandleCthCompare = figure();
 currentSetStatistics.plotCthArrayContrastThresholds( figHandleCthCompare );
 
-plotSignArray = { 'o', 'x', '.' };
+plotSignArray = { 'o', 'x', '.', '*', '+', 's', 'd' };
 numberOfPlotsigns = length( plotSignArray );
 
 alphaMinutes = currentSetStatistics.alphaArray( 3 );
 legends{ 1 } = sprintf( 'C_{th, pos} for alpha %3.2f^{''}', alphaMinutes );
 legends{ 2 } = sprintf( 'C_{th, neg} for alpha %3.2f^{''}', alphaMinutes );
+
+minLb = 1000000000;
+maxLb = 0;
 
 for currentDatasetIndex = 1 : numberOfDatasets
     
@@ -254,6 +257,8 @@ for currentDatasetIndex = 1 : numberOfDatasets
     if ( currentPlotsignIndex == 0 )
         currentPlotsignIndex = numberOfPlotsigns;
     end
+    
+    currentSetStatistics = arrayWithSetStatistics{ currentDatasetIndex };
     
     [ legendString ] = currentSetStatistics.plotCthArrayCurrentData( figHandleCthCompare, currentDatasetIndex, plotSignArray{ currentPlotsignIndex } );
     
@@ -264,17 +269,27 @@ for currentDatasetIndex = 1 : numberOfDatasets
     if( length( legendString ) >= 4)
         legends{ length( legends ) + 1 } = sprintf( 'C_{neg} for %s', legendsForDatasets{ currentDatasetIndex } );
     end
+    
+    mini = min( currentSetStatistics.meanBackgroundArray );
+    maxi = max( currentSetStatistics.meanBackgroundArray );
+    if( mini < minLb )
+        minLb = mini;
+    end
+    if( maxi > maxLb )
+        maxLb = maxi;
+    end
+    
 end
 
 %adjust legends here:
 %set(0, 'CurrentFigure', figHandleCthCompare);
 legend( legends, 'Location', 'Best' );
 
-currentSetStatistics.plotCthArrayLBBorderAndSave( 'DO_NOT_SAVE', figHandleCthCompare );
+currentSetStatistics.plotCthArrayLBBorderAndSave( 'DO_NOT_SAVE', figHandleCthCompare, minLb, maxLb );
 
 filename = sprintf( '%s%sComparePlot%sCthComparison_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
-saveas(figHandleContrast, filename, 'epsc');
-saveas(figHandleContrast, filename, 'fig');
+saveas(figHandleCthCompare, filename, 'epsc');
+saveas(figHandleCthCompare, filename, 'fig');
 
 
 %convert to pdf
