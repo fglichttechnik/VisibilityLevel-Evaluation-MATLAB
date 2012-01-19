@@ -27,6 +27,9 @@ if (y2 > height)
     y2 = height;
 end
 
+%imshow(img(y1 : y2, x1 : x2))
+%imshow(img(y1 : y2+1, x1 : x2+1))
+
 meanImg = mean2( img(y1 : y2, x1 : x2) );
 
 %visualize measurement region
