@@ -28,6 +28,7 @@ upperTargetY2 = y1 + targetRegionHeight;
 
 %HACK: we have a offset of 1 px in the current positioning system
 upperTargetX1 = upperTargetX1 + 1;
+upperTargetX2 = upperTargetX2 + 1;
 upperTargetY1 = upperTargetY1 + 1;
 upperTargetY2 = upperTargetY2 + 1;
 
@@ -38,8 +39,9 @@ upperBackgroundY2 = inImageVert(y1 - border, image);
 
 %HACK: we have a offset of 1 px in the current positioning system
 upperBackgroundX1 = upperBackgroundX1 + 1;
-upperBackgroundY1 = upperBackgroundY1 - 1;
-upperBackgroundY2 = upperBackgroundY2 - 1;
+upperBackgroundX2 = upperBackgroundX2 + 1;
+upperBackgroundY1 = upperBackgroundY1 + 1;
+upperBackgroundY2 = upperBackgroundY2 + 1;
 
 lowerTargetX1 = x1;
 lowerTargetX2 = x2;
@@ -48,8 +50,9 @@ lowerTargetY2 = y2;
 
 %HACK: we have a offset of 1 px in the current positioning system
 lowerTargetX1 = lowerTargetX1 + 1;
-lowerTargetY1 = lowerTargetY1 - 1;
-lowerTargetY2 = lowerTargetY2 - 1;
+lowerTargetX2 = lowerTargetX2 + 1;
+lowerTargetY1 = lowerTargetY1 + 1;
+lowerTargetY2 = lowerTargetY2 + 1;
 
 lowerBackgroundX1 = x1;
 lowerBackgroundX2 = x2;
@@ -58,6 +61,7 @@ lowerBackgroundY2 = inImageVert(y2 + border + targetRegionHeight, image);
 
 %HACK: we have a offset of 1 px in the current positioning system
 lowerBackgroundX1 = lowerBackgroundX1 + 1;
+lowerBackgroundX2 = lowerBackgroundX2 + 1;
 lowerBackgroundY1 = lowerBackgroundY1 + 1;
 lowerBackgroundY2 = lowerBackgroundY2 + 1;
 
@@ -68,6 +72,7 @@ leftTargetY2 = y2;
 
 %HACK: we have a offset of 1 px in the current positioning system
 leftTargetX1 = leftTargetX1 + 1;
+leftTargetX2 = leftTargetX2 + 1;
 leftTargetY1 = leftTargetY1 + 1;
 leftTargetY2 = leftTargetY2 + 1;
 
@@ -77,6 +82,8 @@ leftBackgroundY1 = y1;
 leftBackgroundY2 = y2;
 
 %HACK: we have a offset of 1 px in the current positioning system
+leftBackgroundX1 = leftBackgroundX1 + 1;
+leftBackgroundX2 = leftBackgroundX2 + 1;
 leftBackgroundY1 = leftBackgroundY1 + 1;
 leftBackgroundY2 = leftBackgroundY2 + 1;
 
@@ -86,6 +93,8 @@ rightTargetY1 = y1;
 rightTargetY2 = y2;
 
 %HACK: we have a offset of 1 px in the current positioning system
+rightTargetX1 = rightTargetX1 + 1;
+rightTargetX2 = rightTargetX2 + 1;
 rightTargetY1 = rightTargetY1 + 1;
 rightTargetY2 = rightTargetY2 + 1;
 
@@ -93,6 +102,12 @@ rightBackgroundX1 = inImageHor(x2 + border, image);
 rightBackgroundX2 = inImageHor(x2 + targetRegionWidth + border, image);
 rightBackgroundY1 = y1;
 rightBackgroundY2 = y2;
+
+%HACK: we have a offset of 1 px in the current positioning system
+rightBackgroundX1 = rightBackgroundX1 + 1;
+rightBackgroundX2 = rightBackgroundX2 + 1;
+rightBackgroundY1 = rightBackgroundY1 + 1;
+rightBackgroundY2 = rightBackgroundY2 + 1;
 
 %calc mean of regions
 colorChannel = 3;
