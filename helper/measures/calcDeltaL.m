@@ -80,6 +80,10 @@ if(Lb >= 0.1)
     fcpFactor = 0.125;     %Lb >= 0.1 cd/m^2
 elseif(Lb > 0.004)
     fcpFactor = 0.075;    %Lb > 0.004 cd/m^2
+else
+    %not defined for this range
+    Fcp = 1;
+    return;
 end
 m = 10.^(- (fcpFactor .* (log10(Lb) + 1).^2 + 0.0245));
 m = 10.^(-m);
