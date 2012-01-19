@@ -896,8 +896,8 @@ classdef LMK_Image_Set_Statistics < handle
 %                 color1 = sprintf( 'gr%s', plotsign );
 %                 color2 = sprintf( 'b%s', plotsign );
 %             else
-                color1 = sprintf( 'b%s', plotsign );
-                color2 = sprintf( 'r%s', plotsign );
+                color1 = sprintf( 'r%s', plotsign );
+                color2 = sprintf( 'b%s', plotsign );
             %end
             
             posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
