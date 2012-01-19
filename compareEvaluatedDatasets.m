@@ -241,12 +241,12 @@ saveas(figHandleLB, filename, 'fig');
 figHandleCthCompare = figure();
 currentSetStatistics.plotCthArrayContrastThresholds( figHandleCthCompare );
 
-plotSignArray = { 'o', 'x', '.' }
+plotSignArray = { 'o', 'x', '.' };
 numberOfPlotsigns = length( plotSignArray );
 
-
-legends{ 1 } = sprintf( 'C_{th, pos}' );
-legends{ 2 } = sprintf( 'C_{th, neg}' );
+alphaMinutes = currentSetStatistics.alphaArray( 3 );
+legends{ 1 } = sprintf( 'C_{th, pos} for alpha %3.2f^{''}', alphaMinutes );
+legends{ 2 } = sprintf( 'C_{th, neg} for alpha %3.2f^{''}', alphaMinutes );
 
 for currentDatasetIndex = 1 : numberOfDatasets
     

@@ -904,10 +904,6 @@ classdef LMK_Image_Set_Statistics < handle
             negContrasts = ~posContrasts;
             alphaMinutes = obj.alphaArray( 3 );
             
-            plotsign
-            color1
-            color2
-            
             %actual contrasts
             hold on;
             pP2 = loglog( obj.meanBackgroundArray( posContrasts ), obj.weberContrastAbsArray( posContrasts ), color1 );
@@ -928,8 +924,8 @@ classdef LMK_Image_Set_Statistics < handle
             %prepare legend
             %alphaStrings = cell(length(alphaDegrees),1);
             %for i = 1 : length(alphaDegrees)
-            legendString{ 1 } = sprintf( 'C_{th, pos} for alpha (%s ^{''})', num2str( alphaMinutes ) );
-            legendString{ 2 } = sprintf( 'C_{th, neg} for alpha (%s ^{''})', num2str( alphaMinutes ) );
+            legendString{ 1 } = sprintf( 'C_{th, pos} for alpha %3.2f ^{''}', alphaMinutes );
+            legendString{ 2 } = sprintf( 'C_{th, neg} for alpha %3.2f ^{''}', alphaMinutes );
             if( sum( posContrasts ) )
                 legendString{ length( legendString ) + 1 } = 'actual pos contrasts';
             end
