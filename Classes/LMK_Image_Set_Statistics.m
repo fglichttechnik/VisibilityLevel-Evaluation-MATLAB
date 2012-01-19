@@ -76,7 +76,7 @@ classdef LMK_Image_Set_Statistics < handle
             
             %create arrays with Lt , LB and d
             for currentIndex = 1 : length( meanTargetArray )
-                currentStatistics = currentStatisticsArray{ currentIndex };                
+                currentStatistics = currentStatisticsArray{ currentIndex };
                 distanceArray( currentIndex ) = currentStatistics.imageMetadata.rectPosition;
                 visualisationImageArray{ currentIndex } = currentStatistics.imageMetadata.visualisationImagePhotopic;
                 
@@ -142,6 +142,7 @@ classdef LMK_Image_Set_Statistics < handle
                 if ~( isempty( obj.visibilityLevelArray ) )
                     %ignore first / last 2
                     visibilityLevelArrayOfMeasurementField = obj.visibilityLevelArray( 3 : end - 2 );
+                    disp( sprintf( 'calculating STV from index %d to index %d of image array', 3, (length(obj.visibilityLevelArray) - 2) ) );
                     stv = calcSTVfromArray( visibilityLevelArrayOfMeasurementField );
                     obj.smallTargetVL = stv;
                 end
@@ -539,7 +540,7 @@ classdef LMK_Image_Set_Statistics < handle
             
         end
         
-          %% plotVLFixedDistanceScaled
+        %% plotVLFixedDistanceScaled
         function plotVLFixedDistanceScaled( obj, savePath, figHandle, color )
             
             %set standard color
@@ -758,7 +759,7 @@ classdef LMK_Image_Set_Statistics < handle
         end
         
         %% plotLtLBWithImages
-        function plotLtLBWithImages( obj, savePath )          
+        function plotLtLBWithImages( obj, savePath )
             
             len = length( obj.meanBackgroundArray );
             len = len - 1;
@@ -807,36 +808,12 @@ classdef LMK_Image_Set_Statistics < handle
             end
         end
         
-        %% plotCthArea
-        function plotCthArray( obj, savePath, figHandle, color )
+        %% plotCthArrayContrastThresholds
+        function plotCthArrayContrastThresholds( obj, figHandle )
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             % cthresh over Lb for several alpha
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            
-            %set standard color
-            if ( nargin < 4 )
-                color = 'r';
-            end
-            
-            if ( nargin < 3 )
-                figHandle = figure();
-            end
-            
-            %platform specific path delimiter
-            if(ispc)
-                DELIMITER = '\';
-            elseif(isunix)
-                DELIMITER = '/';
-            end
-            
-            if( strcmp( savePath, '' ) )
-                savePath = 'DO_NOT_SAVE'
-            end
-            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
-            if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
-                mkdir( savePath );
-            end
-            
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %THIS FUNCTION WORKS ONLY WITH THE CORRESPONDING 2 OTHERS
             
             Lt = 10000001;  %only necessary to indicate positive or negative delta (therefore higher or lower than max / min Lb
             Lb_continuous = logspace(-2,1,100);
@@ -880,21 +857,65 @@ classdef LMK_Image_Set_Statistics < handle
             posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
             negContrasts = ~posContrasts;
             
-            pP1 = loglog( Lb_continuous, contrastThresholdpos, color );
+            pP1 = loglog( Lb_continuous, contrastThresholdpos, 'r' );
             hold on;
             pP1a = loglog( Lb_continuous, contrastThresholdneg, 'b' );
-            %actual contrasts
-            pP2 = loglog( obj.meanBackgroundArray( posContrasts ), obj.weberContrastAbsArray( posContrasts ), 'ro' );
-            pP2a = loglog( obj.meanBackgroundArray( negContrasts ), obj.weberContrastAbsArray( negContrasts ), 'bo' );
-            %vertical lines
-            pP3 = loglog( [ minLb; minLb ], verticalLine, 'gr:' );
-            pP4 = loglog( [ maxLb; maxLb ], verticalLine, 'gr:' );
-            hold off;
+            
             set( pP1, 'LineWidth', obj.LINEWIDTH );
             set( pP1a, 'LineWidth', obj.LINEWIDTH );
+            
+            pT = title(strcat('Contrast Threshold vs. Actual Contrast'));
+            set(pT,'FontSize', obj.FONTSIZE);
+            pX = xlabel('L_{B} in cd / m^2');
+            set(pX, 'FontSize', obj.FONTSIZE);
+            pY = ylabel('C');
+            set(pY, 'FontSize', obj.FONTSIZE);
+            
+        end
+        
+        %% plotCthArrayCurrentData
+        function [ legendString ] = plotCthArrayCurrentData( obj, figHandle, color, plotsign )
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            % cthresh over Lb for several alpha
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %THIS FUNCTION WORKS ONLY WITH THE CORRESPONDING 2 OTHERS
+            
+            %set standard color
+            if ( nargin < 4 )
+                plotsign = 'o';
+            end
+            
+            if ( nargin < 3 )
+                color = 1;
+            end
+            
+            if ( color == 1 )
+                color1 = sprintf( 'r%s', plotsign );
+                color2 = sprintf( 'k%s', plotsign );
+            elseif ( color == 2 )
+                color1 = sprintf( 'gr%s', plotsign );
+                color2 = sprintf( 'b%s', plotsign );
+            else
+                color1 = sprintf( 'c%s', plotsign );
+                color2 = sprintf( 'm%s', plotsign );
+            end
+            
+            posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
+            negContrasts = ~posContrasts;
+            alphaMinutes = obj.alphaArray( 3 );
+            
+            plotsign
+            color1
+            color2
+            
+            %actual contrasts
+            hold on;
+            pP2 = loglog( obj.meanBackgroundArray( posContrasts ), obj.weberContrastAbsArray( posContrasts ), color1 );
+            pP2a = loglog( obj.meanBackgroundArray( negContrasts ), obj.weberContrastAbsArray( negContrasts ), color2 );
+            hold off;
+            
             set( pP2, 'LineWidth', obj.LINEWIDTH );
-            set( pP3, 'LineWidth', obj.LINEWIDTH );
-            set( pP4, 'LineWidth', obj.LINEWIDTH );
+            set( pP2a, 'LineWidth', obj.LINEWIDTH );
             
             pT = title(strcat('Contrast Threshold vs. Actual Contrast'));
             set(pT,'FontSize', obj.FONTSIZE);
@@ -922,12 +943,114 @@ classdef LMK_Image_Set_Statistics < handle
             %set( v, 'string', 'alpha' );
             
             %adjust size:
-%             mini = min( obj.meanBackgroundArray );
-%             miniLog = log10( mini )
-%             miniLog = floor( miniLog )
-%             currentAxis = axis( figHandle );
-%             axis( figHandle, [ 10^miniLog currentAxis(2) currentAxis(3) currentAxis(4) ] );
-%             
+            %             mini = min( obj.meanBackgroundArray );
+            %             miniLog = log10( mini )
+            %             miniLog = floor( miniLog )
+            %             currentAxis = axis( figHandle );
+            %             axis( figHandle, [ 10^miniLog currentAxis(2) currentAxis(3) currentAxis(4) ] );
+            %
+            
+        end
+        
+        %% plotCthArrayLBBorderAndSave
+        function plotCthArrayLBBorderAndSave( obj, savePath, figHandle )
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            % cthresh over Lb for several alpha
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+            %set standard color
+            
+            if ( nargin < 2 )
+                figHandle = figure();
+            end
+            
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            if( strcmp( savePath, '' ) )
+                savePath = 'DO_NOT_SAVE'
+            end
+            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                mkdir( savePath );
+            end
+            
+            
+            Lt = 10000001;  %only necessary to indicate positive or negative delta (therefore higher or lower than max / min Lb
+            Lb_continuous = logspace(-2,1,100);
+            alphaMinutes = obj.alphaArray( 3 );
+            disp( sprintf( 'calculating Cth with alpha: %f', alphaMinutes ) );
+            
+            %bad but we have it currently in that way
+            len = length( Lb_continuous );
+            deltaLpos = zeros( size( Lb_continuous ) );
+            for i = 1 : len
+                deltaLpos( i ) = calcDeltaL_RP800( Lb_continuous( i ), max( Lb_continuous + 1), alphaMinutes, obj.ageVL, obj.tVL , obj.kVL );
+                deltaLneg( i ) = calcDeltaL_RP800( Lb_continuous( i ), min( Lb_continuous - min( Lb_continuous ) ), alphaMinutes, obj.ageVL, obj.tVL , obj.kVL );
+            end
+            
+            contrastThresholdpos = deltaLpos ./ Lb_continuous;
+            contrastThresholdneg = deltaLneg ./ Lb_continuous;
+            
+            minLb = min( obj.meanBackgroundArray );
+            maxLb = max( obj.meanBackgroundArray );
+            minCthpos = min( contrastThresholdpos );
+            maxCthpos = max( contrastThresholdpos );
+            minCthneg = min( contrastThresholdneg );
+            maxCthneg = max( contrastThresholdneg );
+            minC = min( obj.weberContrastAbsArray );
+            maxC = max( obj.weberContrastAbsArray );
+            mini = minCthpos;
+            if ( minC < mini )
+                mini = minC;
+            end
+            if ( minCthneg < mini )
+                mini = minCthneg;
+            end
+            maxi = maxCthpos;
+            if( maxC > maxi )
+                maxi = maxC;
+            end
+            if( maxCthneg > maxi )
+                maxi = maxCthneg;
+            end
+            verticalLine = [ mini; maxi ];
+            
+            posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
+            negContrasts = ~posContrasts;
+            
+            
+            %vertical lines
+            hold on;
+            pP3 = loglog( [ minLb; minLb ], verticalLine, 'gr:' );
+            pP4 = loglog( [ maxLb; maxLb ], verticalLine, 'gr:' );
+            hold off;
+            
+            set( pP3, 'LineWidth', obj.LINEWIDTH );
+            set( pP4, 'LineWidth', obj.LINEWIDTH );
+            
+            pT = title(strcat('Contrast Threshold vs. Actual Contrast'));
+            set(pT,'FontSize', obj.FONTSIZE);
+            pX = xlabel('L_{B} in cd / m^2');
+            set(pX, 'FontSize', obj.FONTSIZE);
+            pY = ylabel('C');
+            set(pY, 'FontSize', obj.FONTSIZE);
+            
+            %set(pL,'interpreter','LaTeX');
+            %v = get( pL, 'title' );
+            %set( v, 'string', 'alpha' );
+            
+            %adjust size:
+            %             mini = min( obj.meanBackgroundArray );
+            %             miniLog = log10( mini )
+            %             miniLog = floor( miniLog )
+            %             currentAxis = axis( figHandle );
+            %             axis( figHandle, [ 10^miniLog currentAxis(2) currentAxis(3) currentAxis(4) ] );
+            %
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );

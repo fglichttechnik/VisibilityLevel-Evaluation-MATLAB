@@ -1,6 +1,8 @@
+function compareEvaluatedDatasets( SAVEPATH )
+
 %SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_ComparisonS5toS6';
 %SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_Comparison_HS_vs_LED';
-SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_ComparisonDimVs2ndOff_4';
+%SAVEPATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_ComparisonDimVs2ndOff_4';
 
 XMLFILENAME = 'CompareSet.xml'; %best to name all sets the same
 
@@ -199,17 +201,17 @@ legend( legendsForDatasets, 'Location', 'Best' );
 set(0, 'CurrentFigure', figHandleLB);
 legend( legendsForDatasets, 'Location', 'Best' );
 
+%create folder for plot data
+if ( ~exist( sprintf( '%s%sComparePlot', SAVEPATH, DELIMITER ), 'dir' ) )
+    mkdir( sprintf( '%s%sComparePlot', SAVEPATH, DELIMITER ) );
+end
+
 %apply custom code
 if( ~isempty( customCodeString ) )%~strcmp( customCodeString, '') )
     eval( customCodeString );
 end
 
 %save images
-%plot data
-if ( ~exist( sprintf( '%s%sComparePlot', SAVEPATH, DELIMITER ), 'dir' ) )
-    mkdir( sprintf( '%s%sComparePlot', SAVEPATH, DELIMITER ) );
-end
-
 filename = sprintf( '%s%sComparePlot%sweberContrastPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleContrast, filename, 'epsc');
 saveas(figHandleContrast, filename, 'fig');
@@ -234,8 +236,46 @@ filename = sprintf( '%s%sComparePlot%sLBPlot_%s', SAVEPATH, DELIMITER, DELIMITER
 saveas(figHandleLB, filename, 'epsc');
 saveas(figHandleLB, filename, 'fig');
 
+%prepare extra plot: compare Cs to Cth
 %compare data
-%plotDifferenceOfDatasets( arrayWithSetStatistics{ originalIndex }, arrayWithSetStatistics{ compareIndex } );
+figHandleCthCompare = figure();
+currentSetStatistics.plotCthArrayContrastThresholds( figHandleCthCompare );
+
+plotSignArray = { 'o', 'x', '.' }
+numberOfPlotsigns = length( plotSignArray );
+
+
+legends{ 1 } = sprintf( 'C_{th, pos}' );
+legends{ 2 } = sprintf( 'C_{th, neg}' );
+
+for currentDatasetIndex = 1 : numberOfDatasets
+    
+    currentPlotsignIndex = mod( currentDatasetIndex, numberOfPlotsigns );
+    if ( currentPlotsignIndex == 0 )
+        currentPlotsignIndex = numberOfPlotsigns;
+    end
+    
+    [ legendString ] = currentSetStatistics.plotCthArrayCurrentData( figHandleCthCompare, currentDatasetIndex, plotSignArray{ currentPlotsignIndex } );
+    
+    %adjust legends only for necessary data
+    if( length( legendString ) >= 3)
+        legends{ length( legends ) + 1 } = sprintf( 'C_{pos} for %s', legendsForDatasets{ currentDatasetIndex } );
+    end
+    if( length( legendString ) >= 4)
+        legends{ length( legends ) + 1 } = sprintf( 'C_{neg} for %s', legendsForDatasets{ currentDatasetIndex } );
+    end
+end
+
+%adjust legends here:
+%set(0, 'CurrentFigure', figHandleCthCompare);
+legend( legends, 'Location', 'Best' );
+
+currentSetStatistics.plotCthArrayLBBorderAndSave( 'DO_NOT_SAVE', figHandleCthCompare );
+
+filename = sprintf( '%s%sComparePlot%sCthComparison_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
+saveas(figHandleContrast, filename, 'epsc');
+saveas(figHandleContrast, filename, 'fig');
+
 
 %convert to pdf
 %convert all files to pdf
