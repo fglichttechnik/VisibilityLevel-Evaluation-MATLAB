@@ -216,31 +216,37 @@ finetunePlot( figHandleContrast );
 filename = sprintf( '%s%sComparePlot%sweberContrastPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleContrast, filename, 'epsc');
 saveas(figHandleContrast, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
 finetunePlot( figHandleAbsContrast );
 filename = sprintf( '%s%sComparePlot%sAbsWeberContrastPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleAbsContrast, filename, 'epsc');
 saveas(figHandleAbsContrast, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
 finetunePlot( figHandleVL );
 filename = sprintf( '%s%sComparePlot%sVLPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleVL, filename, 'epsc');
 saveas(figHandleVL, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
 finetunePlot( figHandleVLFixedDistance );
 filename = sprintf( '%s%sComparePlot%sVLFixedDistancePlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleVLFixedDistance, filename, 'epsc');
 saveas(figHandleVLFixedDistance, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
 finetunePlot( figHandleLt );
 filename = sprintf( '%s%sComparePlot%sLtPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleLt, filename, 'epsc');
 saveas(figHandleLt, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
 finetunePlot( figHandleLB );
 filename = sprintf( '%s%sComparePlot%sLBPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleLB, filename, 'epsc');
 saveas(figHandleLB, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
 %prepare extra plot: compare Cs to Cth
 %compare data
@@ -304,7 +310,7 @@ finetunePlot( figHandleCthCompare );
 filename = sprintf( '%s%sComparePlot%sCthComparison_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleCthCompare, filename, 'epsc');
 saveas(figHandleCthCompare, filename, 'fig');
-
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
 %convert to pdf
 %convert all files to pdf
