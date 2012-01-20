@@ -113,7 +113,7 @@ for currentDatasetIndex = 1 : numberOfDatasets
         load( filePath );
         arrayWithSetStatistics{ currentDatasetIndex } = photopicLMK_Image_Set_Statistics;
     end
-
+    
     %we don't like too much data in memory
     %shouldn't have been saved in the first place...
     photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray = 0;
@@ -212,26 +212,32 @@ if( ~isempty( customCodeString ) )%~strcmp( customCodeString, '') )
 end
 
 %save images
+finetunePlot( figHandleContrast );
 filename = sprintf( '%s%sComparePlot%sweberContrastPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleContrast, filename, 'epsc');
 saveas(figHandleContrast, filename, 'fig');
 
+finetunePlot( figHandleAbsContrast );
 filename = sprintf( '%s%sComparePlot%sAbsWeberContrastPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleAbsContrast, filename, 'epsc');
 saveas(figHandleAbsContrast, filename, 'fig');
 
+finetunePlot( figHandleVL );
 filename = sprintf( '%s%sComparePlot%sVLPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleVL, filename, 'epsc');
 saveas(figHandleVL, filename, 'fig');
 
+finetunePlot( figHandleVLFixedDistance );
 filename = sprintf( '%s%sComparePlot%sVLFixedDistancePlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleVLFixedDistance, filename, 'epsc');
 saveas(figHandleVLFixedDistance, filename, 'fig');
 
+finetunePlot( figHandleLt );
 filename = sprintf( '%s%sComparePlot%sLtPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleLt, filename, 'epsc');
 saveas(figHandleLt, filename, 'fig');
 
+finetunePlot( figHandleLB );
 filename = sprintf( '%s%sComparePlot%sLBPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleLB, filename, 'epsc');
 saveas(figHandleLB, filename, 'fig');
@@ -253,9 +259,16 @@ maxLb = 0;
 
 for currentDatasetIndex = 1 : numberOfDatasets
     
-    currentPlotsignIndex = mod( currentDatasetIndex, numberOfPlotsigns );
-    if ( currentPlotsignIndex == 0 )
-        currentPlotsignIndex = numberOfPlotsigns;
+    %     currentPlotsignIndex = mod( currentDatasetIndex, numberOfPlotsigns );
+    %     if ( currentPlotsignIndex == 0 )
+    %         currentPlotsignIndex = numberOfPlotsigns;
+    %     end
+    currentPlotsignIndex = currentDatasetIndex;
+    while( currentPlotsignIndex > numberOfPlotsigns )
+        currentPlotsignIndex = currentPlotsignIndex - numberOfPlotsigns;
+        if( currentPlotsignIndex < 1 )
+            currentPlotsignIndex = 1;
+        end
     end
     
     currentSetStatistics = arrayWithSetStatistics{ currentDatasetIndex };
@@ -287,6 +300,7 @@ legend( legends, 'Location', 'Best' );
 
 currentSetStatistics.plotCthArrayLBBorderAndSave( 'DO_NOT_SAVE', figHandleCthCompare, minLb, maxLb );
 
+finetunePlot( figHandleCthCompare );
 filename = sprintf( '%s%sComparePlot%sCthComparison_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleCthCompare, filename, 'epsc');
 saveas(figHandleCthCompare, filename, 'fig');

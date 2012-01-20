@@ -58,7 +58,7 @@ classdef LMK_Image_Set_Statistics < handle
             end
             
             obj.FONTSIZE = 14;
-            obj.LINEWIDTH = 1.8;
+            obj.LINEWIDTH = 3.0;
             
         end% constructor
         
