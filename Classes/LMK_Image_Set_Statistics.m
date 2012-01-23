@@ -99,8 +99,8 @@ classdef LMK_Image_Set_Statistics < handle
             end
             
             %calculate weber contrast
-            weberContrastArray = meanTargetArray ./ meanBackgroundArray - 1;
-            weberContrastAbsArray = abs( meanTargetArray - meanBackgroundArray ) ./ meanBackgroundArray;
+            weberContrastArray = meanTargetArray - meanBackgroundArray ./ meanBackgroundArray;
+            weberContrastAbsArray = abs( weberContrastArray );
             
             %calculate threshold contrast
             for currentIndex = 1 : length( meanTargetArray )
@@ -121,15 +121,15 @@ classdef LMK_Image_Set_Statistics < handle
             
             %calculate visibility level
             %VL is always positive (not in RP800) was abs()
-            visibilityLevelArray = (weberContrastAbsArray ./ thresholdContrastArray);
-            visibilityLevelFixedDistanceArray = (weberContrastAbsArray ./ thresholdContrastFixedDistanceArray);
-            signPos = ( weberContrastArray >= 0 );
-            signNeg = ~signPos;
-            signPosNeg = zeros( length(signPos), 1);
-            signPosNeg( signPos ) = 1;
-            signPosNeg( signNeg ) = -1;
-            visibilityLevelArray = visibilityLevelArray .* signPosNeg;
-            visibilityLevelFixedDistanceArray = visibilityLevelFixedDistanceArray .* signPosNeg;
+            visibilityLevelArray = (weberContrastArray ./ thresholdContrastArray);
+            visibilityLevelFixedDistanceArray = (weberContrastArray ./ thresholdContrastFixedDistanceArray);
+%             signPos = ( weberContrastArray >= 0 );
+%             signNeg = ~signPos;
+%             signPosNeg = zeros( length(signPos), 1);
+%             signPosNeg( signPos ) = 1;
+%             signPosNeg( signNeg ) = -1;
+%             visibilityLevelArray = visibilityLevelArray .* signPosNeg;
+%             visibilityLevelFixedDistanceArray = visibilityLevelFixedDistanceArray .* signPosNeg;
             
             %set instance values
             obj.visualisationImageArray = visualisationImageArray;
