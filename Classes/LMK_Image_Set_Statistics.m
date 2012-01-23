@@ -121,8 +121,15 @@ classdef LMK_Image_Set_Statistics < handle
             
             %calculate visibility level
             %VL is always positive (not in RP800) was abs()
-            visibilityLevelArray = (weberContrastArray ./ thresholdContrastArray);
-            visibilityLevelFixedDistanceArray = (weberContrastArray ./ thresholdContrastFixedDistanceArray);
+            visibilityLevelArray = (weberContrastAbsArray ./ thresholdContrastArray);
+            visibilityLevelFixedDistanceArray = (weberContrastAbsArray ./ thresholdContrastFixedDistanceArray);
+            signPos = ( weberContrastArray >= 0 );
+            signNeg = ~signPos;
+            signPosNeg = zeros( length(signPos), 1);
+            signPosNeg( signPos ) = 1;
+            signPosNeg( signNeg ) = -1;
+            visibilityLevelArray = visibilityLevelArray .* signPosNeg;
+            visibilityLevelFixedDistanceArray = visibilityLevelFixedDistanceArray .* signPosNeg;
             
             %set instance values
             obj.visualisationImageArray = visualisationImageArray;
