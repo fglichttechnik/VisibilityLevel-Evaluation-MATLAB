@@ -935,7 +935,7 @@ classdef LMK_Image_Set_Statistics < handle
             color2 = sprintf( 'b%s', plotsign );
             %end
             
-            posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
+            posContrasts = obj.weberContrastArray >= 0;
             negContrasts = ~posContrasts;
             alphaMinutes = obj.alphaArray( 3 );
             
@@ -1048,7 +1048,7 @@ classdef LMK_Image_Set_Statistics < handle
             
             verticalLine = [ mini; maxi ];
             
-            posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
+            posContrasts = obj.weberContrastArray > 0;
             negContrasts = ~posContrasts;
             
             
