@@ -21,17 +21,17 @@ evaluateBatchSet = {
 %     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_4_dark',
 %     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_4_dim',
 %     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_4_dim_ns',
-     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_4_ds',
+ %    '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_4_ds',
 %     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_4_ds_nlbmf',
 %     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_4_undim',
 %     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_4_undim_ns',
-%     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_1035',
-%     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_1449',
-%     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_2070',
+    '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_1035',
+    '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_1449',
+    '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_2070',
 %     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_dark',
 %     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_dim',
 %     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_dim_ns',
-     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_ds'
+ %    '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_ds'
 %     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_undim',
 %     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_undim_ns',
 %     '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_test'
