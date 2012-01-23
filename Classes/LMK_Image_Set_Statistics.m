@@ -141,8 +141,8 @@ classdef LMK_Image_Set_Statistics < handle
             if( isempty( obj.smallTargetVL ) )
                 if ~( isempty( obj.visibilityLevelArray ) )
                     %ignore first / last 2
-                    visibilityLevelArrayOfMeasurementField = obj.visibilityLevelArray( 3 : end - 2 );
-                    disp( sprintf( 'calculating STV from index %d to index %d of image array', 3, (length(obj.visibilityLevelArray) - 2) ) );
+                    visibilityLevelArrayOfMeasurementField = obj.visibilityLevelFixedDistanceArray( 3 : end - 2 );
+                    disp( sprintf( 'calculating STV from index %d to index %d of image array', 3, (length(obj.visibilityLevelFixedDistanceArray) - 2) ) );
                     stv = calcSTVfromArray( visibilityLevelArrayOfMeasurementField );
                     obj.smallTargetVL = stv;
                 end
