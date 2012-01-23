@@ -58,7 +58,7 @@ classdef LMK_Image_Set_Statistics < handle
             end
             
             obj.FONTSIZE = 14;
-            obj.LINEWIDTH = 1.1;
+            obj.LINEWIDTH = 3.0;
             
         end% constructor
         
@@ -99,8 +99,8 @@ classdef LMK_Image_Set_Statistics < handle
             end
             
             %calculate weber contrast
-            weberContrastArray = meanTargetArray ./ meanBackgroundArray - 1;
-            weberContrastAbsArray = abs( meanTargetArray - meanBackgroundArray ) ./ meanBackgroundArray;
+            weberContrastArray = meanTargetArray - meanBackgroundArray ./ meanBackgroundArray;
+            weberContrastAbsArray = abs( weberContrastArray );
             
             %calculate threshold contrast
             for currentIndex = 1 : length( meanTargetArray )
@@ -123,6 +123,13 @@ classdef LMK_Image_Set_Statistics < handle
             %VL is always positive (not in RP800) was abs()
             visibilityLevelArray = (weberContrastArray ./ thresholdContrastArray);
             visibilityLevelFixedDistanceArray = (weberContrastArray ./ thresholdContrastFixedDistanceArray);
+%             signPos = ( weberContrastArray >= 0 );
+%             signNeg = ~signPos;
+%             signPosNeg = zeros( length(signPos), 1);
+%             signPosNeg( signPos ) = 1;
+%             signPosNeg( signNeg ) = -1;
+%             visibilityLevelArray = visibilityLevelArray .* signPosNeg;
+%             visibilityLevelFixedDistanceArray = visibilityLevelFixedDistanceArray .* signPosNeg;
             
             %set instance values
             obj.visualisationImageArray = visualisationImageArray;
@@ -219,6 +226,8 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
+            finetunePlot( figHandle );
+            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
@@ -228,6 +237,7 @@ classdef LMK_Image_Set_Statistics < handle
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
             
         end
@@ -283,6 +293,8 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
+            finetunePlot( figHandle );
+            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
@@ -292,6 +304,7 @@ classdef LMK_Image_Set_Statistics < handle
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
             
         end
@@ -343,6 +356,8 @@ classdef LMK_Image_Set_Statistics < handle
             set( t, 'FontSize', obj.FONTSIZE );
             
             
+            finetunePlot( figHandle );
+            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 
                 %we need the last path component for filename of plots
@@ -352,6 +367,7 @@ classdef LMK_Image_Set_Statistics < handle
                 filename = sprintf( '%s%s_deltaLPlot_%s', savePath, obj.type, lastPathComponent  );
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
             
         end
@@ -400,6 +416,8 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
+            finetunePlot( figHandle );
+            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
@@ -409,6 +427,7 @@ classdef LMK_Image_Set_Statistics < handle
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
             
         end
@@ -458,6 +477,9 @@ classdef LMK_Image_Set_Statistics < handle
             set( x, 'FontSize', obj.FONTSIZE );
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
+            
+            finetunePlot( figHandle );
+            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 
                 %we need the last path component for filename of plots
@@ -468,6 +490,7 @@ classdef LMK_Image_Set_Statistics < handle
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
             
         end
@@ -527,6 +550,8 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
+            finetunePlot( figHandle );
+            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
@@ -536,6 +561,7 @@ classdef LMK_Image_Set_Statistics < handle
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
             
         end
@@ -595,6 +621,8 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
+            finetunePlot( figHandle );
+            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
@@ -604,6 +632,7 @@ classdef LMK_Image_Set_Statistics < handle
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
             
         end
@@ -653,6 +682,8 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
+            finetunePlot( figHandle );
+            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
@@ -662,6 +693,7 @@ classdef LMK_Image_Set_Statistics < handle
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
         end
         
@@ -709,6 +741,8 @@ classdef LMK_Image_Set_Statistics < handle
             set( y, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
+            finetunePlot( figHandle );
+            
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
@@ -718,6 +752,7 @@ classdef LMK_Image_Set_Statistics < handle
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
         end
         
@@ -738,6 +773,8 @@ classdef LMK_Image_Set_Statistics < handle
             set( l, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
+            finetunePlot( figHandle );
+            
             %platform specific path delimiter
             if(ispc)
                 DELIMITER = '\';
@@ -755,6 +792,7 @@ classdef LMK_Image_Set_Statistics < handle
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
         end
         
@@ -788,6 +826,8 @@ classdef LMK_Image_Set_Statistics < handle
             set( l, 'FontSize', obj.FONTSIZE );
             set( t, 'FontSize', obj.FONTSIZE );
             
+            finetunePlot( figHandle );
+            
             %platform specific path delimiter
             if(ispc)
                 DELIMITER = '\';
@@ -805,6 +845,7 @@ classdef LMK_Image_Set_Statistics < handle
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
         end
         
@@ -822,6 +863,7 @@ classdef LMK_Image_Set_Statistics < handle
             %bad but we have it currently in that way
             len = length( Lb_continuous );
             deltaLpos = zeros( size( Lb_continuous ) );
+            deltaLneg = zeros( size( Lb_continuous ) );
             for i = 1 : len
                 deltaLpos( i ) = calcDeltaL_RP800( Lb_continuous( i ), max( Lb_continuous + 1), alphaMinutes, obj.ageVL, obj.tVL , obj.kVL );
                 deltaLneg( i ) = calcDeltaL_RP800( Lb_continuous( i ), min( Lb_continuous - min( Lb_continuous ) ), alphaMinutes, obj.ageVL, obj.tVL , obj.kVL );
@@ -857,9 +899,9 @@ classdef LMK_Image_Set_Statistics < handle
             posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
             negContrasts = ~posContrasts;
             
-            pP1 = loglog( Lb_continuous, contrastThresholdpos, 'r' );
+            pP1 = semilogx( Lb_continuous, contrastThresholdpos, 'r' );
             hold on;
-            pP1a = loglog( Lb_continuous, contrastThresholdneg, 'b' );
+            pP1a = semilogx( Lb_continuous, contrastThresholdneg, 'b' );
             
             set( pP1, 'LineWidth', obj.LINEWIDTH );
             set( pP1a, 'LineWidth', obj.LINEWIDTH );
@@ -889,25 +931,25 @@ classdef LMK_Image_Set_Statistics < handle
                 color = 1;
             end
             
-%             if ( color == 1 )
-%                 color1 = sprintf( 'r%s', plotsign );
-%                 color2 = sprintf( 'k%s', plotsign );
-%             elseif ( color == 2 )
-%                 color1 = sprintf( 'gr%s', plotsign );
-%                 color2 = sprintf( 'b%s', plotsign );
-%             else
-                color1 = sprintf( 'r%s', plotsign );
-                color2 = sprintf( 'b%s', plotsign );
+            %             if ( color == 1 )
+            %                 color1 = sprintf( 'r%s', plotsign );
+            %                 color2 = sprintf( 'k%s', plotsign );
+            %             elseif ( color == 2 )
+            %                 color1 = sprintf( 'gr%s', plotsign );
+            %                 color2 = sprintf( 'b%s', plotsign );
+            %             else
+            color1 = sprintf( 'r%s', plotsign );
+            color2 = sprintf( 'b%s', plotsign );
             %end
             
-            posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
+            posContrasts = obj.weberContrastArray >= 0;
             negContrasts = ~posContrasts;
             alphaMinutes = obj.alphaArray( 3 );
             
             %actual contrasts
             hold on;
-            pP2 = loglog( obj.meanBackgroundArray( posContrasts ), obj.weberContrastAbsArray( posContrasts ), color1 );
-            pP2a = loglog( obj.meanBackgroundArray( negContrasts ), obj.weberContrastAbsArray( negContrasts ), color2 );
+            pP2 = semilogx( obj.meanBackgroundArray( posContrasts ), obj.weberContrastAbsArray( posContrasts ), color1 );
+            pP2a = semilogx( obj.meanBackgroundArray( negContrasts ), obj.weberContrastAbsArray( negContrasts ), color2 );
             hold off;
             
             set( pP2, 'LineWidth', obj.LINEWIDTH );
@@ -949,7 +991,7 @@ classdef LMK_Image_Set_Statistics < handle
         end
         
         %% plotCthArrayLBBorderAndSave
-        function plotCthArrayLBBorderAndSave( obj, savePath, figHandle )
+        function plotCthArrayLBBorderAndSave( obj, savePath, figHandle, minLb, maxLb )
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             % cthresh over Lb for several alpha
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -986,8 +1028,10 @@ classdef LMK_Image_Set_Statistics < handle
             contrastThresholdpos = deltaLpos ./ Lb_continuous;
             contrastThresholdneg = deltaLneg ./ Lb_continuous;
             
-            minLb = min( obj.meanBackgroundArray );
-            maxLb = max( obj.meanBackgroundArray );
+            if( nargin < 4 )
+                minLb = min( obj.meanBackgroundArray );
+                maxLb = max( obj.meanBackgroundArray );
+            end
             minCthpos = min( contrastThresholdpos );
             maxCthpos = max( contrastThresholdpos );
             minCthneg = min( contrastThresholdneg );
@@ -1008,16 +1052,17 @@ classdef LMK_Image_Set_Statistics < handle
             if( maxCthneg > maxi )
                 maxi = maxCthneg;
             end
+            
             verticalLine = [ mini; maxi ];
             
-            posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
+            posContrasts = obj.weberContrastArray > 0;
             negContrasts = ~posContrasts;
             
             
             %vertical lines
             hold on;
-            pP3 = loglog( [ minLb; minLb ], verticalLine, 'gr:' );
-            pP4 = loglog( [ maxLb; maxLb ], verticalLine, 'gr:' );
+            pP3 = semilogx( [ minLb; minLb ], verticalLine, 'gr:' );
+            pP4 = semilogx( [ maxLb; maxLb ], verticalLine, 'gr:' );
             hold off;
             
             set( pP3, 'LineWidth', obj.LINEWIDTH );
@@ -1029,6 +1074,8 @@ classdef LMK_Image_Set_Statistics < handle
             set(pX, 'FontSize', obj.FONTSIZE);
             pY = ylabel('C');
             set(pY, 'FontSize', obj.FONTSIZE);
+            
+            finetunePlot( figHandle );
             
             %set(pL,'interpreter','LaTeX');
             %v = get( pL, 'title' );
@@ -1051,6 +1098,7 @@ classdef LMK_Image_Set_Statistics < handle
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
             
         end

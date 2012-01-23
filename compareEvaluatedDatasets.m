@@ -113,7 +113,7 @@ for currentDatasetIndex = 1 : numberOfDatasets
         load( filePath );
         arrayWithSetStatistics{ currentDatasetIndex } = photopicLMK_Image_Set_Statistics;
     end
-
+    
     %we don't like too much data in memory
     %shouldn't have been saved in the first place...
     photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray = 0;
@@ -212,48 +212,72 @@ if( ~isempty( customCodeString ) )%~strcmp( customCodeString, '') )
 end
 
 %save images
+finetunePlot( figHandleContrast );
 filename = sprintf( '%s%sComparePlot%sweberContrastPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleContrast, filename, 'epsc');
 saveas(figHandleContrast, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
+finetunePlot( figHandleAbsContrast );
 filename = sprintf( '%s%sComparePlot%sAbsWeberContrastPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleAbsContrast, filename, 'epsc');
 saveas(figHandleAbsContrast, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
+finetunePlot( figHandleVL );
 filename = sprintf( '%s%sComparePlot%sVLPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleVL, filename, 'epsc');
 saveas(figHandleVL, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
+finetunePlot( figHandleVLFixedDistance );
 filename = sprintf( '%s%sComparePlot%sVLFixedDistancePlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleVLFixedDistance, filename, 'epsc');
 saveas(figHandleVLFixedDistance, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
+finetunePlot( figHandleLt );
 filename = sprintf( '%s%sComparePlot%sLtPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleLt, filename, 'epsc');
 saveas(figHandleLt, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
+finetunePlot( figHandleLB );
 filename = sprintf( '%s%sComparePlot%sLBPlot_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
 saveas(figHandleLB, filename, 'epsc');
 saveas(figHandleLB, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
 %prepare extra plot: compare Cs to Cth
 %compare data
 figHandleCthCompare = figure();
 currentSetStatistics.plotCthArrayContrastThresholds( figHandleCthCompare );
 
-plotSignArray = { 'o', 'x', '.' };
+plotSignArray = { 'o', 'x', '.', '*', '+', 's', 'd' };
 numberOfPlotsigns = length( plotSignArray );
 
 alphaMinutes = currentSetStatistics.alphaArray( 3 );
 legends{ 1 } = sprintf( 'C_{th, pos} for alpha %3.2f^{''}', alphaMinutes );
 legends{ 2 } = sprintf( 'C_{th, neg} for alpha %3.2f^{''}', alphaMinutes );
 
+minLb = 1000000000;
+maxLb = 0;
+
 for currentDatasetIndex = 1 : numberOfDatasets
     
-    currentPlotsignIndex = mod( currentDatasetIndex, numberOfPlotsigns );
-    if ( currentPlotsignIndex == 0 )
-        currentPlotsignIndex = numberOfPlotsigns;
+    %     currentPlotsignIndex = mod( currentDatasetIndex, numberOfPlotsigns );
+    %     if ( currentPlotsignIndex == 0 )
+    %         currentPlotsignIndex = numberOfPlotsigns;
+    %     end
+    currentPlotsignIndex = currentDatasetIndex;
+    while( currentPlotsignIndex > numberOfPlotsigns )
+        currentPlotsignIndex = currentPlotsignIndex - numberOfPlotsigns;
+        if( currentPlotsignIndex < 1 )
+            currentPlotsignIndex = 1;
+        end
     end
+    
+    currentSetStatistics = arrayWithSetStatistics{ currentDatasetIndex };
     
     [ legendString ] = currentSetStatistics.plotCthArrayCurrentData( figHandleCthCompare, currentDatasetIndex, plotSignArray{ currentPlotsignIndex } );
     
@@ -264,18 +288,29 @@ for currentDatasetIndex = 1 : numberOfDatasets
     if( length( legendString ) >= 4)
         legends{ length( legends ) + 1 } = sprintf( 'C_{neg} for %s', legendsForDatasets{ currentDatasetIndex } );
     end
+    
+    mini = min( currentSetStatistics.meanBackgroundArray );
+    maxi = max( currentSetStatistics.meanBackgroundArray );
+    if( mini < minLb )
+        minLb = mini;
+    end
+    if( maxi > maxLb )
+        maxLb = maxi;
+    end
+    
 end
 
 %adjust legends here:
 %set(0, 'CurrentFigure', figHandleCthCompare);
 legend( legends, 'Location', 'Best' );
 
-currentSetStatistics.plotCthArrayLBBorderAndSave( 'DO_NOT_SAVE', figHandleCthCompare );
+currentSetStatistics.plotCthArrayLBBorderAndSave( 'DO_NOT_SAVE', figHandleCthCompare, minLb, maxLb );
 
+finetunePlot( figHandleCthCompare );
 filename = sprintf( '%s%sComparePlot%sCthComparison_%s', SAVEPATH, DELIMITER, DELIMITER, lastPathComponent );
-saveas(figHandleContrast, filename, 'epsc');
-saveas(figHandleContrast, filename, 'fig');
-
+saveas(figHandleCthCompare, filename, 'epsc');
+saveas(figHandleCthCompare, filename, 'fig');
+fixPSlinestyle( sprintf( '%s.eps', filename ) );
 
 %convert to pdf
 %convert all files to pdf
