@@ -99,7 +99,7 @@ classdef LMK_Image_Set_Statistics < handle
             end
             
             %calculate weber contrast
-            weberContrastArray = meanTargetArray - meanBackgroundArray ./ meanBackgroundArray;
+            weberContrastArray = ( meanTargetArray - meanBackgroundArray ) ./ meanBackgroundArray;
             weberContrastAbsArray = abs( weberContrastArray );
             
             %calculate threshold contrast
@@ -896,7 +896,7 @@ classdef LMK_Image_Set_Statistics < handle
             end
             verticalLine = [ mini; maxi ];
             
-            posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
+            posContrasts = obj.weberContrastArray >= 0;
             negContrasts = ~posContrasts;
             
             pP1 = semilogx( Lb_continuous, contrastThresholdpos, 'r' );
@@ -1055,7 +1055,7 @@ classdef LMK_Image_Set_Statistics < handle
             
             verticalLine = [ mini; maxi ];
             
-            posContrasts = obj.weberContrastArray > 0;
+            posContrasts = obj.weberContrastArray >= 0;
             negContrasts = ~posContrasts;
             
             
