@@ -103,10 +103,11 @@ classdef LMK_Image_Set_Statistics < handle
             weberContrastAbsArray = abs( weberContrastArray );
             
             %calculate threshold contrast
+            fixedAlphaMinutes = currentStatisticsArray{ 3 }.alphaMinutes;
             for currentIndex = 1 : length( meanTargetArray )
                 Lb = meanBackgroundArray( currentIndex );
                 Lt = meanTargetArray( currentIndex );
-                alphaMinutes = obj.alphaArray( currentIndex );
+                alphaMinutes = currentStatisticsArray{ currentIndex }.alphaMinutes;
                 deltaL = calcDeltaL(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
                 deltaL_RP800 = calcDeltaL_RP800(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
                 thresholdContrastArray( currentIndex ) = deltaL_RP800 / Lb;
@@ -114,8 +115,8 @@ classdef LMK_Image_Set_Statistics < handle
                 disp( sprintf( 'deltaLAdrian: %f deltaLRP800: %f', deltaL, deltaL_RP800 ) );
                 
                 %calc the same for fixed distance (we take the first distance in the measurement field, that's currently object 3)
-                alphaMinutes = obj.alphaArray( 3 );
-                deltaLFixedDistance = calcDeltaL_RP800(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
+                %alphaMinutes = obj.alphaArray( 3 );
+                deltaLFixedDistance = calcDeltaL_RP800(Lb, Lt, fixedAlphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
                 thresholdContrastFixedDistanceArray( currentIndex ) = deltaLFixedDistance / Lb;
             end
             

@@ -10,7 +10,7 @@ classdef LMK_Image_Metadata < handle
         focalLength
         twoDegreeRadiusPix
         distanceToObject
-        targetAlphaMinutes
+        %targetAlphaMinutes
         
         dataSRCMat
         dataTypeMat
@@ -171,15 +171,15 @@ classdef LMK_Image_Metadata < handle
             value = obj.Name;
         end%lazy loading of measurement series name
         
-        %% calcAlpha
-        function calcAlpha(obj)
-            dis = obj.distanceToObject;
-            objSize = obj.targetSize;
-            alphaRad = 2 * atan(objSize / 2 ./ dis);
-            alphaMinutes = (alphaRad / pi * 180 * 60);
-            obj.targetAlphaMinutes = alphaMinutes;
-        end
-        
+%         %% calcAlpha
+%         function calcAlpha(obj)
+%             dis = obj.distanceToObject;
+%             objSize = obj.targetSize;
+%             alphaRad = 2 * atan(objSize / 2 ./ dis);
+%             alphaMinutes = (alphaRad / pi * 180 * 60);
+%             obj.targetAlphaMinutes = alphaMinutes;
+%         end
+%         
         %% get.visualisationImagePhotopic
         function value = get.visualisationImagePhotopic( obj )
             if (isempty( obj.visualisationImagePhotopic ) )
