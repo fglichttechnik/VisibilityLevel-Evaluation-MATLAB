@@ -10,12 +10,6 @@ y1 = LMK_Image_Statistics.imageMetadata.rect.upperLeft.y - k;
 x2 = LMK_Image_Statistics.imageMetadata.rect.lowerRight.x + k;
 y2 = LMK_Image_Statistics.imageMetadata.rect.lowerRight.y + k;
 
-%HACK: we have an offset of 1 px in the current positioning system
-x1 = x1 + 1;
-y1 = y1 + 1;
-%x2 = x2 + 1;
-%y2 = y2 + 1;
-
 %calc mean
 %targetImage = image(y1 : y2, x1 : x2);
 %meanTarget = mean2(targetImage);
