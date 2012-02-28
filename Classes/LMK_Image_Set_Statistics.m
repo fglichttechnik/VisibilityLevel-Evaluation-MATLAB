@@ -21,6 +21,7 @@ classdef LMK_Image_Set_Statistics < handle
         visibilityLevelFixedDistanceArray        %array with visibility levels of current set (distance is assumed to be the samefor all target positions)
         distanceArray               %array with distances of current set
         visualisationImageArray     %array with visualisation images of current set
+        visualisationMeasArray
         
         
         smallTargetVL               %small target visibility level; weighted average of all VL
@@ -73,12 +74,14 @@ classdef LMK_Image_Set_Statistics < handle
             thresholdContrastFixedDistanceArray = zeros( size( currentStatisticsArray ) );
             distanceArray = zeros( size( currentStatisticsArray ) );
             visualisationImageArray = cell( size( currentStatisticsArray ) );
+            visualisationMeasArray = cell( size( currentStatisticsArray ) );
             
             %create arrays with Lt , LB and d
             for currentIndex = 1 : length( meanTargetArray )
                 currentStatistics = currentStatisticsArray{ currentIndex };
                 distanceArray( currentIndex ) = currentStatistics.imageMetadata.rectPosition;
                 visualisationImageArray{ currentIndex } = currentStatistics.imageMetadata.visualisationImagePhotopic;
+                visualisationMeasArray{ currentIndex } = currentStatistics.imageMetadata.visualisationMeasRegions;
                 
                 if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST' ) )
                     meanTargetArray( currentIndex ) = currentStatistics.strongestEdgeMeanTarget;
@@ -134,6 +137,7 @@ classdef LMK_Image_Set_Statistics < handle
             
             %set instance values
             obj.visualisationImageArray = visualisationImageArray;
+            obj.visualisationMeasArray = visualisationMeasArray;
             obj.distanceArray = distanceArray;
             obj.meanTargetArray = meanTargetArray;
             obj.meanBackgroundArray = meanBackgroundArray;
@@ -176,6 +180,12 @@ classdef LMK_Image_Set_Statistics < handle
                 filename = sprintf( '%s%svisImages%s%s_%d.png', savePath, DELIMITER, DELIMITER, obj.type, currentIndex );
                 imwrite( image, filename );
             end
+            for currentIndex = 1 : length( obj.visualisationMeasArray )
+                image = obj.visualisationMeasArray{ currentIndex };
+                filename = sprintf( '%s%svisImages%sMeasRegions_%d.png', savePath, DELIMITER, DELIMITER, currentIndex );
+                imwrite( image, filename );
+            end
+            
         end
         
         %% plotContrast

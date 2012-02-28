@@ -18,3 +18,12 @@ colorChannel = 2;
 
 %save to class
 LMK_Image_Statistics.meanTarget = meanTarget;
+
+% %visualize measurement region
+% visMeasRegion = logical( ones( size( image ) ) );
+% visMeasRegion( y1 : y2, x1 : x2 ) = 0;
+% alphaMask = logical( visMeasRegion );
+% visualisationMeasRegions = image;
+% visualisationMeasRegions( alphaMask ) = image( alphaMask ) * 0.1;
+% %imshow( visualisationMeasRegions );
+% LMK_Image_Statistics.imageMetadata.visualisationMeasRegions = visualisationMeasRegions;

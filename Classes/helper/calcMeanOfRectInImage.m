@@ -30,7 +30,7 @@ end
 %imshow(img(y1 : y2, x1 : x2))
 %imshow(img(y1 : y2+1, x1 : x2+1))
 
-meanImg = mean2( img(y1 : y2, x1 : x2) );
+meanImg = mean2( img( y1 : y2, x1 : x2) );
 
 %visualize measurement region
 visImage = logical( zeros( size( img ) ) );
@@ -38,7 +38,7 @@ visImage(y1 : y2, x1 : x2) = 1;
 visImage = bwperim( visImage, 8);
 
 %mark region 
-alphaMask = zeros( size ( LMK_Image_Statistics.imageMetadata.dataImagePhotopic ) );
+alphaMask = zeros( size ( img ) );
 alphaMask( : , : , colorChannel) = visImage;
 alphaMask = logical( alphaMask );
 LMK_Image_Statistics.imageMetadata.visualisationImagePhotopic( alphaMask ) = 1;

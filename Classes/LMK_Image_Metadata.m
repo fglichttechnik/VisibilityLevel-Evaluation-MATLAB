@@ -31,6 +31,7 @@ classdef LMK_Image_Metadata < handle
         factorForMesopicLumCalc
         
         visualisationImagePhotopic
+        visualisationMeasRegions
         
         imageMetaData % currently not in use
         
