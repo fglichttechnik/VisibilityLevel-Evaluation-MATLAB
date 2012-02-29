@@ -83,14 +83,14 @@ LMK_Image_Statistics.meanBackgroundLowerEdge = lowerBackgroundMean;
 LMK_Image_Statistics.meanBackgroundLeftEdge = leftBackgroundMean;
 LMK_Image_Statistics.meanBackgroundRightEdge = rightBackgroundMean;
 
-%visualize measurement region
-visMeasRegion = logical( ones( size( image ) ) );
-visMeasRegion( upperBackgroundY1 : lowerBackgroundY2, leftBackgroundX1 : rightBackgroundX2 ) = 0;
-alphaMask = logical( visMeasRegion );
-visualisationMeasRegions = image;
-visualisationMeasRegions( alphaMask ) = image( alphaMask ) * 0.5;
-%imshow( visualisationMeasRegions );
-LMK_Image_Statistics.imageMetadata.visualisationMeasRegions = visualisationMeasRegions;
+% %visualize measurement region
+% visMeasRegion = logical( ones( size( image ) ) );
+% visMeasRegion( upperBackgroundY1 : lowerBackgroundY2, leftBackgroundX1 : rightBackgroundX2 ) = 0;
+% alphaMask = logical( visMeasRegion );
+% visualisationMeasRegions = image;
+% visualisationMeasRegions( alphaMask ) = image( alphaMask ) * 0.5;
+% %imshow( visualisationMeasRegions );
+% LMK_Image_Statistics.imageMetadata.visualisationMeasRegions = visualisationMeasRegions;
 
 end
 

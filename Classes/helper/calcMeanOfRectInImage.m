@@ -35,10 +35,28 @@ meanImg = mean2( img( y1 : y2, x1 : x2) );
 %visualize measurement region
 visImage = logical( zeros( size( img ) ) );
 visImage(y1 : y2, x1 : x2) = 1;
+
+visImage2 = visImage;
+
 visImage = bwperim( visImage, 8);
 
 %mark region 
 alphaMask = zeros( size ( img ) );
 alphaMask( : , : , colorChannel) = visImage;
 alphaMask = logical( alphaMask );
+
 LMK_Image_Statistics.imageMetadata.visualisationImagePhotopic( alphaMask ) = 1;
+
+alphaMask2 = logical( visImage2 );
+LMK_Image_Statistics.imageMetadata.visualisationMeasRegions( alphaMask2 ) = img( alphaMask2 );
+%imshow( LMK_Image_Statistics.imageMetadata.visualisationMeasRegions );
+%disp('imshow');
+
+% %visualize measurement region
+% visMeasRegion = logical( ones( size( image ) ) );
+% visMeasRegion( upperBackgroundY1 : lowerBackgroundY2, leftBackgroundX1 : rightBackgroundX2 ) = 0;
+% alphaMask = logical( visMeasRegion );
+% visualisationMeasRegions = image;
+% visualisationMeasRegions( alphaMask ) = image( alphaMask ) * 0.5;
+% %imshow( visualisationMeasRegions );
+% LMK_Image_Statistics.imageMetadata.visualisationMeasRegions = visualisationMeasRegions;

@@ -209,5 +209,20 @@ classdef LMK_Image_Metadata < handle
             
         end
         
+                %% get.visualisationMeasRegions
+        function value = get.visualisationMeasRegions( obj )
+            if (isempty( obj.visualisationMeasRegions ) )
+                
+                dataImage = obj.dataImagePhotopic;
+                
+                %set visualisation image as RGB image
+                %visImagePhotopic = imadjust( obj.dataImagePhotopic, stretchlim(dataImage),[] ); %contrast stretch image for better viewing
+                %obj.visualisationMeasRegions = visImagePhotopic * 0.1;
+                obj.visualisationMeasRegions = dataImage * 0.5;
+            end
+            value = obj.visualisationMeasRegions;
+            
+        end
+        
     end % methods
 end
