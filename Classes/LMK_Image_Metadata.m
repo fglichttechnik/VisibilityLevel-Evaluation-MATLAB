@@ -21,7 +21,6 @@ classdef LMK_Image_Metadata < handle
         
         rect
         rectPosition
-        targetSize
         quadrangle
         border
         
@@ -35,11 +34,16 @@ classdef LMK_Image_Metadata < handle
         
         imageMetaData % currently not in use
         
-        SPRatio
         comments
         lightSource
-        Name
         dirPath
+        
+        % temporarily used properties
+        viewPointDistance        
+        targetSize
+        SPRatio
+        numPoleFields
+        
     end % properties
     methods
         %constructor
@@ -165,11 +169,11 @@ classdef LMK_Image_Metadata < handle
         end%lazy loading of light source
         
         %% get.Name
-        function value = get.Name(obj)
-            if (isempty(obj.Name))
-                obj.Name = 'LMKSet';
+        function value = get.sceneTitle(obj)
+            if (isempty(obj.sceneTitle))
+                obj.sceneTitle = 'LMKSetMat';
             end
-            value = obj.Name;
+            value = obj.sceneTitle;
         end%lazy loading of measurement series name
         
 %         %% calcAlpha
