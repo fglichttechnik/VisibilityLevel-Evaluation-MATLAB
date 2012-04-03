@@ -25,6 +25,8 @@ XMLNAME = 'LMKSetMat';  %best if you name all xmls like that
 %PATH = '/Users/sandy/Desktop/Development/RoadRad/RoadRad/scenes/sceneXY/LMKSetMat';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 %PATH = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder\pf';
+%PATH = '/Users/sandy/Desktop/Development/LMK/LMK_Data_evaluation/database/sceneXYZ';
+
 
 %adrian threshold model parameter
 %AGE = 24;		%age of observer for adrians model
