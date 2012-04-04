@@ -61,16 +61,16 @@ for i = 1 : MAX_NUMBER_OF_ITERATIONS
     denominator = m_n_1 + (1 - m_n_1) * V_strich_lambda0;
     Lmes_n = numerator / denominator;
     
-    m_n = a + b * log10(Lmes_n)
+    m_n = a + b * log10(Lmes_n);
     
     %keep photopic luminances above UPPER_VALUE_FOR_MESOPIC
     if Lmes_n >= UPPER_VALUE_FOR_MESOPIC
-        m_n = 1
+        m_n = 1;
     end
     
     %keep scotopic luminances below LOWER_VALUE_FOR_MESOPIC
     if Lmes_n <= LOWER_VALUE_FOR_MESOPIC
-        m_n = 0
+        m_n = 0;
     end
     
 end
