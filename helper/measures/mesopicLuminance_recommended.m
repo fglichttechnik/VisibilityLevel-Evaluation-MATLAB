@@ -33,8 +33,8 @@ end
 %make calling without adaption luminance possible
 if nargin < 3
     %for currentIndex = 1 : size(Lp)
-        Lap = mean( Lp );
-        Las = mean( Ls );
+        Lap = mean2( Lp );
+        Las = mean2( Ls );
     %end   
 end
 
@@ -50,7 +50,7 @@ m_n_1 = 0;
 m_n = STARTWERT;
 
 for i = 1 : MAX_NUMBER_OF_ITERATIONS
-    
+
     if abs( m_n_1 - m_n ) <= BREAK_CRITERION         
         break
     end

@@ -31,8 +31,20 @@ fromY = centerY - radius;
 toX = centerX + radius;
 toY = centerY + radius;
 
-%TODO
-%check if vals are within range.. of image
+%check if vals are within range of image
+[ maxY, maxX ] = size( img );
+if ( fromY > maxY )
+    fromY = maxY;
+end
+if ( toY > maxY )
+    toY = maxY;
+end
+if ( fromX > maxX )
+    fromX = maxX;
+end
+if ( toX > maxX )
+    toX = maxX;
+end
 
 %calculations needs to be done only within subimage
 subImage = img(fromY : toY, fromX : toX);
@@ -50,11 +62,8 @@ subY2 = subCenterY + round((y2 - y1) / 2);
 meanVal = 0;
 numberOfVals = 0;
 
-
-
-
-for i = 1 : height
-    for j = 1 : width
+for i = 1 : width
+    for j = 1 : height
         %circle criterion
         currentDistanceFromCenter = sqrt((i - height / 2)^2 + (j - width / 2)^2);
         if(currentDistanceFromCenter < radius)              

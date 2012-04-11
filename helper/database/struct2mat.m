@@ -282,49 +282,49 @@ for i = 1 : childSize
         end % end of browsing children  
                
         % error handling:
-         if (photMatch == 1) && (isempty(evaluatedData.dataSRCPhotopic) && ...
-                 (isempty(evaluatedData.dataSRCMat)))
-            disp(['Warning: no src attributes for photopic data found!',...
-                'Picture cannot be loaded!']);
-         end
-         if (photMatch == 1) && (isempty(evaluatedData.dataTypePhotopic) && ...
-                 (isempty(evaluatedData.dataSRCMat)))
-            disp(['Warning: no type attributes for photopic data found!',...
-                'Picture cannot be loaded!']);           
-         end 
-         if (photMatch == 1) && (isempty(evaluatedData.dataSRCScotopic) && ...
-                 (isempty(evaluatedData.dataSRCMat)))
-            disp(['Warning: no src attributes for scotopic data found!',...
-                'Picture cannot be loaded!']);           
-         end
-         if (photMatch) == 1 && (isempty(evaluatedData.dataTypeScotopic) && ...
-                 (isempty(evaluatedData.dataSRCMat)))
-            disp(['Warning: no type attributes for scotopic data found!',...
-                'Picture cannot be loaded!']);
-         end 
-         if rectMatch == 0
-             disp('Warning: no rectangle object found!');
-         elseif ~(exist('x1', 'var')) || ~(exist('y1', 'var'))
-             disp('Warning: no upper left coordinates for rectangle object found!');
-         elseif ~(exist('x2', 'var')) || ~(exist('y2', 'var'))
-             disp('Warning: no lower right coordinates for rectangle object found!');
-         elseif (isempty(evaluatedData.border))
-             disp('Warning: no border for rectangle object found!');
-         elseif (isempty(evaluatedData.rectPosition))
-             disp('Warning: no position for rectangle object found!');
-         end 
-         if ~(isempty(evaluatedData.dataSRCPhotopic)) ...
-                 && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCPhotopic],'file'))
-             disp(['Warning: File ', evaluatedData.dataSRCPhotopic, ' not found!']);
-         end
-         if ~(isempty(evaluatedData.dataSRCScotopic)) ...
-                 && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCScotopic],'file'))
-             disp(['Warning: File ', evaluatedData.dataSRCScotopic, ' not found!']);
-         end
-         if ~(isempty(evaluatedData.dataSRCMat)) ...
-                 && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCMat],'file'))
-             disp(['Warning: File ', evaluatedData.dataSRCMat, ' not found!']);
-         end
+%          if (photMatch == 1) && (isempty(evaluatedData.dataSRCPhotopic) && ...
+%                  (isempty(evaluatedData.dataSRCMat)))
+%             disp(['Warning: no src attributes for photopic data found!',...
+%                 'Picture cannot be loaded!']);
+%          end
+%          if (photMatch == 1) && (isempty(evaluatedData.dataTypePhotopic) && ...
+%                  (isempty(evaluatedData.dataSRCMat)))
+%             disp(['Warning: no type attributes for photopic data found!',...
+%                 'Picture cannot be loaded!']);           
+%          end 
+%          if (photMatch == 1) && (isempty(evaluatedData.dataSRCScotopic) && ...
+%                  (isempty(evaluatedData.dataSRCMat)))
+%             disp(['Warning: no src attributes for scotopic data found!',...
+%                 'Picture cannot be loaded!']);           
+%          end
+%          if (photMatch) == 1 && (isempty(evaluatedData.dataTypeScotopic) && ...
+%                  (isempty(evaluatedData.dataSRCMat)))
+%             disp(['Warning: no type attributes for scotopic data found!',...
+%                 'Picture cannot be loaded!']);
+%          end 
+%          if rectMatch == 0
+%              disp('Warning: no rectangle object found!');
+%          elseif ~(exist('x1', 'var')) || ~(exist('y1', 'var'))
+%              disp('Warning: no upper left coordinates for rectangle object found!');
+%          elseif ~(exist('x2', 'var')) || ~(exist('y2', 'var'))
+%              disp('Warning: no lower right coordinates for rectangle object found!');
+%          elseif (isempty(evaluatedData.border))
+%              disp('Warning: no border for rectangle object found!');
+%          elseif (isempty(evaluatedData.rectPosition))
+%              disp('Warning: no position for rectangle object found!');
+%          end 
+%          if ~(isempty(evaluatedData.dataSRCPhotopic)) ...
+%                  && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCPhotopic],'file'))
+%              disp(['Warning: File ', evaluatedData.dataSRCPhotopic, ' not found!']);
+%          end
+%          if ~(isempty(evaluatedData.dataSRCScotopic)) ...
+%                  && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCScotopic],'file'))
+%              disp(['Warning: File ', evaluatedData.dataSRCScotopic, ' not found!']);
+%          end
+%          if ~(isempty(evaluatedData.dataSRCMat)) ...
+%                  && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCMat],'file'))
+%              disp(['Warning: File ', evaluatedData.dataSRCMat, ' not found!']);
+%          end
                  
         
         % create struct for rect object
@@ -361,7 +361,7 @@ for i = 1 : childSize
         evaluatedData.distanceToObject = distanceToObject;
         evaluatedData.targetSize = targetSize;
         evaluatedData.SPRatio = SPRatio;
-        evaluatedData.calcAlpha();
+        %evaluatedData.calcAlpha();
         
         %set scotopic image if needed and possible
         if( evaluatedData.SPRatio && ~strcmp( evaluatedData.dataSRCScotopic, '' ) )

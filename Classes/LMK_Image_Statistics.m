@@ -26,6 +26,7 @@ classdef LMK_Image_Statistics < handle
         strongestEdgeString         %upperEdge, lowerEdge, leftEdge, rightEdge
         strongestEdgeMeanTarget
         strongestEdgeMeanBackground
+        alphaMinutes
         
         
         %currently not necessary values
@@ -52,7 +53,7 @@ classdef LMK_Image_Statistics < handle
         end% constructor
         
         
-        %lazy loading of strongestEdgeContrast
+        %% lazy loading of strongestEdgeContrast
         function value = get.strongestEdgeContrast( obj )
             if( isempty( obj.strongestEdgeContrast ) )
                 
@@ -91,7 +92,7 @@ classdef LMK_Image_Statistics < handle
             value = obj.strongestEdgeContrast;
         end
         
-        %lazy loading of strongestEdgeString
+        %% lazy loading of strongestEdgeString
         function value = get.strongestEdgeString( obj )
             if( isempty( obj.strongestEdgeString ) )
                 %trigger strongestEdgeContrast --> will calculate
@@ -101,7 +102,7 @@ classdef LMK_Image_Statistics < handle
             value = obj.strongestEdgeString;
         end
         
-        %lazy loading of background luminance according to RP800
+        %% lazy loading of background luminance according to RP800
         function value = get.meanBackground_RP8_00( obj )
             if( isempty( obj.meanBackground_RP8_00 ) )
                 meanBackground_RP8_00 = ( obj.meanBackgroundUpperEdge + obj.meanBackgroundLowerEdge ) / 2;
@@ -110,7 +111,7 @@ classdef LMK_Image_Statistics < handle
             value = obj.meanBackground_RP8_00;
         end
         
-        %lazy loading of strongestEdgeMeanTarget
+        %% lazy loading of strongestEdgeMeanTarget
         function value = get.strongestEdgeMeanTarget( obj )
             if( isempty( obj.strongestEdgeMeanTarget ) )
                 %trigger strongestEdgeContrast --> will calculate
@@ -133,7 +134,7 @@ classdef LMK_Image_Statistics < handle
             value = obj.strongestEdgeMeanTarget;
         end
         
-        %lazy loading of strongestEdgeString
+        %% lazy loading of strongestEdgeString
         function value = get.strongestEdgeMeanBackground( obj )
             if( isempty( obj.strongestEdgeMeanBackground ) )
                 %trigger strongestEdgeContrast --> will calculate
@@ -157,8 +158,20 @@ classdef LMK_Image_Statistics < handle
             
         end
         
-        %private methods
-        %calculate all values
+        %% lazy loading of alphaMinutes
+        function value = get.alphaMinutes( obj )
+            if( isempty( obj.alphaMinutes ) )
+                dis = obj.imageMetadata.distanceToObject;
+                objSize = obj.imageMetadata.targetSize;
+                alphaRad = 2 * atan( objSize / 2 ./ dis );
+                targetAlphaMinutes = ( alphaRad / pi * 180 * 60 );
+                obj.alphaMinutes = targetAlphaMinutes;
+            end
+            value = obj.alphaMinutes;
+        end
+        
+        %% private methods
+        %% calculate all values
         function performCalculations(obj)
             
             if( strcmp( obj.dataType, 'Photopic') )

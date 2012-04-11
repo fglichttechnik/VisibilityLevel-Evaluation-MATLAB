@@ -10,7 +10,7 @@ classdef LMK_Image_Metadata < handle
         focalLength
         twoDegreeRadiusPix
         distanceToObject
-        targetAlphaMinutes
+        %targetAlphaMinutes
         
         dataSRCMat
         dataTypeMat
@@ -21,7 +21,6 @@ classdef LMK_Image_Metadata < handle
         
         rect
         rectPosition
-        targetSize
         quadrangle
         border
         
@@ -31,14 +30,20 @@ classdef LMK_Image_Metadata < handle
         factorForMesopicLumCalc
         
         visualisationImagePhotopic
+        visualisationMeasRegions
         
         imageMetaData % currently not in use
         
-        SPRatio
         comments
         lightSource
-        Name
         dirPath
+        
+        % temporarily used properties
+        viewPointDistance        
+        targetSize
+        SPRatio
+        numPoleFields
+        
     end % properties
     methods
         %constructor
@@ -164,22 +169,22 @@ classdef LMK_Image_Metadata < handle
         end%lazy loading of light source
         
         %% get.Name
-        function value = get.Name(obj)
-            if (isempty(obj.Name))
-                obj.Name = 'LMKSet';
+        function value = get.sceneTitle(obj)
+            if (isempty(obj.sceneTitle))
+                obj.sceneTitle = 'LMKSetMat';
             end
-            value = obj.Name;
+            value = obj.sceneTitle;
         end%lazy loading of measurement series name
         
-        %% calcAlpha
-        function calcAlpha(obj)
-            dis = obj.distanceToObject;
-            objSize = obj.targetSize;
-            alphaRad = 2 * atan(objSize / 2 ./ dis);
-            alphaMinutes = (alphaRad / pi * 180 * 60);
-            obj.targetAlphaMinutes = alphaMinutes;
-        end
-        
+%         %% calcAlpha
+%         function calcAlpha(obj)
+%             dis = obj.distanceToObject;
+%             objSize = obj.targetSize;
+%             alphaRad = 2 * atan(objSize / 2 ./ dis);
+%             alphaMinutes = (alphaRad / pi * 180 * 60);
+%             obj.targetAlphaMinutes = alphaMinutes;
+%         end
+%         
         %% get.visualisationImagePhotopic
         function value = get.visualisationImagePhotopic( obj )
             if (isempty( obj.visualisationImagePhotopic ) )
@@ -205,6 +210,21 @@ classdef LMK_Image_Metadata < handle
                 %calcMeanOfCircleWihtoutRect( dataImage, obj.imageMetadata );
             end
             value = obj.visualisationImagePhotopic;
+            
+        end
+        
+                %% get.visualisationMeasRegions
+        function value = get.visualisationMeasRegions( obj )
+            if (isempty( obj.visualisationMeasRegions ) )
+                
+                dataImage = obj.dataImagePhotopic;
+                
+                %set visualisation image as RGB image
+                %visImagePhotopic = imadjust( obj.dataImagePhotopic, stretchlim(dataImage),[] ); %contrast stretch image for better viewing
+                %obj.visualisationMeasRegions = visImagePhotopic * 0.1;
+                obj.visualisationMeasRegions = dataImage * 0.5;
+            end
+            value = obj.visualisationMeasRegions;
             
         end
         

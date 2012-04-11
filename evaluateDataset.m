@@ -25,6 +25,8 @@ XMLNAME = 'LMKSetMat';  %best if you name all xmls like that
 %PATH = '/Users/sandy/Desktop/Development/RoadRad/RoadRad/scenes/sceneXY/LMKSetMat';
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
 %PATH = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder\pf';
+%PATH = '/Users/sandy/Desktop/Development/LMK/LMK_Data_evaluation/database/sceneXYZ';
+
 
 %adrian threshold model parameter
 %AGE = 24;		%age of observer for adrians model
@@ -87,11 +89,13 @@ for currentIndex = 1 : lengthOfSet
     %calculate all necessary values
     currentPhotopic_LMK_Image_Statistics = LMK_Image_Statistics( currentLMK_Image_Metadata, photopicLMK_Image_Set_Statistics.type );
     photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentPhotopic_LMK_Image_Statistics;
-    photopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentLMK_Image_Metadata.targetAlphaMinutes;
+    %photopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentLMK_Image_Metadata.targetAlphaMinutes;
+    photopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentPhotopic_LMK_Image_Statistics.alphaMinutes;
     
     currentMesopic_LMK_Image_Statistics = LMK_Image_Statistics( currentLMK_Image_Metadata, mesopicLMK_Image_Set_Statistics.type );
     mesopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentMesopic_LMK_Image_Statistics;
-    mesopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentLMK_Image_Metadata.targetAlphaMinutes;
+    %mesopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentLMK_Image_Metadata.targetAlphaMinutes;
+    mesopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentMesopic_LMK_Image_Statistics.alphaMinutes;
 end
 
 %prepare data for plotting and plot
