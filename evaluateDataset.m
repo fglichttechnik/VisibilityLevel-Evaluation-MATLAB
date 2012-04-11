@@ -9,7 +9,7 @@ disp( sprintf( 'evaluating %s', PATH ) );
 %clear all; %this will clear all breakpoints as well
 
 CONVERT_TO_PDF = 1; %set this to 0 if you don't have epstopdf
-ANALYZE_MESOPIC = 0; %set this to 0 if you don't like mesopic shit
+ANALYZE_MESOPIC = 1; %set this to 0 if you don't like mesopic shit
 
 %file path preferences
 XMLNAME = 'LMKSetMat';  %best if you name all xmls like that

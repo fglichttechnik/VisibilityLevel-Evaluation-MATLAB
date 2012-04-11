@@ -99,7 +99,7 @@ classdef LMK_Image_Set_Statistics < handle
             end
             
             %calculate weber contrast
-            weberContrastArray = meanTargetArray - meanBackgroundArray ./ meanBackgroundArray;
+            weberContrastArray = ( meanTargetArray - meanBackgroundArray ) ./ meanBackgroundArray;
             weberContrastAbsArray = abs( weberContrastArray );
             
             %calculate threshold contrast
@@ -148,8 +148,8 @@ classdef LMK_Image_Set_Statistics < handle
             if( isempty( obj.smallTargetVL ) )
                 if ~( isempty( obj.visibilityLevelArray ) )
                     %ignore first / last 2
-                    visibilityLevelArrayOfMeasurementField = obj.visibilityLevelArray( 3 : end - 2 );
-                    disp( sprintf( 'calculating STV from index %d to index %d of image array', 3, (length(obj.visibilityLevelArray) - 2) ) );
+                    visibilityLevelArrayOfMeasurementField = obj.visibilityLevelFixedDistanceArray( 3 : end - 2 );
+                    disp( sprintf( 'calculating STV from index %d to index %d of image array', 3, (length(obj.visibilityLevelFixedDistanceArray) - 2) ) );
                     stv = calcSTVfromArray( visibilityLevelArrayOfMeasurementField );
                     obj.smallTargetVL = stv;
                 end
@@ -896,7 +896,7 @@ classdef LMK_Image_Set_Statistics < handle
             end
             verticalLine = [ mini; maxi ];
             
-            posContrasts = obj.weberContrastAbsArray == obj.weberContrastArray;
+            posContrasts = obj.weberContrastArray >= 0;
             negContrasts = ~posContrasts;
             
             pP1 = semilogx( Lb_continuous, contrastThresholdpos, 'r' );
@@ -1055,7 +1055,7 @@ classdef LMK_Image_Set_Statistics < handle
             
             verticalLine = [ mini; maxi ];
             
-            posContrasts = obj.weberContrastArray > 0;
+            posContrasts = obj.weberContrastArray >= 0;
             negContrasts = ~posContrasts;
             
             
