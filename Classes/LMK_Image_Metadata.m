@@ -82,7 +82,15 @@ classdef LMK_Image_Metadata < handle
                     obj.dataImagePhotopic= LMK_readPfImage...
                         ( filePath );
                 elseif ~(isempty(obj.dataSRCMat))
-                    matImage = load([obj.dataSRCMat]);
+                    
+                    if(ispc)
+                        DELIMITER = '\';
+                    elseif(isunix)
+                        DELIMITER = '/';
+                    end
+                    
+                    filePath = sprintf( '%s%s%s', obj.dirPath, DELIMITER, obj.dataSRCMat );
+                    matImage = load( filePath );
                     obj.dataImagePhotopic = ....
                         matImage.LMK_measurements.dataImage.YL;
                     obj.dataImageScotopic = ...
@@ -107,7 +115,15 @@ classdef LMK_Image_Metadata < handle
                     obj.dataImageScotopic= LMK_readPfImage...
                         ( filePath );
                 elseif ~(isempty(obj.dataSRCMat))
-                    matImage = load([obj.dataSRCMat]);
+                    
+                    if(ispc)
+                        DELIMITER = '\';
+                    elseif(isunix)
+                        DELIMITER = '/';
+                    end
+                    
+                    filePath = sprintf( '%s%s%s', obj.dirPath, DELIMITER, obj.dataSRCMat );
+                    matImage = load( filePath );
                     obj.dataImagePhotopic = ....
                         matImage.LMK_measurements.dataImage.YL;
                     obj.dataImageScotopic = ...

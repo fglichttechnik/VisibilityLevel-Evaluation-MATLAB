@@ -12,7 +12,8 @@ evaluateBatchSet = {
 %      '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_4',
 %      '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_6',
 %      '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_10',
-%      '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_20',
+%      '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/databa
+%      se/datasets/Treskowstr_LED_RP8_20',
 %      '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_30',
 %      '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_40',
 %      '/Users/janwinter/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_LED_RP8_50',
