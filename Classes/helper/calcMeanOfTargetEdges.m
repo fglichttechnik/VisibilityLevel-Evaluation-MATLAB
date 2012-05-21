@@ -72,16 +72,86 @@ colorChannel = 3;
 [rightTargetMean] = calcMeanOfRectInImage(image, rightTargetX1, rightTargetX2, rightTargetY1, rightTargetY2, LMK_Image_Statistics, colorChannel);
 [rightBackgroundMean] = calcMeanOfRectInImage(image, rightBackgroundX1, rightBackgroundX2, rightBackgroundY1, rightBackgroundY2, LMK_Image_Statistics, colorChannel);
 
+%calc means of corners: (LB = mean(o), Lt = x)
+%      .-.     .-.
+%    1 |o|     |o| 2
+%      .-.     .-.
+%   .-..---------..-.
+%   |o||x|     |x||o|
+%   .-.|-.     .-|.-.
+%      |         |
+%      |         |
+%      |         |
+%   .-.|-.     .-|.-.
+%   |o||x|     |x||o|
+%   .-..---------..-.
+%      .-.     .-.
+%    3 |o|     |o| 4
+%      .-.     .-.
+
+colorChannel = 2;
+[upperLeftCornerTargetMean] = calcMeanOfRectInImage(image, upperTargetX1, upperTargetX1 + targetRegionWidth, upperTargetY1, upperTargetY1 + targetRegionHeight, LMK_Image_Statistics, colorChannel);
+[upperRightCornerTargetMean] = calcMeanOfRectInImage(image, upperTargetX2 - targetRegionWidth, upperTargetX2, upperTargetY1, upperTargetY1 + targetRegionHeight, LMK_Image_Statistics, colorChannel);
+[lowerLeftCornerTargetMean] = calcMeanOfRectInImage(image, lowerTargetX1, lowerTargetX1 + targetRegionWidth, lowerTargetY2 - targetRegionHeight, lowerTargetY2, LMK_Image_Statistics, colorChannel);
+[lowerRightCornerTargetMean] = calcMeanOfRectInImage(image, lowerTargetX2 - targetRegionWidth, lowerTargetX2, lowerTargetY2 - targetRegionHeight, lowerTargetY2 , LMK_Image_Statistics, colorChannel);
+
+upperLeftUpperBackground = image( upperBackgroundY1 : upperBackgroundY1 + targetRegionHeight, upperBackgroundX1 : upperBackgroundX1 + targetRegionWidth );
+upperLeftLeftBackground = image( leftBackgroundY1 : leftBackgroundY1 + targetRegionHeight, leftBackgroundX1 : leftBackgroundX1 + targetRegionWidth );
+combinedPixels = [ upperLeftUpperBackground(:); upperLeftLeftBackground(:) ];
+upperLeftCornerBackgroundMean = mean( combinedPixels );
+
+upperRightUpperBackground = image( upperBackgroundY1 : upperBackgroundY1 + targetRegionHeight, upperBackgroundX2 - targetRegionWidth : upperBackgroundX2 );
+upperRightRightBackground = image( rightBackgroundY1 : rightBackgroundY1 + targetRegionHeight, rightBackgroundX1 : rightBackgroundX1 + targetRegionWidth );
+combinedPixels = [ upperRightUpperBackground(:); upperRightRightBackground(:) ];
+upperRightCornerBackgroundMean = mean( combinedPixels );
+
+lowerLeftLowerBackground = image( lowerBackgroundY1 : lowerBackgroundY1 + targetRegionHeight, upperBackgroundX1 : upperBackgroundX1 + targetRegionWidth );
+lowerLeftLeftBackground = image( leftBackgroundY2 - targetRegionHeight : leftBackgroundY2, leftBackgroundX1 : leftBackgroundX1 + targetRegionWidth );
+combinedPixels = [ lowerLeftLowerBackground(:); lowerLeftLeftBackground(:) ];
+lowerLeftCornerBackgroundMean = mean( combinedPixels );
+
+lowerRightLowerBackground = image( lowerBackgroundY1 : lowerBackgroundY1 + targetRegionHeight, lowerBackgroundX2 - targetRegionWidth : lowerBackgroundX2 );
+lowerRightRightBackground = image( rightBackgroundY2 - targetRegionHeight : rightBackgroundY2, rightBackgroundX1 : rightBackgroundX1 + targetRegionWidth );
+combinedPixels = [ lowerRightLowerBackground(:); lowerRightRightBackground(:) ];
+lowerRightCornerBackgroundMean = mean( combinedPixels );
+
+%% debug
+% %
+% image( upperBackgroundY1 : upperBackgroundY1 + targetRegionHeight, upperBackgroundX1 : upperBackgroundX1 + targetRegionWidth ) = 255;
+% image( leftBackgroundY1 : leftBackgroundY1 + targetRegionHeight, leftBackgroundX1 : leftBackgroundX1 + targetRegionWidth ) = 255;
+% 
+% %
+% image( upperBackgroundY1 : upperBackgroundY1 + targetRegionHeight, upperBackgroundX2 - targetRegionWidth : upperBackgroundX2 ) = 255;
+% image( rightBackgroundY1 : rightBackgroundY1 + targetRegionHeight, rightBackgroundX1 : rightBackgroundX1 + targetRegionWidth ) = 255;
+%  
+% %
+% image( lowerBackgroundY1 : lowerBackgroundY1 + targetRegionHeight, upperBackgroundX1 : upperBackgroundX1 + targetRegionWidth ) = 255;
+% image( leftBackgroundY2 - targetRegionHeight : leftBackgroundY2, leftBackgroundX1 : leftBackgroundX1 + targetRegionWidth ) = 255;
+% 
+% %
+% image( lowerBackgroundY1 : lowerBackgroundY1 + targetRegionHeight, lowerBackgroundX2 - targetRegionWidth : lowerBackgroundX2 ) = 255;
+% image( rightBackgroundY2 - targetRegionHeight : rightBackgroundY2, rightBackgroundX1 : rightBackgroundX1 + targetRegionWidth ) = 255;
+
 %save to class
 LMK_Image_Statistics.meanTargetUpperEdge = upperTargetMean;
 LMK_Image_Statistics.meanTargetLowerEdge = lowerTargetMean;
 LMK_Image_Statistics.meanTargetLeftEdge = leftTargetMean;
 LMK_Image_Statistics.meanTargetRightEdge = rightTargetMean;
 
+LMK_Image_Statistics.meanTargetUpperLeftCorner = upperLeftCornerTargetMean;
+LMK_Image_Statistics.meanTargetUpperRightCorner = upperRightCornerTargetMean;
+LMK_Image_Statistics.meanTargetLowerLeftCorner = lowerLeftCornerTargetMean;
+LMK_Image_Statistics.meanTargetLowerRightCorner = lowerRightCornerTargetMean;
+
 LMK_Image_Statistics.meanBackgroundUpperEdge = upperBackgroundMean;
 LMK_Image_Statistics.meanBackgroundLowerEdge = lowerBackgroundMean;
 LMK_Image_Statistics.meanBackgroundLeftEdge = leftBackgroundMean;
 LMK_Image_Statistics.meanBackgroundRightEdge = rightBackgroundMean;
+
+LMK_Image_Statistics.meanBackgroundUpperLeftCorner = upperLeftCornerBackgroundMean;
+LMK_Image_Statistics.meanBackgroundUpperRightCorner = upperRightCornerBackgroundMean;
+LMK_Image_Statistics.meanBackgroundLowerLeftCorner = lowerLeftCornerBackgroundMean;
+LMK_Image_Statistics.meanBackgroundLowerRightCorner = lowerRightCornerBackgroundMean;
 
 end
 

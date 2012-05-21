@@ -222,6 +222,10 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % age  plots
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+fig2 = figure;
+frame = get(fig2, 'Position');
+set(fig2, 'Position', [frame(1), frame(2), WIDTH, HEIGHT])
+
 AGE_continuous = 27:74;
 deltaLAge = zeros(1, length(AGE_continuous));
 for i = 1 : length(AGE_continuous)

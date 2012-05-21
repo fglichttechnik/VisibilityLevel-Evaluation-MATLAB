@@ -9,11 +9,13 @@ disp( sprintf( 'evaluating %s', PATH ) );
 %clear all; %this will clear all breakpoints as well
 
 CONVERT_TO_PDF = 1; %set this to 0 if you don't have epstopdf
-ANALYZE_MESOPIC = 1; %set this to 0 if you don't like mesopic shit
+ANALYZE_MESOPIC = 0; %set this to 0 if you don't like mesopic shit
 
 %file path preferences
 XMLNAME = 'LMKSetMat';  %best if you name all xmls like that
 
+%typically 0 for RoadMeasurements
+OFFSET = 12.5; %if 0 the relative position within the measurement field will be plotted, else OFFSET is the distance from view point to meas field in order to show absolute values
 
 %this is the path to the datasets xml file
 %PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_newTarget';
@@ -36,7 +38,7 @@ XMLNAME = 'LMKSetMat';  %best if you name all xmls like that
 AGE = 60;		%age of observer for adrians model & RP800 model
 T = 0.2;		%observing time of visual object (constant 0.2 for RP800 model)
 K = 2.6;		%k factor of adrians model & of RP800 model
-CONTRAST_CALCULATION_METHOD = 'RP800';   %can be STRONGEST, RP800
+CONTRAST_CALCULATION_METHOD = 'STRONGEST_CORNER';   %can be STRONGEST_EDGE, RP800, LOWER_THIRD, STRONGEST_CORNER
 
 %visual object preferences
 %%TODO: these values should be read from the xml file!!!
@@ -76,8 +78,8 @@ disp('Calculating...');
 
 %prepare result class
 title =  imageset{1,1}.sceneTitle;
-photopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Photopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD );
-mesopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Mesopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD );
+photopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Photopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET );
+mesopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Mesopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET );
 
 
 %analyse each image
@@ -134,7 +136,7 @@ end
 
 %convert all files to pdf
 if( CONVERT_TO_PDF )
-    pathToEPSFiles = sprintf( '%s%splots%s', PATH, DELIMITER, DELIMITER );
+    pathToEPSFiles = sprintf( '%s%splots_%s%s', PATH, DELIMITER, CONTRAST_CALCULATION_METHOD, DELIMITER );
     system( sprintf( 'apply /usr/texbin/epstopdf %s*.eps', pathToEPSFiles ) );
     system( sprintf( 'rm %s*.eps', pathToEPSFiles ) );
 end
@@ -148,8 +150,8 @@ photopicLMK_Image_Set_Statistics.visualisationImageArray = 0;
 photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray = 0;
 mesopicLMK_Image_Set_Statistics.visualisationImageArray = 0;
 mesopicLMK_Image_Set_Statistics.lmkImageStatisticsArray = 0;
-save( [ PATH, DELIMITER, 'photopicSetStatistics', '.mat' ], 'photopicLMK_Image_Set_Statistics' );
-save( [ PATH, DELIMITER, 'mesopicSetStatistics', '.mat' ], 'mesopicLMK_Image_Set_Statistics' );
+save( [ PATH, DELIMITER, 'photopicSetStatistics_', CONTRAST_CALCULATION_METHOD, '.mat' ], 'photopicLMK_Image_Set_Statistics' );
+save( [ PATH, DELIMITER, 'mesopicSetStatistics_', CONTRAST_CALCULATION_METHOD, '.mat' ], 'mesopicLMK_Image_Set_Statistics' );
 
 disp('done');
 

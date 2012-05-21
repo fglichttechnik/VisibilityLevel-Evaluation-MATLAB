@@ -2,8 +2,29 @@
 evaluateBatchSet = {
 
     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L1_Mitte',
-     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/LVKOptimierung/Schade_Optimierung_E',
-     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/LVKOptimierung/Schade_Optimierung_L'
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L2_Mitte',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L3_Mitte',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L4_Mitte',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L5_Mitte',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L6_Mitte',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L7_Mitte',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L8_Mitte',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L9_Mitte',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L10_Mitte',
+    
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L1_Rand',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L2_Rand',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L3_Rand',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L4_Rand',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L5_Rand',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L6_Rand',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L7_Rand',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L8_Rand',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L9_Rand',
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L10_Rand'
+    
+     %'/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/LVKOptimierung/Schade_Optimierung_E',
+     %'/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/LVKOptimierung/Schade_Optimierung_L'
      %'/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_HS_RP8_1035',
     % '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_HS_RP8_1449',
    %  '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Treskowstr_HS_RP8_2070',

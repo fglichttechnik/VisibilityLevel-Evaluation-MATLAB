@@ -13,6 +13,10 @@ classdef LMK_Image_Statistics < handle
         meanTargetLowerEdge
         meanTargetLeftEdge
         meanTargetRightEdge
+        meanTargetUpperLeftCorner
+        meanTargetUpperRightCorner
+        meanTargetLowerLeftCorner
+        meanTargetLowerRightCorner
         meanBackgroundStreetSurface
         meanBackgroundTwoDegree
         meanBackgroundUpperEdge
@@ -20,12 +24,20 @@ classdef LMK_Image_Statistics < handle
         meanBackgroundLeftEdge
         meanBackgroundRightEdge
         meanBackground_RP8_00
+        meanBackgroundUpperLeftCorner
+        meanBackgroundUpperRightCorner
+        meanBackgroundLowerLeftCorner
+        meanBackgroundLowerRightCorner
         
         %on demand calculated values
         strongestEdgeContrast
         strongestEdgeString         %upperEdge, lowerEdge, leftEdge, rightEdge
         strongestEdgeMeanTarget
         strongestEdgeMeanBackground
+        strongestCornerContrast
+        strongestCornerString         %upperLeftCorner, upperRightCorner, lowerLeftCorner, lowerRightCorner
+        strongestCornerMeanTarget
+        strongestCornerMeanBackground
         alphaMinutes
         
         
@@ -102,15 +114,6 @@ classdef LMK_Image_Statistics < handle
             value = obj.strongestEdgeString;
         end
         
-        %% lazy loading of background luminance according to RP800
-        function value = get.meanBackground_RP8_00( obj )
-            if( isempty( obj.meanBackground_RP8_00 ) )
-                meanBackground_RP8_00 = ( obj.meanBackgroundUpperEdge + obj.meanBackgroundLowerEdge ) / 2;
-                obj.meanBackground_RP8_00 = meanBackground_RP8_00;
-            end
-            value = obj.meanBackground_RP8_00;
-        end
-        
         %% lazy loading of strongestEdgeMeanTarget
         function value = get.strongestEdgeMeanTarget( obj )
             if( isempty( obj.strongestEdgeMeanTarget ) )
@@ -124,8 +127,10 @@ classdef LMK_Image_Statistics < handle
                     strongestEdgeMeanTarget = obj.meanTargetLowerEdge;
                 elseif ( strcmp( obj.strongestEdgeString, 'leftEdge' ) )
                     strongestEdgeMeanTarget = obj.meanTargetLeftEdge;
-                else
+                elseif ( strcmp( obj.strongestEdgeString, 'rightEdge' ) )
                     strongestEdgeMeanTarget = obj.meanTargetRightEdge;
+                else
+                    error('no strongestEdgeString given!!!')
                 end
                 
                 obj.strongestEdgeMeanTarget = strongestEdgeMeanTarget;
@@ -147,8 +152,10 @@ classdef LMK_Image_Statistics < handle
                     strongestEdgeMeanBackground = obj.meanBackgroundLowerEdge;
                 elseif ( strcmp( obj.strongestEdgeString, 'leftEdge' ) )
                     strongestEdgeMeanBackground = obj.meanBackgroundLeftEdge;
-                else
+                elseif ( strcmp( obj.strongestEdgeString, 'rightEdge' ) )
                     strongestEdgeMeanBackground = obj.meanBackgroundRightEdge;
+                else
+                    error('no strongestEdgeString given!!!')
                 end
                 
                 obj.strongestEdgeMeanBackground = strongestEdgeMeanBackground;
@@ -156,6 +163,116 @@ classdef LMK_Image_Statistics < handle
             
             value = obj.strongestEdgeMeanBackground;
             
+        end
+        
+        %% lazy loading of strongestCornerContrast
+        function value = get.strongestCornerContrast( obj )
+            if( isempty( obj.strongestCornerContrast ) )
+                
+                upperLeftCornerContrast = abs( obj.meanTargetUpperLeftCorner - obj.meanBackgroundUpperLeftCorner ) / obj.meanBackgroundUpperLeftCorner;
+                upperRightCornerContrast = abs( obj.meanTargetUpperRightCorner - obj.meanBackgroundUpperRightCorner ) / obj.meanBackgroundUpperRightCorner;
+                lowerLeftCornerContrast = abs( obj.meanTargetLowerLeftCorner - obj.meanBackgroundLowerLeftCorner ) / obj.meanBackgroundLowerLeftCorner;
+                lowerRightCornerContrast = abs( obj.meanTargetLowerRightCorner - obj.meanBackgroundLowerRightCorner ) / obj.meanBackgroundLowerRightCorner;
+                
+                if ( ( upperLeftCornerContrast >= upperRightCornerContrast )...
+                        && ( upperLeftCornerContrast >= lowerLeftCornerContrast )...
+                        && ( upperLeftCornerContrast >= lowerRightCornerContrast ) )
+                    strongestCorner = 'upperLeftCorner';
+                    stringestCornerContrast = upperLeftCornerContrast;
+                elseif ( ( upperRightCornerContrast >= upperLeftCornerContrast )...
+                        && ( upperRightCornerContrast >= lowerLeftCornerContrast )...
+                        && ( upperRightCornerContrast >= lowerRightCornerContrast ) )
+                    strongestCorner = 'upperRightCorner';
+                    stringestCornerContrast = upperRightCornerContrast;
+                elseif ( ( lowerLeftCornerContrast >= upperLeftCornerContrast )...
+                        && ( lowerLeftCornerContrast >= upperRightCornerContrast )...
+                        && ( lowerLeftCornerContrast >= lowerRightCornerContrast ) )
+                    strongestCorner = 'lowerLeftCorner';
+                    stringestCornerContrast = lowerLeftCornerContrast;
+                else
+                    strongestCorner = 'lowerRightCorner';
+                    stringestCornerContrast = lowerRightCornerContrast;
+                end
+                
+                %print info
+                disp(sprintf('strongest corner: %s', strongestCorner));
+                
+                %assign values
+                obj.strongestCornerContrast = stringestCornerContrast;
+                obj.strongestCornerString = strongestCorner;
+            end
+            value = obj.strongestCornerContrast;
+        end
+        
+        %% lazy loading of strongestCornerString
+        function value = get.strongestCornerString( obj )
+            if( isempty( obj.strongestCornerString ) )
+                %trigger strongestCornerContrast --> will calculate
+                %strongestCornerString
+                obj.strongestCornerContrast;
+            end
+            value = obj.strongestCornerString;
+        end
+        
+        %% lazy loading of strongestCornerMeanTarget
+        function value = get.strongestCornerMeanTarget( obj )
+            if( isempty( obj.strongestCornerMeanTarget ) )
+                %trigger strongestCornerContrast --> will calculate
+                %strongestCornerString
+                obj.strongestCornerContrast;
+                
+                if ( strcmp( obj.strongestCornerString, 'upperLeftCorner' ) )
+                    strongestCornerMeanTarget = obj.meanTargetUpperLeftCorner;
+                elseif ( strcmp( obj.strongestCornerString, 'upperRightCorner' ) )
+                    strongestCornerMeanTarget = obj.meanTargetUpperRightCorner;
+                elseif ( strcmp( obj.strongestCornerString, 'lowerLeftCorner' ) )
+                    strongestCornerMeanTarget = obj.meanTargetLowerLeftCorner;
+                elseif ( strcmp( obj.strongestCornerString, 'lowerRightCorner' ) )
+                    strongestCornerMeanTarget = obj.meanTargetLowerRightCorner;
+                else
+                    error('no strongestCornerString given!!!')
+                end
+                
+                obj.strongestCornerMeanTarget = strongestCornerMeanTarget;
+            end
+            
+            value = obj.strongestCornerMeanTarget;
+        end
+        
+        %% lazy loading of strongestCornerMeanBackground
+        function value = get.strongestCornerMeanBackground( obj )
+            if( isempty( obj.strongestCornerMeanBackground ) )
+                %trigger strongestCornerContrast --> will calculate
+                %strongestCornerString
+                obj.strongestCornerContrast;
+                
+                if ( strcmp( obj.strongestCornerString, 'upperLeftCorner' ) )
+                    strongestCornerMeanBackground = obj.meanBackgroundUpperEdge;
+                elseif ( strcmp( obj.strongestCornerString, 'upperRightCorner' ) )
+                    strongestCornerMeanBackground = obj.meanBackgroundLowerEdge;
+                elseif ( strcmp( obj.strongestCornerString, 'lowerLeftCorner' ) )
+                    strongestCornerMeanBackground = obj.meanBackgroundLeftEdge;
+                elseif ( strcmp( obj.strongestCornerString, 'lowerRightCorner' ) )
+                    strongestCornerMeanBackground = obj.meanBackgroundRightEdge;
+                else
+                    error('no strongestCornerString given!!!')
+                end
+                
+                obj.strongestCornerMeanBackground = strongestCornerMeanBackground;
+            end
+            
+            value = obj.strongestCornerMeanBackground;
+            
+        end
+        
+        
+        %% lazy loading of background luminance according to RP800
+        function value = get.meanBackground_RP8_00( obj )
+            if( isempty( obj.meanBackground_RP8_00 ) )
+                meanBackground_RP8_00 = ( obj.meanBackgroundUpperEdge + obj.meanBackgroundLowerEdge ) / 2;
+                obj.meanBackground_RP8_00 = meanBackground_RP8_00;
+            end
+            value = obj.meanBackground_RP8_00;
         end
         
         %% lazy loading of alphaMinutes
@@ -184,15 +301,15 @@ classdef LMK_Image_Statistics < handle
                 disp( sprintf( 'unknown dataType:%s', obj.dataType ) );
                 disp( 'dataType has to be Photopic, Scotopic or Mesopic' );
             end
-                        
-             
+            
+            
             %calc mean of target
             calcMeanOfTarget( dataImage , obj );
             
             %calc mean of background
             calcMeanOfTargetEdges( dataImage , obj );
             
-            %calc mean of cirlce
+            %calc mean of circle
             calcMeanOfCircleWithoutRect( dataImage, obj.imageMetadata );
         end
         

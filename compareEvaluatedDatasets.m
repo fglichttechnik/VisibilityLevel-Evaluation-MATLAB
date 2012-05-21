@@ -49,6 +49,7 @@ for k = 0 : allDataSetItemsLength - 1
     legendsForDatasets = cell( thisDataSetLength, 1 );
     colorArrayForPlots = cell( thisDataSetLength, 1 );
     typeArrayForPlots = cell( thisDataSetLength, 1 );
+    evalTypeArrayForPlots = cell( thisDataSetLength, 1 );
     customCodeString = '';
     
     for elementsIndex = 0 : thisDataSetLength - 1
@@ -70,6 +71,8 @@ for k = 0 : allDataSetItemsLength - 1
                 subPathesForDatasets{ elementsIndex + 1 } = currentAttribute.Value;
             elseif( strcmp( currentAttribute.Name, 'Type' ) )
                 typeArrayForPlots{ elementsIndex + 1 } = currentAttribute.Value;
+            elseif( strcmp( currentAttribute.Name, 'EvaluationType' ) )
+                evalTypeArrayForPlots{ elementsIndex + 1 } = currentAttribute.Value;
             end
         end
     end
@@ -104,12 +107,21 @@ for currentDatasetIndex = 1 : numberOfDatasets
     
     currentPath = sprintf( '%s%s', pathesForDatasets{ currentDatasetIndex }, subPathesForDatasets{ currentDatasetIndex } );
     currentType = typeArrayForPlots{ currentDatasetIndex };
+    currentEvalType = evalTypeArrayForPlots{ currentDatasetIndex };
     if( strcmp(currentType, 'Mesopic') )
-        filePath = sprintf( '%s%smesopicSetStatistics.mat', currentPath, DELIMITER );
+        if( currentEvalType )
+            filePath = sprintf( '%s%smesopicSetStatistics_%s.mat', currentPath, DELIMITER, currentEvalType );
+        else
+            filePath = sprintf( '%s%smesopicSetStatistics.mat', currentPath, DELIMITER );
+        end
         load( filePath );
         arrayWithSetStatistics{ currentDatasetIndex } = mesopicLMK_Image_Set_Statistics;
     else
-        filePath = sprintf( '%s%sphotopicSetStatistics.mat', currentPath, DELIMITER );
+        if( currentEvalType )
+            filePath = sprintf( '%s%sphotopicSetStatistics_%s.mat', currentPath, DELIMITER, currentEvalType );
+        else
+            filePath = sprintf( '%s%sphotopicSetStatistics.mat', currentPath, DELIMITER );
+        end
         load( filePath );
         arrayWithSetStatistics{ currentDatasetIndex } = photopicLMK_Image_Set_Statistics;
     end
@@ -210,6 +222,9 @@ end
 if( ~isempty( customCodeString ) )%~strcmp( customCodeString, '') )
     eval( customCodeString );
 end
+%save('mitte_evaluated.mat','thresholdContrastAlphaArray','thresholdContras
+%tArray','thresholdContrastBackgroundLuminanceArray','thresholdContrastLabe
+%lCellArray','thresholdContrastPositionArray');
 
 %save images
 finetunePlot( figHandleContrast );
@@ -311,6 +326,7 @@ filename = sprintf( '%s%sComparePlot%sCthComparison_%s', SAVEPATH, DELIMITER, DE
 saveas(figHandleCthCompare, filename, 'epsc');
 saveas(figHandleCthCompare, filename, 'fig');
 fixPSlinestyle( sprintf( '%s.eps', filename ) );
+
 
 %convert to pdf
 %convert all files to pdf

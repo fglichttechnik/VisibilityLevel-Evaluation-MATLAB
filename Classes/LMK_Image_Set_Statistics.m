@@ -28,7 +28,9 @@ classdef LMK_Image_Set_Statistics < handle
         
         setTitle                    %title for this set
         
-        contrastCalculationMethod   %can be STRONGEST, RP800, or other to be implemented methods
+        contrastCalculationMethod   %can be STRONGEST, RP800, LOWER_THIRD, STRONGEST_CORNER or other to be implemented methods
+        
+        offset                      % if 0 the relative position within the meas field is plotted, else offset is the distance from the VP to the meas field for absolute values
         
         FONTSIZE
         LINEWIDTH
@@ -36,7 +38,7 @@ classdef LMK_Image_Set_Statistics < handle
     end % properties
     methods
         %constructor
-        function obj = LMK_Image_Set_Statistics( type, lengthOfSet, ageVL, tVL, kVL, setTitle, contrastCalculationMethod )
+        function obj = LMK_Image_Set_Statistics( type, lengthOfSet, ageVL, tVL, kVL, setTitle, contrastCalculationMethod, offset )
             if nargin > 0 % Support calling with 0 arguments
                 
                 %check if type is valid
@@ -56,6 +58,7 @@ classdef LMK_Image_Set_Statistics < handle
                 obj.lmkImageStatisticsArray = cell( lengthOfSet, 1 );
                 obj.setTitle = setTitle;
                 obj.contrastCalculationMethod = contrastCalculationMethod;
+                obj.offset = offset;
             end
             
             obj.FONTSIZE = 14;
@@ -79,22 +82,30 @@ classdef LMK_Image_Set_Statistics < handle
             %create arrays with Lt , LB and d
             for currentIndex = 1 : length( meanTargetArray )
                 currentStatistics = currentStatisticsArray{ currentIndex };
-                distanceArray( currentIndex ) = currentStatistics.imageMetadata.rectPosition;
+                distanceArray( currentIndex ) = currentStatistics.imageMetadata.rectPosition + obj.offset;
                 visualisationImageArray{ currentIndex } = currentStatistics.imageMetadata.visualisationImagePhotopic;
                 visualisationMeasArray{ currentIndex } = currentStatistics.imageMetadata.visualisationMeasRegions;
                 
-                if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST' ) )
+                if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_EDGE' ) )
                     meanTargetArray( currentIndex ) = currentStatistics.strongestEdgeMeanTarget;
+                elseif ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_CORNER' ) )
+                    meanBackgroundArray( currentIndex ) = currentStatistics.strongestCornerMeanTarget;
                 elseif ( strcmp( obj.contrastCalculationMethod, 'RP800' ) )
                     meanTargetArray( currentIndex ) = currentStatistics.meanTarget;
+                elseif ( strcmp( obj.contrastCalculationMethod, 'LOWER_THIRD' ) )
+                    meanTargetArray( currentIndex ) = currentStatistics.meanTargetLowerEdge;
                 end
                 
-                if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST' ) )
+                if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_EDGE' ) )
                     meanBackgroundArray( currentIndex ) = currentStatistics.strongestEdgeMeanBackground;
+                elseif ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_CORNER' ) )
+                    meanBackgroundArray( currentIndex ) = currentStatistics.strongestCornerMeanBackground;
                 elseif ( strcmp( obj.contrastCalculationMethod, 'RP800' ) )
                     meanBackgroundArray( currentIndex ) = currentStatistics.meanBackground_RP8_00;
+                elseif ( strcmp( obj.contrastCalculationMethod, 'LOWER_THIRD' ) )
+                    meanBackgroundArray( currentIndex ) = currentStatistics.meanBackgroundLowerEdge;
                 else
-                    disp( sprintf( 'contrastCalculationMethod must be either STRONGEST or RP800' ) );
+                    disp( sprintf( 'contrastCalculationMethod must be either STRONGEST_EDGE, STRONGEST_CORNER, LOWER_THIRD or RP800' ) );
                     disp( sprintf( 'contrastCalculationMethod is currently %s', obj.contrastCalculationMethod ) );
                     disp( 'QUITTING' );
                     return;
@@ -127,13 +138,13 @@ classdef LMK_Image_Set_Statistics < handle
             %VL is always positive (not in RP800) was abs()
             visibilityLevelArray = (weberContrastArray ./ thresholdContrastArray);
             visibilityLevelFixedDistanceArray = (weberContrastArray ./ thresholdContrastFixedDistanceArray);
-%             signPos = ( weberContrastArray >= 0 );
-%             signNeg = ~signPos;
-%             signPosNeg = zeros( length(signPos), 1);
-%             signPosNeg( signPos ) = 1;
-%             signPosNeg( signNeg ) = -1;
-%             visibilityLevelArray = visibilityLevelArray .* signPosNeg;
-%             visibilityLevelFixedDistanceArray = visibilityLevelFixedDistanceArray .* signPosNeg;
+            %             signPos = ( weberContrastArray >= 0 );
+            %             signNeg = ~signPos;
+            %             signPosNeg = zeros( length(signPos), 1);
+            %             signPosNeg( signPos ) = 1;
+            %             signPosNeg( signNeg ) = -1;
+            %             visibilityLevelArray = visibilityLevelArray .* signPosNeg;
+            %             visibilityLevelFixedDistanceArray = visibilityLevelFixedDistanceArray .* signPosNeg;
             
             %set instance values
             obj.visualisationImageArray = visualisationImageArray;
@@ -172,17 +183,17 @@ classdef LMK_Image_Set_Statistics < handle
                 DELIMITER = '/';
             end
             
-            if( ~exist( [savePath, DELIMITER, 'visImages'], 'dir') )
-                mkdir( [savePath, DELIMITER], 'visImages' );
+            if( ~exist( [savePath, DELIMITER, 'visImages_', obj.contrastCalculationMethod], 'dir') )
+                mkdir( [savePath, DELIMITER, 'visImages_', obj.contrastCalculationMethod] );
             end
             for currentIndex = 1 : length( obj.visualisationImageArray )
                 image = obj.visualisationImageArray{ currentIndex };
-                filename = sprintf( '%s%svisImages%s%s_%d.png', savePath, DELIMITER, DELIMITER, obj.type, currentIndex );
+                filename = sprintf( '%s%svisImages_%s%s%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentIndex );
                 imwrite( image, filename );
             end
             for currentIndex = 1 : length( obj.visualisationMeasArray )
                 image = obj.visualisationMeasArray{ currentIndex };
-                filename = sprintf( '%s%svisImages%sMeasRegions_%d.png', savePath, DELIMITER, DELIMITER, currentIndex );
+                filename = sprintf( '%s%svisImages_%s%sMeasRegions_%s%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentIndex );
                 imwrite( image, filename );
             end
             
@@ -210,7 +221,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( strcmp( savePath, '' ) )
                 savePath = 'DO_NOT_SAVE'
             end
-            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            savePath = [savePath, DELIMITER, 'plots_', obj.contrastCalculationMethod, DELIMITER];
             if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 mkdir( savePath );
             end
@@ -277,7 +288,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( strcmp( savePath, '' ) )
                 savePath = 'DO_NOT_SAVE'
             end
-            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            savePath = [savePath, DELIMITER, 'plots_', obj.contrastCalculationMethod, DELIMITER];
             if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 mkdir( savePath );
             end
@@ -343,7 +354,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( strcmp( savePath, '' ) )
                 savePath = 'DO_NOT_SAVE'
             end
-            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            savePath = [savePath, DELIMITER, 'plots_', obj.contrastCalculationMethod, DELIMITER];
             if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 mkdir( savePath );
             end
@@ -405,7 +416,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( strcmp( savePath, '' ) )
                 savePath = 'DO_NOT_SAVE'
             end
-            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            savePath = [savePath, DELIMITER, 'plots_', obj.contrastCalculationMethod, DELIMITER];
             if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 mkdir( savePath );
             end
@@ -465,7 +476,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( strcmp( savePath, '' ) )
                 savePath = 'DO_NOT_SAVE'
             end
-            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            savePath = [savePath, DELIMITER, 'plots_', obj.contrastCalculationMethod, DELIMITER];
             if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 mkdir( savePath );
             end
@@ -531,7 +542,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( strcmp( savePath, '' ) )
                 savePath = 'DO_NOT_SAVE'
             end
-            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            savePath = [savePath, DELIMITER, 'plots_', obj.contrastCalculationMethod, DELIMITER];
             if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 mkdir( savePath );
             end
@@ -602,7 +613,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( strcmp( savePath, '' ) )
                 savePath = 'DO_NOT_SAVE'
             end
-            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            savePath = [savePath, DELIMITER, 'plots_', obj.contrastCalculationMethod, DELIMITER];
             if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 mkdir( savePath );
             end
@@ -670,7 +681,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( strcmp( savePath, '' ) )
                 savePath = 'DO_NOT_SAVE'
             end
-            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            savePath = [savePath, DELIMITER, 'plots_', obj.contrastCalculationMethod, DELIMITER];
             if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 mkdir( savePath );
             end
@@ -730,7 +741,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( strcmp( savePath, '' ) )
                 savePath = 'DO_NOT_SAVE'
             end
-            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            savePath = [savePath, DELIMITER, 'plots_', obj.contrastCalculationMethod, DELIMITER];
             if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 mkdir( savePath );
             end
@@ -799,7 +810,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
-                filename = sprintf( '%s%splots%s%s_LtLBPlot_%s', savePath, DELIMITER, DELIMITER, obj.type, lastPathComponent  );
+                filename = sprintf( '%s%splots_%s%s%s_LtLBPlot_%s', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, lastPathComponent  );
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
@@ -852,7 +863,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 %we need the last path component for filename of plots
                 [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
-                filename = sprintf( '%s%splots%s%s_LtLBWithImagesPlot_%s', savePath, DELIMITER, DELIMITER, obj.type, lastPathComponent  );
+                filename = sprintf( '%s%splots_%s%s%s_LtLBWithImagesPlot_%s', savePath, obj.contrastCalculationMethod, DELIMITER, DELIMITER, obj.type, lastPathComponent  );
                 
                 saveas(figHandle, filename, 'epsc');
                 saveas(figHandle, filename, 'fig');
@@ -1017,7 +1028,7 @@ classdef LMK_Image_Set_Statistics < handle
             if( strcmp( savePath, '' ) )
                 savePath = 'DO_NOT_SAVE'
             end
-            savePath = [savePath, DELIMITER, 'plots', DELIMITER];
+            savePath = [savePath, DELIMITER, 'plots_', obj.contrastCalculationMethod, DELIMITER];
             if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
                 mkdir( savePath );
             end
