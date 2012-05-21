@@ -21,6 +21,23 @@ targetRegionWidth = round(targetWidth * TARGET_SIZE_PERCENTAGE_FOR_REGION);
 targetRegionHeight = round(targetHeight * TARGET_SIZE_PERCENTAGE_FOR_REGION);
 
 %calc edge region points
+%calc means of corners: (LB = mean(o), Lt = mean(x9)
+%      .---------.
+%      |    o1   | 
+%      .---------.
+%   .-..---------..-.
+%   | || |  x1 | || |
+%   | ||-+-----+-|| |
+%   | || |     | || |
+%   | || |     | || | 
+%   | || |     | || |
+%   | ||-+-----+-|| |
+%   | || |     | || |
+%   .-..---------..-.
+%      .---------.
+%      |         | 
+%      .---------.
+
 upperTargetX1 = x1;
 upperTargetX2 = x2;
 upperTargetY1 = y1;
@@ -95,23 +112,23 @@ colorChannel = 2;
 [lowerLeftCornerTargetMean] = calcMeanOfRectInImage(image, lowerTargetX1, lowerTargetX1 + targetRegionWidth, lowerTargetY2 - targetRegionHeight, lowerTargetY2, LMK_Image_Statistics, colorChannel);
 [lowerRightCornerTargetMean] = calcMeanOfRectInImage(image, lowerTargetX2 - targetRegionWidth, lowerTargetX2, lowerTargetY2 - targetRegionHeight, lowerTargetY2 , LMK_Image_Statistics, colorChannel);
 
-upperLeftUpperBackground = image( upperBackgroundY1 : upperBackgroundY1 + targetRegionHeight, upperBackgroundX1 : upperBackgroundX1 + targetRegionWidth );
-upperLeftLeftBackground = image( leftBackgroundY1 : leftBackgroundY1 + targetRegionHeight, leftBackgroundX1 : leftBackgroundX1 + targetRegionWidth );
+[dummyMean, upperLeftUpperBackground] = calcMeanOfRectInImage(image, upperBackgroundX1, upperBackgroundX1 + targetRegionWidth, upperBackgroundY1, upperBackgroundY1 + targetRegionHeight, LMK_Image_Statistics, colorChannel );
+[dummyMean, upperLeftLeftBackground] = calcMeanOfRectInImage(image, leftBackgroundX1, leftBackgroundX1 + targetRegionWidth, leftBackgroundY1, leftBackgroundY1 + targetRegionHeight, LMK_Image_Statistics, colorChannel );
 combinedPixels = [ upperLeftUpperBackground(:); upperLeftLeftBackground(:) ];
 upperLeftCornerBackgroundMean = mean( combinedPixels );
 
-upperRightUpperBackground = image( upperBackgroundY1 : upperBackgroundY1 + targetRegionHeight, upperBackgroundX2 - targetRegionWidth : upperBackgroundX2 );
-upperRightRightBackground = image( rightBackgroundY1 : rightBackgroundY1 + targetRegionHeight, rightBackgroundX1 : rightBackgroundX1 + targetRegionWidth );
+[dummyMean, upperRightUpperBackground] = calcMeanOfRectInImage(image, upperBackgroundX2 - targetRegionWidth, upperBackgroundX2, upperBackgroundY1, upperBackgroundY1 + targetRegionHeight, LMK_Image_Statistics, colorChannel );
+[dummyMean, upperRightRightBackground] = calcMeanOfRectInImage(image, rightBackgroundX1, rightBackgroundX1 + targetRegionWidth, rightBackgroundY1, rightBackgroundY1 + targetRegionHeight, LMK_Image_Statistics, colorChannel );
 combinedPixels = [ upperRightUpperBackground(:); upperRightRightBackground(:) ];
 upperRightCornerBackgroundMean = mean( combinedPixels );
 
-lowerLeftLowerBackground = image( lowerBackgroundY1 : lowerBackgroundY1 + targetRegionHeight, upperBackgroundX1 : upperBackgroundX1 + targetRegionWidth );
-lowerLeftLeftBackground = image( leftBackgroundY2 - targetRegionHeight : leftBackgroundY2, leftBackgroundX1 : leftBackgroundX1 + targetRegionWidth );
+[dummyMean, lowerLeftLowerBackground] = calcMeanOfRectInImage(image, upperBackgroundX1, upperBackgroundX1 + targetRegionWidth, lowerBackgroundY1, lowerBackgroundY1 + targetRegionHeight, LMK_Image_Statistics, colorChannel );
+[dummyMean, lowerLeftLeftBackground] = calcMeanOfRectInImage(image, leftBackgroundX1, leftBackgroundX1 + targetRegionWidth, leftBackgroundY2 - targetRegionHeight, leftBackgroundY2, LMK_Image_Statistics, colorChannel );
 combinedPixels = [ lowerLeftLowerBackground(:); lowerLeftLeftBackground(:) ];
 lowerLeftCornerBackgroundMean = mean( combinedPixels );
 
-lowerRightLowerBackground = image( lowerBackgroundY1 : lowerBackgroundY1 + targetRegionHeight, lowerBackgroundX2 - targetRegionWidth : lowerBackgroundX2 );
-lowerRightRightBackground = image( rightBackgroundY2 - targetRegionHeight : rightBackgroundY2, rightBackgroundX1 : rightBackgroundX1 + targetRegionWidth );
+[dummyMean, lowerRightLowerBackground] = calcMeanOfRectInImage(image, lowerBackgroundX2 - targetRegionWidth, lowerBackgroundX2, lowerBackgroundY1, lowerBackgroundY1 + targetRegionHeight, LMK_Image_Statistics, colorChannel );
+[dummyMean, lowerRightRightBackground] = calcMeanOfRectInImage(image, rightBackgroundX1, rightBackgroundX1 + targetRegionWidth, rightBackgroundY2 - targetRegionHeight, rightBackgroundY2, LMK_Image_Statistics, colorChannel );
 combinedPixels = [ lowerRightLowerBackground(:); lowerRightRightBackground(:) ];
 lowerRightCornerBackgroundMean = mean( combinedPixels );
 

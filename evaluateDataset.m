@@ -38,7 +38,7 @@ OFFSET = 12.5; %if 0 the relative position within the measurement field will be 
 AGE = 60;		%age of observer for adrians model & RP800 model
 T = 0.2;		%observing time of visual object (constant 0.2 for RP800 model)
 K = 2.6;		%k factor of adrians model & of RP800 model
-CONTRAST_CALCULATION_METHOD = 'STRONGEST_CORNER';   %can be STRONGEST_EDGE, RP800, LOWER_THIRD, STRONGEST_CORNER
+CONTRAST_CALCULATION_METHOD = 'STRONGEST_EDGE';   %can be STRONGEST_EDGE, RP800, LOWER_THIRD, STRONGEST_CORNER
 
 %visual object preferences
 %%TODO: these values should be read from the xml file!!!

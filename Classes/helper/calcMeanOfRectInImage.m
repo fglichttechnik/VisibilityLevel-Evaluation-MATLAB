@@ -1,4 +1,4 @@
-function meanImg = calcMeanOfRectInImage(img, x1, x2, y1, y2, LMK_Image_Statistics, colorChannel)
+function [meanImg, rawImage] = calcMeanOfRectInImage(img, x1, x2, y1, y2, LMK_Image_Statistics, colorChannel)
 %author Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 %calculates the mean of a rect region within an image
@@ -30,7 +30,8 @@ end
 %imshow(img(y1 : y2, x1 : x2))
 %imshow(img(y1 : y2+1, x1 : x2+1))
 
-meanImg = mean2( img( y1 : y2, x1 : x2) );
+rawImage = img( y1 : y2, x1 : x2);
+meanImg = mean2( rawImage );
 
 %visualize measurement region
 visImage = logical( zeros( size( img ) ) );

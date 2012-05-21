@@ -89,7 +89,7 @@ classdef LMK_Image_Set_Statistics < handle
                 if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_EDGE' ) )
                     meanTargetArray( currentIndex ) = currentStatistics.strongestEdgeMeanTarget;
                 elseif ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_CORNER' ) )
-                    meanBackgroundArray( currentIndex ) = currentStatistics.strongestCornerMeanTarget;
+                    meanTargetArray( currentIndex ) = currentStatistics.strongestCornerMeanTarget;
                 elseif ( strcmp( obj.contrastCalculationMethod, 'RP800' ) )
                     meanTargetArray( currentIndex ) = currentStatistics.meanTarget;
                 elseif ( strcmp( obj.contrastCalculationMethod, 'LOWER_THIRD' ) )
@@ -110,6 +110,7 @@ classdef LMK_Image_Set_Statistics < handle
                     disp( 'QUITTING' );
                     return;
                 end
+                
             end
             
             %calculate weber contrast
@@ -188,12 +189,34 @@ classdef LMK_Image_Set_Statistics < handle
             end
             for currentIndex = 1 : length( obj.visualisationImageArray )
                 image = obj.visualisationImageArray{ currentIndex };
-                filename = sprintf( '%s%svisImages_%s%s%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentIndex );
+
+                %save strongest edge / corner decision to saveImage
+                currentStatisticsArray = obj.lmkImageStatisticsArray;
+                currentStatistics = currentStatisticsArray{ currentIndex };
+                if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_EDGE' )  )
+                    filename = sprintf( '%s%svisImages_%s%s%s_%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentStatistics.strongestEdgeString, currentIndex ); 
+                elseif ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_CORNER' ) )
+                    filename = sprintf( '%s%svisImages_%s%s%s_%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentStatistics.strongestCornerString, currentIndex ); 
+                else
+                    filename = sprintf( '%s%svisImages_%s%s%s%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentIndex );     
+                end
+                
                 imwrite( image, filename );
             end
             for currentIndex = 1 : length( obj.visualisationMeasArray )
                 image = obj.visualisationMeasArray{ currentIndex };
-                filename = sprintf( '%s%svisImages_%s%sMeasRegions_%s%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentIndex );
+                
+                %save strongest edge / corner decision to saveImage
+                currentStatisticsArray = obj.lmkImageStatisticsArray;
+                currentStatistics = currentStatisticsArray{ currentIndex };
+                if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_EDGE' )  )
+                    filename = sprintf( '%s%svisImages_%s%sMeasRegions_%s_%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentStatistics.strongestEdgeString, currentIndex ); 
+                elseif ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_CORNER' ) )
+                    filename = sprintf( '%s%svisImages_%s%sMeasRegions_%s_%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentStatistics.strongestCornerString, currentIndex ); 
+                else
+                    filename = sprintf( '%s%svisImages_%s%sMeasRegions_%s%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentIndex );     
+                end
+                
                 imwrite( image, filename );
             end
             
