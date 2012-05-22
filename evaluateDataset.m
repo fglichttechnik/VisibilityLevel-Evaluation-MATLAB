@@ -41,7 +41,7 @@ K = 2.6;		%k factor of adrians model & of RP800 model
 
 %% set contrast calculation method
 %can be STRONGEST_EDGE, RP800, LOWER_THIRD, STRONGEST_CORNER, 2DEGREE_BACKGROUND
-CONTRAST_CALCULATION_METHOD = '2DEGREE_BACKGROUND';
+CONTRAST_CALCULATION_METHOD = 'STRONGEST_CORNER';
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

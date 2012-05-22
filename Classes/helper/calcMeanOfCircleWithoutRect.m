@@ -50,6 +50,7 @@ end
 
 %calculations needs to be done only within subimage
 subImage = img(fromY : toY, fromX : toX);
+%subImage = img;
 [width, height] = size(subImage);
 
 %adjust values to subimage koordinates
@@ -63,6 +64,7 @@ subY2 = subCenterY + round((y2 - y1) / 2);
 %prepare mean 
 meanVal = 0;
 numberOfVals = 0;
+maxi = max( max( subImage ) );
 
 for i = 1 : width
     for j = 1 : height
@@ -72,7 +74,10 @@ for i = 1 : width
             %rect criterion
             if(((i < subY1) || (i > subY2)) || ((j < subX1) || (j > subX2)))
                 meanVal = meanVal + subImage(i, j);
-                numberOfVals = numberOfVals + 1;               
+                numberOfVals = numberOfVals + 1;   
+                
+                %debug:
+                %subImage(i,j) = maxi;
             end
         end
     end

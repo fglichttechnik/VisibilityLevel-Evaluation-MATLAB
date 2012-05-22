@@ -132,23 +132,6 @@ lowerLeftCornerBackgroundMean = mean( combinedPixels );
 combinedPixels = [ lowerRightLowerBackground(:); lowerRightRightBackground(:) ];
 lowerRightCornerBackgroundMean = mean( combinedPixels );
 
-%% debug
-% %
-% image( upperBackgroundY1 : upperBackgroundY1 + targetRegionHeight, upperBackgroundX1 : upperBackgroundX1 + targetRegionWidth ) = 255;
-% image( leftBackgroundY1 : leftBackgroundY1 + targetRegionHeight, leftBackgroundX1 : leftBackgroundX1 + targetRegionWidth ) = 255;
-% 
-% %
-% image( upperBackgroundY1 : upperBackgroundY1 + targetRegionHeight, upperBackgroundX2 - targetRegionWidth : upperBackgroundX2 ) = 255;
-% image( rightBackgroundY1 : rightBackgroundY1 + targetRegionHeight, rightBackgroundX1 : rightBackgroundX1 + targetRegionWidth ) = 255;
-%  
-% %
-% image( lowerBackgroundY1 : lowerBackgroundY1 + targetRegionHeight, upperBackgroundX1 : upperBackgroundX1 + targetRegionWidth ) = 255;
-% image( leftBackgroundY2 - targetRegionHeight : leftBackgroundY2, leftBackgroundX1 : leftBackgroundX1 + targetRegionWidth ) = 255;
-% 
-% %
-% image( lowerBackgroundY1 : lowerBackgroundY1 + targetRegionHeight, lowerBackgroundX2 - targetRegionWidth : lowerBackgroundX2 ) = 255;
-% image( rightBackgroundY2 - targetRegionHeight : rightBackgroundY2, rightBackgroundX1 : rightBackgroundX1 + targetRegionWidth ) = 255;
-
 %save to class
 LMK_Image_Statistics.meanTargetUpperEdge = upperTargetMean;
 LMK_Image_Statistics.meanTargetLowerEdge = lowerTargetMean;
