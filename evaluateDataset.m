@@ -1,53 +1,43 @@
 function evaluateDataset( PATH )
-%author Sandy Buschmann, Jan Winter TU Berlin
+%author Jan Winter, Sandy Buschmann TU Berlin
 %email j.winter@tu-berlin.de
 %this script evaluates a set of images with a graycard corresponding to Adrians 1989
 %model of contrast threshold
+%this shall be called by evaluate_batch()
 
 disp( sprintf( 'evaluating %s', PATH ) );
 
-%clear all; %this will clear all breakpoints as well
+%clear all; %this will clear all breakpoints as well, so we don't like this
 
+%% set tasks
 CONVERT_TO_PDF = 1; %set this to 0 if you don't have epstopdf
 ANALYZE_MESOPIC = 0; %set this to 0 if you don't like mesopic shit
+ANALYZE_SCOTOPIC = 0; %set this to 0 if you don't like scotopic shit
 
+%% set xml name
 %file path preferences
 XMLNAME = 'LMKSetMat';  %best if you name all xmls like that
 
 %typically 0 for RoadMeasurements
-OFFSET = 12.5; %if 0 the relative position within the measurement field will be plotted, else OFFSET is the distance from view point to meas field in order to show absolute values
+%if 0 the relative position within the measurement field will be plotted, 
+%else OFFSET is the distance from view point to meas field in order to show absolute values
+OFFSET = 12.5; 
 
-%this is the path to the datasets xml file
-%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_newTarget';
-%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3';
-%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3_fixedDistance';
-%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert';
-%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/Treskowstr_LED_simuliert_R3';
-%PATH = '/Volumes/server/Postfach/Transfer zu Winter/2010_10_07 - Treskowstr/Leuchtdichtebilder/pf';
-%PATH = '/Users/sandy/Desktop/Development/RoadRad/RoadRad/scenes/sceneXY/LMKSetMat';
-%PATH = '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/SebBremer/neu';
-%PATH = 'Z:\Postfach\Transfer zu Winter\2010_10_07 - Treskowstr\Leuchtdichtebilder\pf';
-%PATH = '/Users/sandy/Desktop/Development/LMK/LMK_Data_evaluation/database/sceneXYZ';
-
-
+%% set VL parameters
 %adrian threshold model parameter
-%AGE = 24;		%age of observer for adrians model
-%T = 1;			%observing time of visual object
-%K = 2.6;		%k factor of adrians model
 %as seen in (ANSI IESNA RP 8 00)
 AGE = 60;		%age of observer for adrians model & RP800 model
-T = 0.2;		%observing time of visual object (constant 0.2 for RP800 model)
+T = 0.2;		%observing time of visual object (0.2 for RP800 model)
 K = 2.6;		%k factor of adrians model & of RP800 model
-CONTRAST_CALCULATION_METHOD = 'STRONGEST_EDGE';   %can be STRONGEST_EDGE, RP800, LOWER_THIRD, STRONGEST_CORNER
 
-%visual object preferences
-%%TODO: these values should be read from the xml file!!!
-%DISTANCE_TO_MEASUREMENT_FIELD = 11;	%distance between camera and first measurement position of visual object
-%SIZE_OF_OBJECT = 0.30;	%size of visual object
-%TITLE = '';
+%% set contrast calculation method
+%can be STRONGEST_EDGE, RP800, LOWER_THIRD, STRONGEST_CORNER, 2DEGREE_BACKGROUND
+CONTRAST_CALCULATION_METHOD = 'STRONGEST_CORNER';   
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%no adjustments have to be done below
+%% no adjustments have to be done below
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %platform specific path delimiter
 if(ispc)
@@ -56,9 +46,8 @@ elseif(isunix)
     DELIMITER = '/';
 end
 
-
 %load data
-%THIS CAUSES A LOT OF PROBLEMS!!!
+%THIS CAUSES A LOT OF PROBLEMS!!! THERFORE WE DON'T LIKE IT
 %if ~exist([PATH,DELIMITER,XMLNAME, '.mat'], 'file');
 %load xml file and read all pf images
 
@@ -76,10 +65,11 @@ lengthOfSet = length(imageset);
 disp('Calculating...');
 
 
-%prepare result class
+%prepare result instance of setStatistics class
 title =  imageset{1,1}.sceneTitle;
 photopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Photopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET );
 mesopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Mesopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET );
+scotopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Mesopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET );
 
 
 %analyse each image
@@ -88,16 +78,19 @@ for currentIndex = 1 : lengthOfSet
     %get current element
     currentLMK_Image_Metadata = imageset{ currentIndex };
     
-    %calculate all necessary values
+    %init with necessary values
     currentPhotopic_LMK_Image_Statistics = LMK_Image_Statistics( currentLMK_Image_Metadata, photopicLMK_Image_Set_Statistics.type );
     photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentPhotopic_LMK_Image_Statistics;
-    %photopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentLMK_Image_Metadata.targetAlphaMinutes;
     photopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentPhotopic_LMK_Image_Statistics.alphaMinutes;
     
     currentMesopic_LMK_Image_Statistics = LMK_Image_Statistics( currentLMK_Image_Metadata, mesopicLMK_Image_Set_Statistics.type );
     mesopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentMesopic_LMK_Image_Statistics;
-    %mesopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentLMK_Image_Metadata.targetAlphaMinutes;
     mesopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentMesopic_LMK_Image_Statistics.alphaMinutes;
+    
+    currentScotopic_LMK_Image_Statistics = LMK_Image_Statistics( currentLMK_Image_Metadata, scotopicLMK_Image_Set_Statistics.type );
+    scotopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentScotopic_LMK_Image_Statistics;
+    scotopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentScotopic_LMK_Image_Statistics.alphaMinutes;
+    
 end
 
 %prepare data for plotting and plot
@@ -118,6 +111,7 @@ photopicLMK_Image_Set_Statistics.plotCthArrayLBBorderAndSave( PATH, figHandleCth
 
 %photopicLMK_Image_Set_Statistics.plotLtLBWithImages( PATH ) ;
 
+%calculate mesopic values and plots if requested
 if( ANALYZE_MESOPIC )
     mesopicLMK_Image_Set_Statistics.gatherData();
     mesopicLMK_Image_Set_Statistics.plotVL( PATH );
@@ -134,6 +128,23 @@ if( ANALYZE_MESOPIC )
     mesopicLMK_Image_Set_Statistics.plotCthArrayLBBorderAndSave( PATH, figHandleCth );
 end
 
+%calculate scotopic values and plots if requested
+if( ANALYZE_SCOTOPIC )
+    scotopicLMK_Image_Set_Statistics.gatherData();
+    scotopicLMK_Image_Set_Statistics.plotVL( PATH );
+    scotopicLMK_Image_Set_Statistics.plotVLFixedDistance( PATH );
+    scotopicLMK_Image_Set_Statistics.plotVLFixedDistanceScaled( PATH );
+    scotopicLMK_Image_Set_Statistics.plotThresholdContrast( PATH );
+    scotopicLMK_Image_Set_Statistics.plotThresholdDeltaL( PATH );
+    scotopicLMK_Image_Set_Statistics.plotContrast( PATH );
+    scotopicLMK_Image_Set_Statistics.plotAbsContrast( PATH );
+    scotopicLMK_Image_Set_Statistics.plotLtLB( PATH );
+    figHandleCth = figure();
+    scotopicLMK_Image_Set_Statistics.plotCthArrayContrastThresholds( figHandleCth );
+    scotopicLMK_Image_Set_Statistics.plotCthArrayCurrentData( figHandleCth );
+    scotopicLMK_Image_Set_Statistics.plotCthArrayLBBorderAndSave( PATH, figHandleCth );
+end
+
 %convert all files to pdf
 if( CONVERT_TO_PDF )
     pathToEPSFiles = sprintf( '%s%splots_%s%s', PATH, DELIMITER, CONTRAST_CALCULATION_METHOD, DELIMITER );
@@ -141,7 +152,7 @@ if( CONVERT_TO_PDF )
     system( sprintf( 'rm %s*.eps', pathToEPSFiles ) );
 end
 
-%save images
+%save visualisation images
 photopicLMK_Image_Set_Statistics.saveVisualisationImage( PATH );
 
 %save dataset for compareEvaluatedDatasets
@@ -150,9 +161,15 @@ photopicLMK_Image_Set_Statistics.visualisationImageArray = 0;
 photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray = 0;
 mesopicLMK_Image_Set_Statistics.visualisationImageArray = 0;
 mesopicLMK_Image_Set_Statistics.lmkImageStatisticsArray = 0;
+scotopicLMK_Image_Set_Statistics.visualisationImageArray = 0;
+scotopicLMK_Image_Set_Statistics.lmkImageStatisticsArray = 0;
 save( [ PATH, DELIMITER, 'photopicSetStatistics_', CONTRAST_CALCULATION_METHOD, '.mat' ], 'photopicLMK_Image_Set_Statistics' );
-save( [ PATH, DELIMITER, 'mesopicSetStatistics_', CONTRAST_CALCULATION_METHOD, '.mat' ], 'mesopicLMK_Image_Set_Statistics' );
-
+if( ANALYZE_MESOPIC )
+    save( [ PATH, DELIMITER, 'mesopicSetStatistics_', CONTRAST_CALCULATION_METHOD, '.mat' ], 'mesopicLMK_Image_Set_Statistics' );
+end
+if( ANALYZE_SCOTOPIC )
+    save( [ PATH, DELIMITER, 'scotopicSetStatistics_', CONTRAST_CALCULATION_METHOD, '.mat' ], 'scotopicLMK_Image_Set_Statistics' );
+end
 disp('done');
 
 

@@ -178,27 +178,27 @@ classdef LMK_Image_Statistics < handle
                         && ( upperLeftCornerContrast >= lowerLeftCornerContrast )...
                         && ( upperLeftCornerContrast >= lowerRightCornerContrast ) )
                     strongestCorner = 'upperLeftCorner';
-                    stringestCornerContrast = upperLeftCornerContrast;
+                    strongestCornerContrast = upperLeftCornerContrast;
                 elseif ( ( upperRightCornerContrast >= upperLeftCornerContrast )...
                         && ( upperRightCornerContrast >= lowerLeftCornerContrast )...
                         && ( upperRightCornerContrast >= lowerRightCornerContrast ) )
                     strongestCorner = 'upperRightCorner';
-                    stringestCornerContrast = upperRightCornerContrast;
+                    strongestCornerContrast = upperRightCornerContrast;
                 elseif ( ( lowerLeftCornerContrast >= upperLeftCornerContrast )...
                         && ( lowerLeftCornerContrast >= upperRightCornerContrast )...
                         && ( lowerLeftCornerContrast >= lowerRightCornerContrast ) )
                     strongestCorner = 'lowerLeftCorner';
-                    stringestCornerContrast = lowerLeftCornerContrast;
+                    strongestCornerContrast = lowerLeftCornerContrast;
                 else
                     strongestCorner = 'lowerRightCorner';
-                    stringestCornerContrast = lowerRightCornerContrast;
+                    strongestCornerContrast = lowerRightCornerContrast;
                 end
                 
                 %print info
                 disp(sprintf('strongest corner: %s', strongestCorner));
                 
                 %assign values
-                obj.strongestCornerContrast = stringestCornerContrast;
+                obj.strongestCornerContrast = strongestCornerContrast;
                 obj.strongestCornerString = strongestCorner;
             end
             value = obj.strongestCornerContrast;

@@ -222,9 +222,10 @@ end
 if( ~isempty( customCodeString ) )%~strcmp( customCodeString, '') )
     eval( customCodeString );
 end
-%save('mitte_evaluated.mat','thresholdContrastAlphaArray','thresholdContras
-%tArray','thresholdContrastBackgroundLuminanceArray','thresholdContrastLabe
-%lCellArray','thresholdContrastPositionArray');
+
+%save data
+filename = sprintf( '%s%sevaluated_data.mat', SAVEPATH, DELIMITER );
+save(filename,'thresholdContrastAlphaArray','thresholdContrastArray','thresholdContrastBackgroundLuminanceArray','thresholdContrastLabelCellArray','thresholdContrastPositionArray');
 
 %save images
 finetunePlot( figHandleContrast );
@@ -336,7 +337,11 @@ if( CONVERT_TO_PDF )
     system( sprintf( 'rm %s*.eps', pathToEPSFiles ) );
     
     %delete tmp plots
-    pathToTMPFiles = sprintf( '%s%splots%s', SAVEPATH, DELIMITER, DELIMITER );
+    if( currentEvalType )
+        pathToTMPFiles = sprintf( '%s%splots_%s%s', SAVEPATH, DELIMITER, currentEvalType, DELIMITER );
+    else
+        pathToTMPFiles = sprintf( '%s%splots%s', SAVEPATH, DELIMITER, DELIMITER );
+    end
     system( sprintf( 'rm -r %s', pathToTMPFiles ) );
 end
 
