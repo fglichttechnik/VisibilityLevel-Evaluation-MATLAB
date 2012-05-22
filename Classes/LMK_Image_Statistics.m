@@ -41,7 +41,7 @@ classdef LMK_Image_Statistics < handle
         alphaMinutes
         
         
-        %currently not necessary values
+        %currently not necessary values -> most probably deprecated
         minTarget
         maxTarget
         stdTarget

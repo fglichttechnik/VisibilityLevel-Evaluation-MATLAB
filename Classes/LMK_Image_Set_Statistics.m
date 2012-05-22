@@ -28,7 +28,7 @@ classdef LMK_Image_Set_Statistics < handle
         
         setTitle                    %title for this set
         
-        contrastCalculationMethod   %can be STRONGEST, RP800, LOWER_THIRD, STRONGEST_CORNER or other to be implemented methods
+        contrastCalculationMethod   %can be STRONGEST_EDGE, RP800, LOWER_THIRD, STRONGEST_CORNER, 2DEGREE_BACKGROUND or other to be implemented methods
         
         offset                      % if 0 the relative position within the meas field is plotted, else offset is the distance from the VP to the meas field for absolute values
         
@@ -94,6 +94,8 @@ classdef LMK_Image_Set_Statistics < handle
                     meanTargetArray( currentIndex ) = currentStatistics.meanTarget;
                 elseif ( strcmp( obj.contrastCalculationMethod, 'LOWER_THIRD' ) )
                     meanTargetArray( currentIndex ) = currentStatistics.meanTargetLowerEdge;
+                elseif ( strcmp( obj.contrastCalculationMethod, '2DEGREE_BACKGROUND' ) )
+                    meanTargetArray( currentIndex ) = currentStatistics.meanTarget;
                 end
                 
                 if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_EDGE' ) )
@@ -104,8 +106,10 @@ classdef LMK_Image_Set_Statistics < handle
                     meanBackgroundArray( currentIndex ) = currentStatistics.meanBackground_RP8_00;
                 elseif ( strcmp( obj.contrastCalculationMethod, 'LOWER_THIRD' ) )
                     meanBackgroundArray( currentIndex ) = currentStatistics.meanBackgroundLowerEdge;
+                elseif ( strcmp( obj.contrastCalculationMethod, '2DEGREE_BACKGROUND' ) )
+                    meanBackgroundArray( currentIndex ) = currentStatistics.meanBackgroundTwoDegree;
                 else
-                    disp( sprintf( 'contrastCalculationMethod must be either STRONGEST_EDGE, STRONGEST_CORNER, LOWER_THIRD or RP800' ) );
+                    disp( sprintf( 'contrastCalculationMethod must be either STRONGEST_EDGE, STRONGEST_CORNER, LOWER_THIRD, 2DEGREE_BACKGROUND or RP800' ) );
                     disp( sprintf( 'contrastCalculationMethod is currently %s', obj.contrastCalculationMethod ) );
                     disp( 'QUITTING' );
                     return;
@@ -189,16 +193,16 @@ classdef LMK_Image_Set_Statistics < handle
             end
             for currentIndex = 1 : length( obj.visualisationImageArray )
                 image = obj.visualisationImageArray{ currentIndex };
-
+                
                 %save strongest edge / corner decision to saveImage
                 currentStatisticsArray = obj.lmkImageStatisticsArray;
                 currentStatistics = currentStatisticsArray{ currentIndex };
                 if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_EDGE' )  )
-                    filename = sprintf( '%s%svisImages_%s%s%s_%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentStatistics.strongestEdgeString, currentIndex ); 
+                    filename = sprintf( '%s%svisImages_%s%s%s_%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentStatistics.strongestEdgeString, currentIndex );
                 elseif ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_CORNER' ) )
-                    filename = sprintf( '%s%svisImages_%s%s%s_%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentStatistics.strongestCornerString, currentIndex ); 
+                    filename = sprintf( '%s%svisImages_%s%s%s_%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentStatistics.strongestCornerString, currentIndex );
                 else
-                    filename = sprintf( '%s%svisImages_%s%s%s%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentIndex );     
+                    filename = sprintf( '%s%svisImages_%s%s%s%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentIndex );
                 end
                 
                 imwrite( image, filename );
@@ -210,11 +214,11 @@ classdef LMK_Image_Set_Statistics < handle
                 currentStatisticsArray = obj.lmkImageStatisticsArray;
                 currentStatistics = currentStatisticsArray{ currentIndex };
                 if ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_EDGE' )  )
-                    filename = sprintf( '%s%svisImages_%s%sMeasRegions_%s_%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentStatistics.strongestEdgeString, currentIndex ); 
+                    filename = sprintf( '%s%svisImages_%s%sMeasRegions_%s_%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentStatistics.strongestEdgeString, currentIndex );
                 elseif ( strcmp( obj.contrastCalculationMethod, 'STRONGEST_CORNER' ) )
-                    filename = sprintf( '%s%svisImages_%s%sMeasRegions_%s_%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentStatistics.strongestCornerString, currentIndex ); 
+                    filename = sprintf( '%s%svisImages_%s%sMeasRegions_%s_%s_%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentStatistics.strongestCornerString, currentIndex );
                 else
-                    filename = sprintf( '%s%svisImages_%s%sMeasRegions_%s%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentIndex );     
+                    filename = sprintf( '%s%svisImages_%s%sMeasRegions_%s%d.png', savePath, DELIMITER, obj.contrastCalculationMethod, DELIMITER, obj.type, currentIndex );
                 end
                 
                 imwrite( image, filename );
