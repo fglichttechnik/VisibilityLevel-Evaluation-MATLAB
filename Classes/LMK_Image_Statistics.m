@@ -278,13 +278,21 @@ classdef LMK_Image_Statistics < handle
         %% lazy loading of alphaMinutes
         function value = get.alphaMinutes( obj )
             if( isempty( obj.alphaMinutes ) )
-                dis = obj.imageMetadata.distanceToObject;
-                objSize = obj.imageMetadata.targetSize;
-                alphaRad = 2 * atan( objSize / 2 ./ dis );
-                targetAlphaMinutes = ( alphaRad / pi * 180 * 60 );
-                obj.alphaMinutes = targetAlphaMinutes;
+                distanceToObject = obj.imageMetadata.distanceToObject;
+                targetSize = obj.imageMetadata.targetSize;
+%                 alphaRad = 2 * atan( targetSize / 2 ./ distanceToObject );
+%                 targetAlphaMinutes = ( alphaRad / pi * 180 * 60 );
+%                 obj.alphaMinutes = targetAlphaMinutes;
+                  obj.alphaMinutes = obj.calcAlphaMinutesForRectAndDistance( targetSize, distanceToObject );
             end
             value = obj.alphaMinutes;
+        end
+        
+        %% alpha minute calculation helper function
+        function alphaMinutes = calcAlphaMinutesForRectAndDistance( obj, targetSize, distanceToObject )
+                alphaRad = 2 * atan( ( targetSize / 2 ) ./ distanceToObject );
+                alphaMinutes = ( alphaRad / pi * 180 * 60 );
+                disp( sprintf( 'current alphaMinutes: %f for targetSize: %f and distanceToObject: %f', alphaMinutes, targetSize, distanceToObject ) );
         end
         
         %% private methods
@@ -310,7 +318,7 @@ classdef LMK_Image_Statistics < handle
             calcMeanOfTargetEdges( dataImage , obj );
             
             %calc mean of circle
-            calcMeanOfCircleWithoutRect( dataImage, obj.imageMetadata );
+            calcMeanOfCircleWithoutRect( dataImage, obj );
         end
         
     end % methods

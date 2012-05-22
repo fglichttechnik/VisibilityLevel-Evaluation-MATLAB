@@ -3,7 +3,7 @@ function evaluateDataset( PATH )
 %email j.winter@tu-berlin.de
 %this script evaluates a set of images with a graycard corresponding to Adrians 1989
 %model of contrast threshold
-%this shall be called by evaluate_batch()
+%this shall be called by evaluateDataset_batch()
 
 disp( sprintf( 'evaluating %s', PATH ) );
 
@@ -18,10 +18,19 @@ ANALYZE_SCOTOPIC = 0; %set this to 0 if you don't like scotopic shit
 %file path preferences
 XMLNAME = 'LMKSetMat';  %best if you name all xmls like that
 
+%% set offset
 %typically 0 for RoadMeasurements
-%if 0 the relative position within the measurement field will be plotted, 
+%if 0 the relative position within the measurement field will be plotted,
 %else OFFSET is the distance from view point to meas field in order to show absolute values
-OFFSET = 12.5; 
+OFFSET = 12.5;
+
+%% set STV calculation indices
+%STV is calculated for images within this range only
+%e.g. if you have 2 measurements before and 2 after the meas field, you'll
+%want to use 3 and 12
+%indices start at 1
+STV_START_INDEX = 0;    %set this to 0 if you don't need this
+STV_END_INDEX = 0;     %set this to 0 if you don't need this
 
 %% set VL parameters
 %adrian threshold model parameter
@@ -32,7 +41,7 @@ K = 2.6;		%k factor of adrians model & of RP800 model
 
 %% set contrast calculation method
 %can be STRONGEST_EDGE, RP800, LOWER_THIRD, STRONGEST_CORNER, 2DEGREE_BACKGROUND
-CONTRAST_CALCULATION_METHOD = 'STRONGEST_CORNER';   
+CONTRAST_CALCULATION_METHOD = '2DEGREE_BACKGROUND';
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,14 +72,13 @@ imageset = struct2mat(str, PATH);
 lengthOfSet = length(imageset);
 
 disp('Calculating...');
-
+disp( sprintf( 'using contrast calculation method: %s', CONTRAST_CALCULATION_METHOD ) );
 
 %prepare result instance of setStatistics class
 title =  imageset{1,1}.sceneTitle;
-photopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Photopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET );
-mesopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Mesopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET );
-scotopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Mesopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET );
-
+photopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Photopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET, STV_START_INDEX, STV_END_INDEX );
+mesopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Mesopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET, STV_START_INDEX, STV_END_INDEX );
+scotopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Mesopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET, STV_START_INDEX, STV_END_INDEX );
 
 %analyse each image
 for currentIndex = 1 : lengthOfSet
@@ -83,13 +91,17 @@ for currentIndex = 1 : lengthOfSet
     photopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentPhotopic_LMK_Image_Statistics;
     photopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentPhotopic_LMK_Image_Statistics.alphaMinutes;
     
-    currentMesopic_LMK_Image_Statistics = LMK_Image_Statistics( currentLMK_Image_Metadata, mesopicLMK_Image_Set_Statistics.type );
-    mesopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentMesopic_LMK_Image_Statistics;
-    mesopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentMesopic_LMK_Image_Statistics.alphaMinutes;
+    if( ANALYZE_MESOPIC )
+        currentMesopic_LMK_Image_Statistics = LMK_Image_Statistics( currentLMK_Image_Metadata, mesopicLMK_Image_Set_Statistics.type );
+        mesopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentMesopic_LMK_Image_Statistics;
+        mesopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentMesopic_LMK_Image_Statistics.alphaMinutes;
+    end
     
-    currentScotopic_LMK_Image_Statistics = LMK_Image_Statistics( currentLMK_Image_Metadata, scotopicLMK_Image_Set_Statistics.type );
-    scotopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentScotopic_LMK_Image_Statistics;
-    scotopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentScotopic_LMK_Image_Statistics.alphaMinutes;
+    if( ANALYZE_SCOTOPIC )
+        currentScotopic_LMK_Image_Statistics = LMK_Image_Statistics( currentLMK_Image_Metadata, scotopicLMK_Image_Set_Statistics.type );
+        scotopicLMK_Image_Set_Statistics.lmkImageStatisticsArray{ currentIndex } = currentScotopic_LMK_Image_Statistics;
+        scotopicLMK_Image_Set_Statistics.alphaArray( currentIndex ) = currentScotopic_LMK_Image_Statistics.alphaMinutes;
+    end
     
 end
 

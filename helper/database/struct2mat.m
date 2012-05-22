@@ -356,6 +356,7 @@ for i = 1 : childSize
         
         % put descriptions into obj
         distanceToObject = distanceToMeasField + evaluatedData.rectPosition;
+        evaluatedData.viewPointDistance = distanceToMeasField;
         evaluatedData.sceneTitle = sceneTitle;
         evaluatedData.focalLength = focalLength;
         evaluatedData.distanceToObject = distanceToObject;

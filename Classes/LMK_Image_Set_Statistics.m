@@ -15,7 +15,7 @@ classdef LMK_Image_Set_Statistics < handle
         meanTargetArray             %array with target means of current set
         meanBackgroundArray         %array with background means of current set
         weberContrastArray          %array with weber contrasts of current set
-        weberContrastAbsArray          %array with weber contrasts of current set
+        weberContrastAbsArray       %array with weber contrasts of current set
         thresholdContrastArray      %array with threshold contrasts of current set
         visibilityLevelArray        %array with visibility levels of current set
         visibilityLevelFixedDistanceArray        %array with visibility levels of current set (distance is assumed to be the samefor all target positions)
@@ -24,6 +24,8 @@ classdef LMK_Image_Set_Statistics < handle
         visualisationMeasArray
         
         
+        stvStartIndex               %index to start STV calculation from
+        stvEndIndex                 %index to end STV calculation with
         smallTargetVL               %small target visibility level; weighted average of all VL
         
         setTitle                    %title for this set
@@ -38,7 +40,7 @@ classdef LMK_Image_Set_Statistics < handle
     end % properties
     methods
         %constructor
-        function obj = LMK_Image_Set_Statistics( type, lengthOfSet, ageVL, tVL, kVL, setTitle, contrastCalculationMethod, offset )
+        function obj = LMK_Image_Set_Statistics( type, lengthOfSet, ageVL, tVL, kVL, setTitle, contrastCalculationMethod, offset, stvStartIndex, stvEndIndex )
             if nargin > 0 % Support calling with 0 arguments
                 
                 %check if type is valid
@@ -59,6 +61,8 @@ classdef LMK_Image_Set_Statistics < handle
                 obj.setTitle = setTitle;
                 obj.contrastCalculationMethod = contrastCalculationMethod;
                 obj.offset = offset;
+                obj.stvStartIndex = stvStartIndex;
+                obj.stvEndIndex = stvEndIndex;
             end
             
             obj.FONTSIZE = 14;
@@ -121,22 +125,32 @@ classdef LMK_Image_Set_Statistics < handle
             weberContrastArray = ( meanTargetArray - meanBackgroundArray ) ./ meanBackgroundArray;
             weberContrastAbsArray = abs( weberContrastArray );
             
+            %get alpha in minutes of target
+            
+            % this is to simulate a fixed  target distance for a fixed view point
+            % measurement
+            % any metadata instance should suffice ( viewPointDistance and targetSize should be the same for
+            % all)
+            viewPointDistance = currentStatisticsArray{ 1 }.imageMetadata.viewPointDistance; 
+            targetSize = currentStatisticsArray{ 1 }.imageMetadata.targetSize;
+            fixedAlphaMinutes = currentStatisticsArray{ 1 }.calcAlphaMinutesForRectAndDistance( targetSize, viewPointDistance );
+            
             %calculate threshold contrast
-            fixedAlphaMinutes = currentStatisticsArray{ 3 }.alphaMinutes;
             for currentIndex = 1 : length( meanTargetArray )
+                
                 Lb = meanBackgroundArray( currentIndex );
                 Lt = meanTargetArray( currentIndex );
                 alphaMinutes = currentStatisticsArray{ currentIndex }.alphaMinutes;
-                deltaL = calcDeltaL(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
-                deltaL_RP800 = calcDeltaL_RP800(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
+                deltaL = calcDeltaL(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL);     % as shown in Adrian1989
+                deltaL_RP800 = calcDeltaL_RP800(Lb, Lt, alphaMinutes, obj.ageVL, obj.tVL, obj.kVL); % as shown in RP 8 00 (WE LIKE THIS)
                 thresholdContrastArray( currentIndex ) = deltaL_RP800 / Lb;
                 
                 disp( sprintf( 'deltaLAdrian: %f deltaLRP800: %f', deltaL, deltaL_RP800 ) );
                 
                 %calc the same for fixed distance (we take the first distance in the measurement field, that's currently object 3)
-                %alphaMinutes = obj.alphaArray( 3 );
                 deltaLFixedDistance = calcDeltaL_RP800(Lb, Lt, fixedAlphaMinutes, obj.ageVL, obj.tVL, obj.kVL);
                 thresholdContrastFixedDistanceArray( currentIndex ) = deltaLFixedDistance / Lb;
+                
             end
             
             %calculate visibility level
@@ -168,9 +182,27 @@ classdef LMK_Image_Set_Statistics < handle
         function value = get.smallTargetVL( obj )
             if( isempty( obj.smallTargetVL ) )
                 if ~( isempty( obj.visibilityLevelArray ) )
-                    %ignore first / last 2
-                    visibilityLevelArrayOfMeasurementField = obj.visibilityLevelFixedDistanceArray( 3 : end - 2 );
-                    disp( sprintf( 'calculating STV from index %d to index %d of image array', 3, (length(obj.visibilityLevelFixedDistanceArray) - 2) ) );
+                    %ignore certain values for STV calculation
+                    startIndex = 1;
+                    endIndex = length( obj.visibilityLevelFixedDistanceArray );
+                    
+                    if( obj.stvStartIndex )
+                        if( obj.stvStartIndex <= endIndex )
+                            startIndex = obj.stvStartIndex;
+                        else
+                            error(sprintf('stvStartIndex is out of range (%d length is %d)', obj.stvStartIndex, endIndex));
+                        end
+                    end
+                    if( obj.stvEndIndex )
+                        if( obj.stvEndIndex <= endIndex )
+                            endIndex = obj.stvEndIndex;
+                        else
+                            error(sprintf('stvEndIndex is out of range (%d length is %d)', obj.stvEndIndex, endIndex));
+                        end
+                    end
+                    
+                    visibilityLevelArrayOfMeasurementField = obj.visibilityLevelFixedDistanceArray( startIndex : endIndex );
+                    disp( sprintf( 'calculating STV from index %d to index %d of image array', startIndex, endIndex) );
                     stv = calcSTVfromArray( visibilityLevelArrayOfMeasurementField );
                     obj.smallTargetVL = stv;
                 end
