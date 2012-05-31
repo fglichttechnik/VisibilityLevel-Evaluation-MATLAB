@@ -38,6 +38,10 @@ LbRange = linspace( LbMin, LbMax, 100 );
 measuredCthValues = zeros( 100, 100 );
 calculatedCthValues = zeros( 100, 100 );
 
+meanOfValues = mean( measuredContrastThreshold( : ) );
+meanCthValues = ones( 100, 100 ) * meanOfValues;
+stdOfValues = std( measuredContrastThreshold );
+
 for currentIndex = 1 : length( measuredContrastThreshold )
     
     alpha = measuredAlphaMinutes( currentIndex );
@@ -61,9 +65,9 @@ for currentIndex = 1 : length( measuredContrastThreshold )
     
     measuredCthValues( alphaIndex, lBIndex ) = measuredContrastThreshold( currentIndex );
     calculatedCthValues( alphaIndex, lBIndex ) = thresholdContrastForAlphaAndLBArray( currentIndex );
-    
 end
 
 correlation2 = corr2( measuredCthValues, calculatedCthValues );
-%disp('');
+correlationWithMean2 = corr2( measuredCthValues, meanCthValues );
+disp('');
 

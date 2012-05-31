@@ -1,16 +1,25 @@
 
+%possible evaluation methods:
+% RP800, LOWER_THIRD, STRONGEST_EDGE, STRONGEST_CORNER, 2DEGREE_BACKGROUND
+
 evaluateBatchSet = {
 
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L1_Mitte',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L2_Mitte',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L3_Mitte',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L4_Mitte',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L5_Mitte',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L6_Mitte',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L7_Mitte',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L8_Mitte',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L9_Mitte',
-    '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L10_Mitte',
+       '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'RP800';
+       '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'LOWER_THIRD';
+       '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'STRONGEST_EDGE';
+       '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'STRONGEST_CORNER';
+       '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', '2DEGREE_BACKGROUND';
+       
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L1_Mitte', 'RP800';
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L2_Mitte', 'RP800';
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L3_Mitte', 'RP800';
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L4_Mitte', 'RP800';
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L5_Mitte', 'RP800';
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L6_Mitte', 'RP800';
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L7_Mitte', 'RP800';
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L8_Mitte', 'RP800';
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L9_Mitte', 'RP800';
+%     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L10_Mitte', 'RP800';
     
 %     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L1_Rand',
 %     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L2_Rand',
@@ -70,7 +79,8 @@ evaluateCount = length( evaluateBatchSet );
 
 for currentIndex = 1 : evaluateCount
     close all;
-    currentFolderPath = evaluateBatchSet{ currentIndex };
-    evaluateDataset( currentFolderPath );
+    currentFolderPath = evaluateBatchSet{ currentIndex, 1 };
+    currentEvaluationMethod = evaluateBatchSet{ currentIndex, 2 };
+    evaluateDataset( currentFolderPath, currentEvaluationMethod );
 end
 

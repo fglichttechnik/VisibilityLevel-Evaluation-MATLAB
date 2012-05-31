@@ -1,4 +1,4 @@
-function evaluateDataset( PATH )
+function evaluateDataset( PATH, CONTRAST_CALCULATION_METHOD )
 %author Jan Winter, Sandy Buschmann TU Berlin
 %email j.winter@tu-berlin.de
 %this script evaluates a set of images with a graycard corresponding to Adrians 1989
@@ -41,7 +41,7 @@ K = 2.6;		%k factor of adrians model & of RP800 model
 
 %% set contrast calculation method
 %can be STRONGEST_EDGE, RP800, LOWER_THIRD, STRONGEST_CORNER, 2DEGREE_BACKGROUND
-CONTRAST_CALCULATION_METHOD = 'STRONGEST_CORNER';
+%CONTRAST_CALCULATION_METHOD = 'STRONGEST_CORNER';
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
