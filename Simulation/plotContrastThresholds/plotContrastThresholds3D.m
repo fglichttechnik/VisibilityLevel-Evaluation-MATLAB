@@ -3,7 +3,7 @@
 %make plots similar to adrian 89 (based on ANSI IESNA RP 8 00)
 
 AGE = 27;
-T = 2;
+T = 0.2;
 K = 2.6;
 
 %plot preferences
@@ -13,10 +13,15 @@ FONTSIZE = 15;
 
 %plot data close to street luminances or in a broader range
 %'YES' or 'NO'
-FOCUS_ON_STREET = 'YES';
+FOCUS_ON_STREET = 'NO';
 
 %'RP800' or 'Adrian89'
 CALCULATION_METHOD = 'RP800';
+
+%analyze fahrradKeller plots range
+%focus on street = NO
+%pP =
+%mesh(alphaMinutes(21:36),Lb(9:21),contrastThreshold(9:21,21:36),'LineWidth',1.2)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % cthresh over alpha for several Lb
@@ -29,8 +34,8 @@ if (strcmp(FOCUS_ON_STREET,'YES'))
     alphaMinutes = logspace(1,3,100);
     Lb = logspace(-1,1,100);
 else
-    alphaMinutes = logspace(-1,4,100);
-    Lb = logspace(-3,2,100);
+    alphaMinutes = logspace(1,3,100);
+    Lb = logspace(-3,1,100);
 end
 
 %
@@ -79,6 +84,9 @@ set(pZ,'FontSize',FONTSIZE);
 if (strcmp(FOCUS_ON_STREET,'YES'))
     set(gca, 'XTickLabel', {'10''', '100''', '16.67°'});
     set(gca, 'YTickLabel', [0.1, 1, 10]);
+else
+    set(gca, 'XTickLabel', {'10''', '100''', '16.67°'});
+    set(gca, 'YTickLabel', [0.001, 0.01, 0.1, 1, 10]);
 end
 
 %pY = ylabel('$$C_{th} = \frac{L_t - L_B}{L_t}$$');
