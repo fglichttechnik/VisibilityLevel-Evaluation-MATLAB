@@ -30,7 +30,7 @@ classdef LMK_Image_Set_Statistics < handle
         
         setTitle                    %title for this set
         
-        contrastCalculationMethod   %can be STRONGEST_EDGE, RP800, LOWER_THIRD, STRONGEST_CORNER, 2DEGREE_BACKGROUND or other to be implemented methods
+        contrastCalculationMethod   %can be STRONGEST_EDGE, RP800, LOWER_EDGE, LEFT_EDGE, RIGHT_EDGE, UPPER_EDGE, STRONGEST_CORNER, 2DEGREE_BACKGROUND or other to be implemented methods
         
         offset                      % if 0 the relative position within the meas field is plotted, else offset is the distance from the VP to the meas field for absolute values
         
@@ -96,8 +96,16 @@ classdef LMK_Image_Set_Statistics < handle
                     meanTargetArray( currentIndex ) = currentStatistics.strongestCornerMeanTarget;
                 elseif ( strcmp( obj.contrastCalculationMethod, 'RP800' ) )
                     meanTargetArray( currentIndex ) = currentStatistics.meanTarget;
-                elseif ( strcmp( obj.contrastCalculationMethod, 'LOWER_THIRD' ) )
+                    
+                elseif ( strcmp( obj.contrastCalculationMethod, 'LOWER_EDGE' ) )
                     meanTargetArray( currentIndex ) = currentStatistics.meanTargetLowerEdge;
+                elseif ( strcmp( obj.contrastCalculationMethod, 'LEFT_EDGE' ) )
+                    meanTargetArray( currentIndex ) = currentStatistics.meanTargetLeftEdge;
+                elseif ( strcmp( obj.contrastCalculationMethod, 'RIGHT_EDGE' ) )
+                    meanTargetArray( currentIndex ) = currentStatistics.meanTargetRightEdge;
+                elseif ( strcmp( obj.contrastCalculationMethod, 'UPPER_EDGE' ) )
+                    meanTargetArray( currentIndex ) = currentStatistics.meanTargetUpperEdge;
+                    
                 elseif ( strcmp( obj.contrastCalculationMethod, '2DEGREE_BACKGROUND' ) )
                     meanTargetArray( currentIndex ) = currentStatistics.meanTarget;
                 end
@@ -108,12 +116,20 @@ classdef LMK_Image_Set_Statistics < handle
                     meanBackgroundArray( currentIndex ) = currentStatistics.strongestCornerMeanBackground;
                 elseif ( strcmp( obj.contrastCalculationMethod, 'RP800' ) )
                     meanBackgroundArray( currentIndex ) = currentStatistics.meanBackground_RP8_00;
-                elseif ( strcmp( obj.contrastCalculationMethod, 'LOWER_THIRD' ) )
+                    
+                elseif ( strcmp( obj.contrastCalculationMethod, 'LOWER_EDGE' ) )
                     meanBackgroundArray( currentIndex ) = currentStatistics.meanBackgroundLowerEdge;
+                elseif ( strcmp( obj.contrastCalculationMethod, 'LEFT_EDGE' ) )
+                    meanBackgroundArray( currentIndex ) = currentStatistics.meanBackgroundLeftEdge;
+                elseif ( strcmp( obj.contrastCalculationMethod, 'RIGHT_EDGE' ) )
+                    meanBackgroundArray( currentIndex ) = currentStatistics.meanBackgroundRightEdge;
+                elseif ( strcmp( obj.contrastCalculationMethod, 'UPPER_EDGE' ) )
+                    meanBackgroundArray( currentIndex ) = currentStatistics.meanBackgroundUpperEdge;
+                    
                 elseif ( strcmp( obj.contrastCalculationMethod, '2DEGREE_BACKGROUND' ) )
                     meanBackgroundArray( currentIndex ) = currentStatistics.meanBackgroundTwoDegree;
                 else
-                    disp( sprintf( 'contrastCalculationMethod must be either STRONGEST_EDGE, STRONGEST_CORNER, LOWER_THIRD, 2DEGREE_BACKGROUND or RP800' ) );
+                    disp( sprintf( 'contrastCalculationMethod must be either STRONGEST_EDGE, STRONGEST_CORNER, LOWER_EDGE, LEFT_EDGE, RIGHT_EDGE, UPPER_EDGE, 2DEGREE_BACKGROUND or RP800' ) );
                     disp( sprintf( 'contrastCalculationMethod is currently %s', obj.contrastCalculationMethod ) );
                     disp( 'QUITTING' );
                     return;
@@ -131,7 +147,7 @@ classdef LMK_Image_Set_Statistics < handle
             % measurement
             % any metadata instance should suffice ( viewPointDistance and targetSize should be the same for
             % all)
-            viewPointDistance = currentStatisticsArray{ 1 }.imageMetadata.viewPointDistance; 
+            viewPointDistance = currentStatisticsArray{ 1 }.imageMetadata.viewPointDistance;
             targetSize = currentStatisticsArray{ 1 }.imageMetadata.targetSize;
             fixedAlphaMinutes = currentStatisticsArray{ 1 }.calcAlphaMinutesForRectAndDistance( targetSize, viewPointDistance );
             

@@ -40,7 +40,7 @@ T = 0.2;		%observing time of visual object (0.2 for RP800 model)
 K = 2.6;		%k factor of adrians model & of RP800 model
 
 %% set contrast calculation method
-%can be STRONGEST_EDGE, RP800, LOWER_THIRD, STRONGEST_CORNER, 2DEGREE_BACKGROUND
+%can be STRONGEST_EDGE, RP800, LOWER_EDGE, LEFT_EDGE, RIGHT_EDGE, UPPER_EDGE, STRONGEST_CORNER, 2DEGREE_BACKGROUND
 %CONTRAST_CALCULATION_METHOD = 'STRONGEST_CORNER';
 
 

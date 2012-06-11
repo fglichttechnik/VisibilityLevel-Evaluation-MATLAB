@@ -1,11 +1,11 @@
 
 %possible evaluation methods:
-% RP800, LOWER_THIRD, STRONGEST_EDGE, STRONGEST_CORNER, 2DEGREE_BACKGROUND
+% RP800, LOWER_EDGE, LEFT_EDGE, RIGHT_EDGE, UPPER_EDGE, STRONGEST_EDGE, STRONGEST_CORNER, 2DEGREE_BACKGROUND
 
 evaluateBatchSet = {
 
        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'RP800';
-       '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'LOWER_THIRD';
+       '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'LOWER_EDGE';
        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'STRONGEST_EDGE';
        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'STRONGEST_CORNER';
        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', '2DEGREE_BACKGROUND';
