@@ -5,11 +5,11 @@
 % format.
 
 % preferences:
-DIR = '/Volumes/server/Postfach/Transfer zu Winter/2010_10_07 - Treskowstr/Leuchtdichtebilder';
+DIR = 'Z:\Postfach\Transfer zu Winter\Robert\Straﬂen\WEEF\Messungen 2010_04_29';
         % directory where the .h5 protocols are located
-DATAPATH = '/Volumes/server/Postfach/Transfer zu Winter/2010_10_07 - Treskowstr/Leuchtdichtebilder';
+DATAPATH = 'Z:\Postfach\Transfer zu Winter\Robert\Straﬂen\WEEF';
         % path to your target database
-DATABASE = 'pf'; % name of the folder where the .pf-data should be saved
+DATABASE = 'PF'; % name of the folder where the .pf-data should be saved
 NEED_SUBFOLDERS = 0; % 0 or 1 when subfolders should be made
 SUBFOLDER1 = 'VS'; % name of subfolder 1
 SUBFOLDER2 = 'VL'; % name of subfolder 2
