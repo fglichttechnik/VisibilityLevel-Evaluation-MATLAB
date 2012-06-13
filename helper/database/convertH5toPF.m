@@ -5,11 +5,10 @@
 % format.
 
 % preferences:
-DIR = 'Z:\Postfach\Transfer zu Winter\Robert\Straﬂen\WEEF\Messungen 2010_04_29';
+DIR = 'Z:\Postfach\Transfer zu Winter\Sandy\alt\Datenbank\2009_03_03 Flurweg Leuchtdichtebilder';
         % directory where the .h5 protocols are located
-DATAPATH = 'Z:\Postfach\Transfer zu Winter\Robert\Straﬂen\WEEF';
+DATAPATH = 'Z:\Postfach\Transfer zu Winter\Sandy\alt\Datenbank\2009_03_03 Flurweg Leuchtdichtebilder\PF';
         % path to your target database
-DATABASE = 'PF'; % name of the folder where the .pf-data should be saved
 NEED_SUBFOLDERS = 0; % 0 or 1 when subfolders should be made
 SUBFOLDER1 = 'VS'; % name of subfolder 1
 SUBFOLDER2 = 'VL'; % name of subfolder 2
@@ -25,10 +24,10 @@ addpath(genpath(MY_MATLAB_ROOT));
 LMK_initApp(1,'');
 
 % make database and sub folder
-mkdir(DATABASE);
+mkdir(DATAPATH);
 if NEED_SUBFOLDERS == 1
-    mkdir([DATAPATH, '\', DATABASE, '\', SUBFOLDER1]);
-    mkdir([DATAPATH, '\', DATABASE, '\', SUBFOLDER2]);
+    mkdir([DATAPATH, '\', SUBFOLDER1]);
+    mkdir([DATAPATH, '\', SUBFOLDER2]);
 end
 
 % list DB filenames into cell array:
@@ -47,14 +46,14 @@ for i = 1 : l
         if NEED_SUBFOLDERS == 1
             nameMatch1 = strfind(name, SUB_DATANAME1);
             if ~isempty(nameMatch1)
-                dir_name = [DATAPATH, '\', DATABASE, '\', SUBFOLDER1];
+                dir_name = [DATAPATH, '\', SUBFOLDER1];
             end
             nameMatch2 = strfind(name, SUB_DATANAME2);      
             if ~isempty(nameMatch2)
-                dir_name = [DATAPATH, '\', DATABASE, '\', SUBFOLDER2];
+                dir_name = [DATAPATH, '\', SUBFOLDER2];
             end
         else
-            dir_name = [DATAPATH, '\', DATABASE];
+            dir_name = DATAPATH;
         end
         val_date = 0;
         date_time = clock;
