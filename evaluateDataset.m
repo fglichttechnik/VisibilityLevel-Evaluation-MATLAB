@@ -22,15 +22,15 @@ XMLNAME = 'LMKSetMat';  %best if you name all xmls like that
 %typically 0 for RoadMeasurements
 %if 0 the relative position within the measurement field will be plotted,
 %else OFFSET is the distance from view point to meas field in order to show absolute values
-OFFSET = 12.5;
+OFFSET = 0;
 
 %% set STV calculation indices
 %STV is calculated for images within this range only
 %e.g. if you have 2 measurements before and 2 after the meas field, you'll
 %want to use 3 and 12
 %indices start at 1
-STV_START_INDEX = 0;    %set this to 0 if you don't need this
-STV_END_INDEX = 0;     %set this to 0 if you don't need this
+STV_START_INDEX = 3;    %set this to 0 if you don't need this
+STV_END_INDEX = 12;     %set this to 0 if you don't need this
 
 %% set VL parameters
 %adrian threshold model parameter
