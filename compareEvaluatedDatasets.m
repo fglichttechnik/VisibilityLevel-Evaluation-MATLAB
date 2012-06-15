@@ -132,7 +132,7 @@ for currentDatasetIndex = 1 : numberOfDatasets
     
 end
 
-%plot data
+%plot data directory
 if ( ~exist( SAVEPATH, 'dir' ) )
     mkdir( SAVEPATH );
 end
@@ -224,8 +224,8 @@ if( ~isempty( customCodeString ) )%~strcmp( customCodeString, '') )
 end
 
 %save data
-filename = sprintf( '%s%sevaluated_data.mat', SAVEPATH, DELIMITER );
-save(filename,'thresholdContrastAlphaArray','thresholdContrastArray','thresholdContrastBackgroundLuminanceArray','thresholdContrastLabelCellArray','thresholdContrastPositionArray');
+% filename = sprintf( '%s%sevaluated_data.mat', SAVEPATH, DELIMITER );
+% save(filename,'thresholdContrastAlphaArray','thresholdContrastArray','thresholdContrastBackgroundLuminanceArray','thresholdContrastLabelCellArray','thresholdContrastPositionArray');
 
 %save images
 finetunePlot( figHandleContrast );
