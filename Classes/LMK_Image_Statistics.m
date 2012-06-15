@@ -300,10 +300,13 @@ classdef LMK_Image_Statistics < handle
         function performCalculations(obj)
             
             if( strcmp( obj.dataType, 'Photopic') )
+                disp('photoic')
                 dataImage = obj.imageMetadata.dataImagePhotopic;
             elseif( strcmp( obj.dataType, 'Scotopic') )
+                disp('scotopic')
                 dataImage = obj.imageMetadata.dataImageScotopic;
             elseif( strcmp( obj.dataType, 'Mesopic') )
+                disp('mesopic')
                 dataImage = obj.imageMetadata.dataImageMesopic;
             else
                 disp( sprintf( 'unknown dataType:%s', obj.dataType ) );
@@ -318,7 +321,7 @@ classdef LMK_Image_Statistics < handle
             calcMeanOfTargetEdges( dataImage , obj );
             
             %calc mean of circle
-            calcMeanOfCircleWithoutRect( dataImage, obj );
+            calcMeanOfCircleWithoutRect( dataImage, obj.imageMetadata );
         end
         
     end % methods

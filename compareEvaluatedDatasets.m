@@ -26,7 +26,14 @@ fileName = sprintf( '%s%s%s', SAVEPATH, DELIMITER, XMLFILENAME );
 xDoc = xmlread( fileName );
 
 allDataSetItems = xDoc.getElementsByTagName('DataSets');
-allDataSetItemsLength = allDataSetItems.getLength;
+if ~(isempty(xDoc.getElementsByTagName( 'STV' )))
+    disp('not empty')
+    allSTVItems = xDoc.getElementsByTagName( 'STV' );
+    allDataSetItemsLength = allSTVItems.getLength;
+else
+    disp('empty')
+    allDataSetItemsLength = allDataSetItems.getLength;
+end
 
 if (~allDataSetItemsLength)
     disp('NO DATA FOUND, QUITTING');
