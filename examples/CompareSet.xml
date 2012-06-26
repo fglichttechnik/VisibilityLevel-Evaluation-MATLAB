@@ -1,8 +1,9 @@
 <CompareSet>
 	<DataSets>
-		<DataSet Type="Mesopic" Legend="original" Color="gr-o" SubPath="Treskowstr_LED_RP8_4_undim" Path="/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/"/>
-		<DataSet Type="Mesopic" Legend="dimmed" Color="k-o" SubPath="Treskowstr_LED_RP8_4_dim" Path="/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/"/>
-		<DataSet Type="Mesopic" Legend="every 2nd off" Color="r-o" SubPath="Treskowstr_LED_RP8_4_ds" Path="/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/"/>
+		<STV>
+			<DataSet Type="Mesopic" Legend="left" Color="g-o" EvaluationType="RP800" SubPath="Treskowstr_LED_RP8_4_left" Path="/Users/sandy/Desktop/Development/LMK/LMK_Data_evaluation/database/compare_STV/Treskowstr_LED_RP8_4_left/"/>
+        	<DataSet Type="Mesopic" Legend="right" Color="c-o" EvaluationType="RP800" SubPath="Treskowstr_LED_RP8_4_right" Path="/Users/sandy/Desktop/Development/LMK/LMK_Data_evaluation/database/compare_STV/Treskowstr_LED_RP8_4_right/"/>        
+		</STV>
 	</DataSets>
 	<CustomCode>
 	</CustomCode>

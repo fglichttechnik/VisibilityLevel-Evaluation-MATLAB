@@ -26,12 +26,10 @@ fileName = sprintf( '%s%s%s', SAVEPATH, DELIMITER, XMLFILENAME );
 xDoc = xmlread( fileName );
 
 allDataSetItems = xDoc.getElementsByTagName('DataSets');
-if ~(isempty(xDoc.getElementsByTagName( 'STV' )))
-    disp('not empty')
-    allSTVItems = xDoc.getElementsByTagName( 'STV' );
-    allDataSetItemsLength = allSTVItems.getLength;
-else
-    disp('empty')
+allSTVItems = xDoc.getElementsByTagName( 'STV' );
+allDataSetItemsLength = allSTVItems.getLength;
+allSTVItemsLength = allDataSetItemsLength;
+if (~allDataSetItemsLength)
     allDataSetItemsLength = allDataSetItems.getLength;
 end
 
@@ -108,6 +106,7 @@ figHandleVL = figure();
 figHandleVLFixedDistance = figure();
 figHandleLt = figure();
 figHandleLB = figure();
+figHandleSTV = figure();
 
 %load data
 for currentDatasetIndex = 1 : numberOfDatasets
@@ -191,6 +190,28 @@ for currentDatasetIndex = 1 : numberOfDatasets
     hold on;
     currentSetStatistics.plotLB( SAVEPATH, figHandleLB, colorArrayForPlots{ currentColorIndex } );
     hold off;
+    
+    %STV
+    if (allSTVItemsLength)
+        set(0, 'CurrentFigure', figHandleSTV);
+        hold on;
+        currentSetStatistics.plotVLFixedDistance( SAVEPATH, figHandleSTV, colorArrayForPlots{ currentColorIndex } );
+        tx = text( 'units', 'normalized', 'position', [0.01 1.0 - ( currentDatasetIndex / 10 )], 'string', ...
+        sprintf( 'STV_{%s} = %3.1f', legendsForDatasets{ currentDatasetIndex }, currentSetStatistics.smallTargetVL ) );
+        VLDataLength = length( currentSetStatistics.visibilityLevelFixedDistanceArray );
+        allVisibilityLevels( (VLDataLength*(currentDatasetIndex-1))+1 : VLDataLength*currentDatasetIndex, 1 ) = currentSetStatistics.visibilityLevelFixedDistanceArray;
+        totalSmallTargetVisibility = calcSTVfromArray( allVisibilityLevels );
+        if( currentDatasetIndex == numberOfDatasets)
+            tx2 = text( 'units', 'normalized', 'position', [0.3 1.0 - ( 1.5 / 10 )], 'string', ...
+            sprintf( 'STV_{total} = %3.1f', totalSmallTargetVisibility )  );        
+            set( tx2, 'FontSize', 12 ); %'Interpreter','LaTeX',
+        end
+        set( tx, 'FontSize', 12 ); %'Interpreter','LaTeX',        
+        t = title( strcat('Small Target Visibility') );
+        set( t, 'FontSize', currentSetStatistics.FONTSIZE );
+        hold off;
+    end
+    
 end
 
 set(0, 'CurrentFigure', figHandleContrast);
@@ -218,6 +239,12 @@ set(0, 'CurrentFigure', figHandleLt);
 legend( legendsForDatasets, 'Location', 'Best' );
 
 set(0, 'CurrentFigure', figHandleLB);
+legend( legendsForDatasets, 'Location', 'Best' );
+
+set(0, 'CurrentFigure', figHandleSTV);
+hold on;
+plot( currentSetStatistics.distanceArray, ones( length( currentSetStatistics.distanceArray ), 1 ), 'k--' );
+hold off;
 legend( legendsForDatasets, 'Location', 'Best' );
 
 %create folder for plot data
@@ -270,6 +297,8 @@ filename = sprintf( '%s%sComparePlot%sLBPlot_%s', SAVEPATH, DELIMITER, DELIMITER
 saveas(figHandleLB, filename, 'epsc');
 saveas(figHandleLB, filename, 'fig');
 fixPSlinestyle( sprintf( '%s.eps', filename ) );
+
+
 
 %prepare extra plot: compare Cs to Cth
 %compare data
