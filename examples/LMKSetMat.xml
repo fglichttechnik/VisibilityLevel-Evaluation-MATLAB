@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE LMKSetMat SYSTEM "LMKSetMat.dtd">
+
+<LMKSetMat>
+<Description>
+<SceneTitle Title="LED RP8 R3 2070 lm 4%"/>
+<FocalLength FL="25"/>
+<ViewPoint Distance="83"/>
+<Target Size="0.18"/>
+<ScotopicToPhotopicRatio SPRatio="1.71"/>
+<Pole NumPoleFields="1"/>
+</Description>
+
+<LMKData>
+<dataSource src="out0.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="-5.85"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out1.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="-1.95"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out2.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="1.95"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out3.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="5.85"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out4.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="9.75"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out5.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="13.65"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out6.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="17.55"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out7.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="21.45"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out8.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="25.35"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out9.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="29.25"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out10.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="33.15"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out11.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="37.05"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out12.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="40.95"/>
+</RectObject>
+</LMKData>
+
+<LMKData>
+<dataSource src="out13.pf" type="pf_photopic"/>
+<RectObject>
+<upperLeft x="653" y="514"/>
+<lowerRight x="662" y="522"/>
+<border pixel="2"/>
+<position p="44.85"/>
+</RectObject>
+</LMKData>
+
+</LMKSetMat>

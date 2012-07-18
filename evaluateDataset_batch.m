@@ -4,8 +4,7 @@
 
 evaluateBatchSet = {
 
-       '/Users/sandy/Desktop/Development/LMK/LMK_Data_evaluation/database/compare_STV/Treskowstr_LED_RP8_4_right/Treskowstr_LED_RP8_4_right', 'RP800';
-       '/Users/sandy/Desktop/Development/LMK/LMK_Data_evaluation/database/compare_STV/Treskowstr_LED_RP8_4_left/Treskowstr_LED_RP8_4_left', 'RP800';
+       '/Users/sandy/Desktop/Development/LMK/LMK_Data_evaluation/database/Sebastian_Juri_Simulation/Sebastian_Juri_Simulation', '2DEGREE_BACKGROUND';
 %        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'LOWER_EDGE';
 %        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'STRONGEST_EDGE';
 %        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'STRONGEST_CORNER';
@@ -76,7 +75,7 @@ evaluateBatchSet = {
     };
 
 
-evaluateCount = length( evaluateBatchSet );
+evaluateCount = length( evaluateBatchSet ) / 2;
 
 for currentIndex = 1 : evaluateCount
     close all;

@@ -321,7 +321,9 @@ classdef LMK_Image_Statistics < handle
             calcMeanOfTargetEdges( dataImage , obj );
             
             %calc mean of circle
-            calcMeanOfCircleWithoutRect( dataImage, obj.imageMetadata );
+            meanBackground = calcMeanOfCircleWithoutRect( dataImage, obj.imageMetadata );
+            obj.meanBackgroundTwoDegree = meanBackground;
+            
         end
         
     end % methods
