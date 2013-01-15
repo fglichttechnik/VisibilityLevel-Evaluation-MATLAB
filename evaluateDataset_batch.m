@@ -4,11 +4,12 @@
 
 evaluateBatchSet = {
 
-       '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'RP800';
-       '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'LOWER_EDGE';
-       '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'STRONGEST_EDGE';
-       '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'STRONGEST_CORNER';
-       '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', '2DEGREE_BACKGROUND';
+'/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Weefstr_Amb_R2', 'LOWER_EDGE';
+%        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'RP800';
+%        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'LOWER_EDGE';
+%        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'STRONGEST_EDGE';
+%        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'STRONGEST_CORNER';
+%        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', '2DEGREE_BACKGROUND';
        
 %     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L1_Mitte', 'RP800';
 %     '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/FahrradleuchtenKeller/L2_Mitte', 'RP800';

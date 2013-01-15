@@ -2,8 +2,11 @@
 %email j.winter@tu-berlin.de
 %make plots similar to adrian 89 (based on ANSI IESNA RP 8 00)
 
+SAVE = 0;
+MODIFYLABEL= 1;
+
 AGE = 27;
-T = 0.2;
+T = 2;
 K = 2.6;
 
 %plot preferences
@@ -13,7 +16,7 @@ FONTSIZE = 15;
 
 %plot data close to street luminances or in a broader range
 %'YES' or 'NO'
-FOCUS_ON_STREET = 'NO';
+FOCUS_ON_STREET = 'YES';
 
 %'RP800' or 'Adrian89'
 CALCULATION_METHOD = 'RP800';
@@ -81,12 +84,14 @@ pZ = zlabel('C_{th}');
 %set(pX,'interpreter','LaTeX','FontSize',FONTSIZE);
 set(pZ,'FontSize',FONTSIZE);
 
-if (strcmp(FOCUS_ON_STREET,'YES'))
-    set(gca, 'XTickLabel', {'10''', '100''', '16.67°'});
-    set(gca, 'YTickLabel', [0.1, 1, 10]);
-else
-    set(gca, 'XTickLabel', {'10''', '100''', '16.67°'});
-    set(gca, 'YTickLabel', [0.001, 0.01, 0.1, 1, 10]);
+if(MODIFYLABEL)
+    if (strcmp(FOCUS_ON_STREET,'YES'))
+        set(gca, 'XTickLabel', {'10''', '100''', '16.67°'});
+        set(gca, 'YTickLabel', [0.1, 1, 10]);
+    else
+        set(gca, 'XTickLabel', {'10''', '100''', '16.67°'});
+        set(gca, 'YTickLabel', [0.001, 0.01, 0.1, 1, 10]);
+    end
 end
 
 %pY = ylabel('$$C_{th} = \frac{L_t - L_B}{L_t}$$');
@@ -115,11 +120,42 @@ end
 % text(600,mini,'10°');
 
 colorbar();
-
-if (strcmp(FOCUS_ON_STREET,'YES'))
-    saveas(gcf,'c_thresh_3D_street','epsc');
-    saveas(gcf,'c_thresh_3D_street','fig');
-else
-    saveas(gcf,'c_thresh_3D','epsc');
-    saveas(gcf,'c_thresh_3D','fig');
+if(SAVE)
+    if (strcmp(FOCUS_ON_STREET,'YES'))
+        saveas(gcf,'c_thresh_3D_street','epsc');
+        saveas(gcf,'c_thresh_3D_street','fig');
+    else
+        saveas(gcf,'c_thresh_3D','epsc');
+        saveas(gcf,'c_thresh_3D','fig');
+    end
 end
+
+
+%% plot Cth for 56'
+figure;
+
+index = min(find(alphaMinutes > 60));
+semilogx(Lb,contrastThreshold(:,1))
+hold on
+semilogx(Lb,contrastThreshold(:,index),'r')
+hold off
+
+pT = title(strcat('Contrast Threshold, K=',num2str(K),' T=',num2str(T),' AGE=',num2str(AGE)));
+set(pT,'FontSize',FONTSIZE);
+
+pX = xlabel('L_B [cd/m^2]');
+set(pX,'FontSize',FONTSIZE);
+
+pY = ylabel('C_{th}');
+set(pY,'FontSize',FONTSIZE);
+
+legend( '\alpha = 7''', '\alpha = 1°' );
+
+if(MODIFYLABEL)
+    if (strcmp(FOCUS_ON_STREET,'YES'))
+        set(gca, 'XTickLabel', [0.1, 1, 10]);
+    else
+        set(gca, 'XTickLabel', [0.001, 0.01, 0.1, 1, 10]);
+    end
+end
+finetunePlot(gcf);
