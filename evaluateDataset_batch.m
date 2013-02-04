@@ -4,8 +4,12 @@
 
 evaluateBatchSet = {
 
+<<<<<<< HEAD
 '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/Weefstr_Amb_R2', 'LOWER_EDGE';
 %        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'RP800';
+=======
+       '/Users/robert/Desktop/Development/LMK/LMK_Data_evaluation/database/dataset/Treskowstr_R3', 'LOWER_EDGE';
+>>>>>>> be03a26d2c19f76f0cd432db82fb9a8ff1acdd3b
 %        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'LOWER_EDGE';
 %        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'STRONGEST_EDGE';
 %        '/Users/jw/Desktop/Development/LMK/LMK_Data_evaluation/database/datasets/TreskowStr/Treskowstr_LED_gemessen', 'STRONGEST_CORNER';
@@ -76,7 +80,7 @@ evaluateBatchSet = {
     };
 
 
-evaluateCount = length( evaluateBatchSet );
+evaluateCount = length( evaluateBatchSet ) / 2;
 
 for currentIndex = 1 : evaluateCount
     close all;

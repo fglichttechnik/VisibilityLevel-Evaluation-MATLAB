@@ -1,4 +1,4 @@
-function meanBackground = calcMeanOfCircleWithoutRect(img, LMK_Image_Statistics)
+function meanBackground = calcMeanOfCircleWithoutRect(img, LMK_Image_Metadata)
 %author Jan Winter TU Berlin
 %email j.winter@tu-berlin.de
 %calculates the mean within a given circle of an image
@@ -8,7 +8,7 @@ function meanBackground = calcMeanOfCircleWithoutRect(img, LMK_Image_Statistics)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %NO ADJUSTMENTS NEED TO BE DONE BELOW
 
-LMK_Image_Metadata = LMK_Image_Statistics.imageMetadata;
+%LMK_Image_Metadata = LMK_Image_Statistics.imageMetadata;
 
 %save original values for later use
 x1 = LMK_Image_Metadata.rect.upperLeft.x;

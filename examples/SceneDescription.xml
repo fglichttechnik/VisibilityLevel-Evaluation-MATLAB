@@ -1,0 +1,22 @@
+<RoadScene>
+	<SceneDescription>
+		<Description Title="LED RP8 R3 2070 lm 4%" SPRatio="1.71"/>
+		<Road NumLanes="2" LaneWidth="3" SidewalkWidth="1" Surface="R3" NumPoleFields="1"/>
+		<Background Context="Grass"/>
+		<Calculation Method="standard" VeilingLuminance="off" TresholdLuminanceFactor="7"/><!--Method can be standard, rp800 or reflectancy, VeilingLuminance can be on and off-->
+	</SceneDescription>
+	<TargetParameters>
+	<!--fixedTargetDistance or fixedViewPoint-->
+		<ViewPoint Distance="83" Height="1.45" TargetDistanceMode="fixedTargetDistance"/><!---->
+		<Target Size="0.18" Reflectancy="0.04" Position="Left" OnLane="1"/>
+		<!--<Target Size="0.18" Reflectancy="0.5" Position="Centre" OnLane="1"/>-->
+	</TargetParameters>
+	<LDCs>
+	<!--10W kaltweiss, 7.10.2010-->
+		<LDC Name="HellaEcoLight_2070lm_LDT" LightSource="LED"/>
+	</LDCs>	
+	<Poles>
+		<PoleArray PoleHeight="6" PoleSpacing="39" PoleOverhang="1" IsStaggered="False" LDC="HellaEcoLight_2070lm_LDT" Side="Right"/>
+	</Poles>
+	<FocalLength FL="25"></FocalLength>
+</RoadScene>
