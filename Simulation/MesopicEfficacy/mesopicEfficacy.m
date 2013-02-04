@@ -73,7 +73,7 @@ HS_spectrum = HS_spectrum / max( HS_spectrum );
 
 % Vlambda / Vlambda'
 fig = figure();
-set( fig, 'Position', [ 134, 53, 725 + 400, 528 ] );
+set( fig, 'Position', [ 134, 53, 725, 528 ] );
 GRAY0 = 0.9;
 GRAY1 = 0.4;
 GRAY2 = 0.0;
@@ -85,13 +85,13 @@ a1 = area( lambda, V_strich_i, 'FaceColor',[GRAY0 GRAY0 GRAY0], 'EdgeColor','k',
 %hold on;
 
 alpha(  .15 );
-area( lambda, V_mes_LED( :, 1 ), 'FaceColor',[GRAY1 GRAY1 GRAY1], 'EdgeColor','k',...
-   'LineWidth', 3, 'LineStyle', ':' );
-alpha(  1 );
+%area( lambda, V_mes_LED( :, 1 ), 'FaceColor',[GRAY1 GRAY1 GRAY1], 'EdgeColor','k',...
+%   'LineWidth', 3, 'LineStyle', ':' );
+%alpha(  1 );
 %area( lambda, V_mes_HS( :, 1 ), 'FaceColor',[GRAY1 GRAY1 GRAY1], 'EdgeColor','k',...
    % 'LineWidth', 3, 'LineStyle', '-.' );
-plot( lambda, LED_spectrum, '--');%, 'Color',[GRAY2 GRAY2 GRAY2] );
-plot( lambda, HS_spectrum, '-', 'Color', ORANGE  );
+%plot( lambda, LED_spectrum, '--');%, 'Color',[GRAY2 GRAY2 GRAY2] );
+%plot( lambda, HS_spectrum, '-', 'Color', ORANGE  );
 hold off;
 
 x = xlabel('\lambda in nm');
@@ -102,16 +102,17 @@ y = ylabel('Sensitivity_{rel}(\lambda), {L}_{e}(\lambda, rel)');
 %set(y,'Interpreter','LaTeX','FontSize',14);
 set(y,'FontSize',14);
 
-t = title('Mesopic Efficacy\fontsize{18}');
+t = title('Mesopic Efficacy 0.3 cd/m^2\fontsize{18}');
 set(t,'FontSize',14);
 
-l = legend( 'V(\lambda)', 'V(\lambda)^{''}', 'V(\lambda)_{mes, S/P = 1.71, L_{a} = 0.3 cd / m^{2}}', 'LED_{weighted}', 'HS_{weighted}' );
-set( l, 'FontSize', 14, 'Location','NorthEastOutside' );
+%l = legend( 'V(\lambda)', 'V(\lambda)^{''}', 'V(\lambda)_{mes, S/P = 1.71, L_{a} = 0.3 cd / m^{2}}', 'LED_{weighted}', 'HS_{weighted}' );
+l = legend( 'V(\lambda)', 'V^{''}(\lambda)', 'V(\lambda)_{mes}', 'LED_{weighted, S/P=1.71}', 'HS_{weighted, S/P=0.6}' );
+set( l, 'FontSize', 14, 'Location','NorthEast' );
 %Sensitivity_{rel},
 axis( [380, 780, 0, 1.1] )
 %set( gca, 'XTick', [380, 450, 500, 550, 600, 650, 700, 780] );
 %set( gca, 'XTickLabel', [380, 450, 500, 550, 600, 650, 700, 780] );
 finetunePlot( gcf );
 
-saveas( gcf, 'vLambda_mesopic_LED_HS_3.fig' );
-saveas( gcf, 'vLambda_mesopic_LED_HS_3.eps', 'epsc' );
+saveas( gcf, 'vLambda_mesopic_LED_HS_1.fig' );
+saveas( gcf, 'vLambda_mesopic_LED_HS_1.eps', 'epsc' );
