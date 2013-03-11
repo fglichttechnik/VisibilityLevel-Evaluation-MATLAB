@@ -1,0 +1,12 @@
+# Can ignore specific files
+.DS_Store
+*.exe
+
+# Use wildcards as well
+*.m~
+*.asv
+*.exe
+*.eps
+
+
+
