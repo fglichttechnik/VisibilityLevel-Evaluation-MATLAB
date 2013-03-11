@@ -8,5 +8,7 @@
 *.exe
 *.eps
 
-
+# 
+database/*
+resultImages/*
 
