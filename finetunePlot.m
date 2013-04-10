@@ -33,7 +33,7 @@ set(gca, ...
 
 %adjust lines
 lineobj = findobj( plotHandle, 'type', 'line' );
-set( lineobj, 'LineWidth', 4.0 );
+set( lineobj, 'LineWidth', 2 );
 
 %adjust title
 titleobj = findobj( plotHandle, 'type', 'title' );
