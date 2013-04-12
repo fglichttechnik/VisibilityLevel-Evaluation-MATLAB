@@ -341,7 +341,7 @@ classdef LMK_Image_Set_Statistics < handle
         
         
         
-        %% plotContrast
+        %% plotAbsContrast
         function plotAbsContrast( obj, savePath, figHandle, color )
             
             %set standard color

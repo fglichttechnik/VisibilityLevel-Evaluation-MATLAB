@@ -78,7 +78,7 @@ disp( sprintf( 'using contrast calculation method: %s', CONTRAST_CALCULATION_MET
 title =  imageset{1,1}.sceneTitle;
 photopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Photopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET, STV_START_INDEX, STV_END_INDEX );
 mesopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Mesopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET, STV_START_INDEX, STV_END_INDEX );
-scotopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Mesopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET, STV_START_INDEX, STV_END_INDEX );
+scotopicLMK_Image_Set_Statistics = LMK_Image_Set_Statistics( 'Scotopic', lengthOfSet, AGE, T, K, title, CONTRAST_CALCULATION_METHOD, OFFSET, STV_START_INDEX, STV_END_INDEX );
 
 %analyse each image
 for currentIndex = 1 : lengthOfSet
