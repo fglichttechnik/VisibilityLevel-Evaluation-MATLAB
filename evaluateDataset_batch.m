@@ -4,8 +4,8 @@
 
 evaluateBatchSet = {
 
-% '/Users/sandy/Desktop/Development/LMK_Data_evaluation/database/StreetXY/StreetXY', 'RP800';
-'/Users/sandy/Desktop/Development/LMK_Data_evaluation/database/StreetXY/StreetXY', 'LOWER_EDGE'
+ 'd:/cygwin/home/Robert/GitUmgebung/LMK/LMK_Data_Evaluation/database/dataset/PseudoTest', 'RP800';
+% '/Users/sandy/Desktop/Development/LMK_Data_evaluation/database/StreetXY/StreetXY', 'LOWER_EDGE'
 % '/Users/sandy/Desktop/Development/LMK_Data_evaluation/database/StreetXY/StreetXY', 'LEFT_EDGE';
 % '/Users/sandy/Desktop/Development/LMK_Data_evaluation/database/StreetXY/StreetXY', 'RIGHT_EDGE';
 % '/Users/sandy/Desktop/Development/LMK_Data_evaluation/database/StreetXY/StreetXY', 'UPPER_EDGE';
@@ -16,7 +16,7 @@ evaluateBatchSet = {
     };
 
 
-evaluateCount = length( evaluateBatchSet ) / 2;
+evaluateCount = length( evaluateBatchSet );
 
 for currentIndex = 1 : evaluateCount
     close all;

@@ -22,7 +22,7 @@ if isempty(str(1,1).Children) && ~isempty(str(1,2).Children)
 end
 
 % get the number of children of the struct
-[~, childSize] = size(str.Children);
+[dummy, childSize] = size(str.Children);
 
 % declare an element pointer
 %elements = cell(childSize*2,1);
@@ -38,7 +38,7 @@ for i = 1 : childSize
     childMatch = strmatch('Description', str.Children(1,i).Name);
     if (childMatch == 1)
         % get the number of children of 'Description'
-        [~, grandchildSize] = size(str.Children(1,i).Children);
+        [dummy, grandchildSize] = size(str.Children(1,i).Children);
         % browse the children of 'Description'
         for j = 1 : grandchildSize
             % search for children named 'sceneTitle'
@@ -90,7 +90,7 @@ for i = 1 : childSize
     childMatch = strmatch('StreetSurface', str.Children(1,i).Name);
     if (childMatch == 1)
         % get the number of children of 'StreetSurface'
-        [~, grandchildSize] = size(str.Children(1,i).Children);
+        [dummy, grandchildSize] = size(str.Children(1,i).Children);
         % browse the children of 'LMKData'
         for j = 1 : grandchildSize
             % search for children named 'QuadrangleObject'
@@ -98,7 +98,7 @@ for i = 1 : childSize
                 (1,i).Children(1,j).Name);
             if grandchildMatch == 1
                 % get the number of children of 'QuadrangleObject'
-                [~, greatgrandSize] = size(str.Children(1,i).Children...
+                [dummy, greatgrandSize] = size(str.Children(1,i).Children...
                     (1,j).Children);
                 % browse the children of 'RectObject'                 
                 for l = 1 : greatgrandSize
@@ -186,7 +186,7 @@ for i = 1 : childSize
     childMatch = strmatch('LMKData', str.Children(1,i).Name);
     if childMatch == 1
         % get the number of children of 'LMKData'
-        [~, grandchildSize] = size(str.Children(1,i).Children);
+        [dummy, grandchildSize] = size(str.Children(1,i).Children);
         % browse the children of 'LMKData'
         rectMatch = 0;
         photMatch = 0;
@@ -198,7 +198,7 @@ for i = 1 : childSize
             if grandchildMatch1 == 1
                 photMatch = 1;
                 % get the number of attributes of 'dataSource'
-                [~, grandchildAttributesSize1] = size(str.Children...
+                [dummy, grandchildAttributesSize1] = size(str.Children...
                     (1,i).Children(1,j).Attributes);
                 % browse the attributes of 'dataSource'
                 for k = 1 : grandchildAttributesSize1 
@@ -233,12 +233,12 @@ for i = 1 : childSize
                 end                 
                 continue
             end
-            grandchildMatch3 = strmatch('RectObject', str.Children...
+            grandchildMatch2 = strmatch('RectObject', str.Children...
                 (1,i).Children(1,j).Name);
-            if grandchildMatch3 == 1
+            if grandchildMatch2 == 1
                 rectMatch = 1;
                 % get the number of children of 'RectObject'
-                [~, greatgrandSize] = size(str.Children(1,i).Children...
+                [dummy, greatgrandSize] = size(str.Children(1,i).Children...
                     (1,j).Children);
                 % browse the children of 'RectObject'
                 for l = 1 : greatgrandSize
@@ -276,6 +276,32 @@ for i = 1 : childSize
                         evaluatedData.rectPosition = str2double...
                             (str.Children(1,i).Children(1,j).Children...
                             (1,l).Attributes(1,1).Value);
+                    end
+                end
+            end
+            % new read out for veiling Luminances
+            %% DEBUG
+            grandchildMatch3 = strmatch('veilingLuminances', str.Children...
+                (1,i).Children(1,j).Name);
+            if grandchildMatch3 == 1
+                veilMatch = 1;
+                % get the number of children of 'veilingLuminances'
+                [dummy, greatgrandSize] = size(str.Children(1,i).Children...
+                    (1,j).Children);
+                for l = 1 : greatgrandSize
+                    greatgrandMatch1 = strmatch('veilingLuminance', str.Children...
+                        (1,i).Children(1,j).Children(1,l).Name);
+                    if greatgrandMatch1 == 1
+                        if greatgrandSize > 1
+                            evaluatedData.veilingLum = [ evaluatedData.veilingLum str2double(str.Children...
+                                (1,i).Children(1,j).Children...
+                                (1,l).Attributes.Value) ];
+                        else
+                            evaluatedData.veilingLum = str2double(str.Children...
+                                (1,i).Children(1,j).Children...
+                                (1,l).Attributes.Value);
+                        end
+                        continue
                     end
                 end
             end
