@@ -23,6 +23,10 @@ classdef LMK_Image_Set_Statistics < handle
         visualisationImageArray     %array with visualisation images of current set
         visualisationMeasArray
         
+        veilLumStreetLightArray       %array with all fixed veiling luminance streetlight
+        veilLumVariableHeadlightArray %array with only fixed veiling luminance headlight
+        veilLumFixedHeadlightArray    %array with only variable veiling luminance headlight
+        
         
         stvStartIndex               %index to start STV calculation from
         stvEndIndex                 %index to end STV calculation with
@@ -82,6 +86,59 @@ classdef LMK_Image_Set_Statistics < handle
             distanceArray = zeros( size( currentStatisticsArray ) );
             visualisationImageArray = cell( size( currentStatisticsArray ) );
             visualisationMeasArray = cell( size( currentStatisticsArray ) );
+            veilingLumArrayFixed = zeros( size( currentStatisticsArray ) );
+            veilingLumArrayVariableHead = cell( size( currentStatisticsArray ) );
+            veilingLumArrayFixedHead = cell( size( currentStatisticsArray ) );
+            
+            for currentIndex = 1 : length( veilingLumArrayFixed )
+                currentStatistics = currentStatisticsArray{ currentIndex };
+                currentVeilingLumArray = currentStatistics.imageMetadata.veilingLuminance ;
+                
+                findFailure = 0 ;
+                fixedSize = 0 ;
+                variableSize = 0 ;
+                veilingLumArrayFixedHelp =  cell( size ( currentVeilingLumArray ) );
+                veilingLumArrayVariableHelp = cell( size ( currentVeilingLumArray ) );
+                
+                for arrayCrawler = 1 : length( currentVeilingLumArray ) 
+                    currentVeilingLum = currentVeilingLumArray{ arrayCrawler };
+                    if( strcmp( currentVeilingLum.type , 'streetlight') )
+                        oneValueFixedVeilingLum = currentVeilingLum.veilingLuminance ;
+                        findFailure = findFailure + 1 ;
+                    end
+                    if( strcmp( currentVeilingLum.type , 'fixedHeadlight' ) )
+                        fixedSize = fixedSize + 1 ;
+                        veilingLumArrayFixedHelp{ fixedSize } = currentVeilingLum ;
+                    end
+                    if( strcmp( currentVeilingLum.type , 'variableHeadlight' ) )
+                        variableSize = variableSize + 1 ;
+                        veilingLumArrayVariableHelp{ variableSize } = currentVeilingLum ;    
+%                     else
+%                         disp( sprintf( 'something wrong with veiling luminance array, type must be streetlight, fixedHeadlight or variableHeadlight' ) );
+%                         disp( 'QUITTING' );
+%                         return;
+                    end
+                end
+                
+                veilingLumArrayFixed( currentIndex ) = oneValueFixedVeilingLum ;
+                veilingLumArrayVariableHead{ currentIndex } =  cleanEmptyCells( veilingLumArrayVariableHelp );
+                veilingLumArrayFixedHead{ currentIndex } = cleanEmptyCells( veilingLumArrayFixedHelp ) ;
+                
+                if( findFailure ~= 1 )
+                    disp( 'Problem: more values then one streetlight per measpoint' );
+                    return;
+                end                 
+            end
+            
+            obj.veilLumStreetLightArray = veilingLumArrayFixed ;
+            
+            if(~isempty( veilingLumArrayVariableHead ))
+                obj.veilLumVariableHeadlightArray = cleanEmptyCells( veilingLumArrayVariableHead );
+            end
+            
+            if(~isempty( veilingLumArrayFixedHead ))
+                obj.veilLumFixedHeadlightArray = cleanEmptyCells( veilingLumArrayFixedHead );
+            end
             
             %create arrays with Lt , LB and d
             for currentIndex = 1 : length( meanTargetArray )
@@ -1198,6 +1255,66 @@ classdef LMK_Image_Set_Statistics < handle
                 fixPSlinestyle( sprintf( '%s.eps', filename ) );
             end
             
+        end
+        
+        %% plotFixedVeilingLuminance
+        function plotFixedVeilingLuminance( obj, savePath, figHandle, color )
+            
+            %set standard color
+            if ( nargin < 4 )
+                color = 'o-r';
+            end
+            
+            if ( nargin < 3 )
+                figHandle = figure();
+            end
+            
+            %platform specific path delimiter
+            if(ispc)
+                DELIMITER = '\';
+            elseif(isunix)
+                DELIMITER = '/';
+            end
+            
+            if( strcmp( savePath, '' ) )
+                savePath = 'DO_NOT_SAVE'
+            end
+            savePath = [savePath, DELIMITER, 'plots_', obj.contrastCalculationMethod, DELIMITER];
+            if( ~exist( savePath, 'dir') && ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+                mkdir( savePath );
+            end
+            
+            %activate corresponding figure
+            set(0, 'CurrentFigure', figHandle);
+            
+            %plot veiling luminance
+            p = plot( obj.distanceArray, obj.veilLumStreetLightArray, color );
+            %legend('Lv_{photopisch}');
+            axis('tight');
+            x = xlabel('d in m');
+            y = ylabel('L_v');
+            t = title( strcat('Veiling Luminance Streetlight') );
+            
+            %adjust plot
+            set( p, 'LineWidth', obj.LINEWIDTH );
+            set( x, 'FontSize', obj.FONTSIZE );
+            set( y, 'FontSize', obj.FONTSIZE );
+            set( t, 'FontSize', obj.FONTSIZE );
+            
+            finetunePlot( figHandle );
+            
+            if( ~strcmp( savePath, 'DO_NOT_SAVE' ) )
+
+                %we need the last path component for filename of plots
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( savePath );
+                [ firstPath, lastPathComponent, fileExtension ] = fileparts( firstPath );
+                filename = sprintf( '%s%s_VeilingLuminancePlot_%s', savePath, obj.type, lastPathComponent  );
+                
+                saveas(figHandle, filename, 'epsc');
+                saveas(figHandle, filename, 'fig');
+                fixPSlinestyle( sprintf( '%s.eps', filename ) );
+            end
+           
         end
         
     end % methods
