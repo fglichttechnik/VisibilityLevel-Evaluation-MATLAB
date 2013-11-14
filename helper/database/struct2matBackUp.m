@@ -1,7 +1,6 @@
 function elements = struct2mat(str, dirPath)
-%AUTHOR: Jan Winter, Sandy Buschmann, Robert Franke TU Berlin, FG Lichttechnik,
-%	j.winter@tu-berlin.de, www.li.tu-berlin.de
-%LICENSE: free to use at your own risk. Kudos appreciated.
+%author Sandy Buschmann, Jan Winter TU Berlin
+%email j.winter@tu-berlin.de
 %
 % Converts struct resulting from function parseXML into a MATLAB object of
 % class LMK_image_Metadata.
@@ -34,7 +33,7 @@ currentElementPointer = 1;
 % READ Desciption object
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-for i = 1 : childSize
+for i = 1 : childSize 
     % browse children
     childMatch = strmatch('Description', str.Children(1,i).Name);
     if (childMatch == 1)
@@ -67,7 +66,7 @@ for i = 1 : childSize
             grandchildMatch = strmatch('Target', str.Children...
                 (1,i).Children(1,j).Name);
             if grandchildMatch == 1
-                targetSize = str2double(str.Children(1,i).Children(1,j).Attributes.Value);
+                targetSize = str2double(str.Children(1,i).Children(1,j).Attributes.Value); 
                 continue
             end
             % search for children named 'PhotopicToScotopicRatio'
@@ -76,8 +75,8 @@ for i = 1 : childSize
             if grandchildMatch == 1
                 SPRatio = str2double(str.Children(1,i).Children(1,j).Attributes.Value);
                 continue
-            end
-        end
+            end            
+        end        
         break;
     end
 end
@@ -86,7 +85,7 @@ end
 % READ StreetSurface object
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 matchCounter = 0;
-for i = 1 : childSize
+for i = 1 : childSize 
     % browse children
     childMatch = strmatch('StreetSurface', str.Children(1,i).Name);
     if (childMatch == 1)
@@ -101,18 +100,18 @@ for i = 1 : childSize
                 % get the number of children of 'QuadrangleObject'
                 [dummy, greatgrandSize] = size(str.Children(1,i).Children...
                     (1,j).Children);
-                % browse the children of 'RectObject'
+                % browse the children of 'RectObject'                 
                 for l = 1 : greatgrandSize
                     greatgrandMatch1 = strmatch('upperLeft', ...
                         str.Children(1,i).Children(1,j).Children...
                         (1,l).Name);
-                    if greatgrandMatch1 == 1
+                    if greatgrandMatch1 == 1 
                         x1_quad = str2double(str.Children(1,i).Children...
                             (1,j).Children(1,l).Attributes(1,1).Value);
                         y1_quad = str2double(str.Children(1,i).Children...
                             (1,j).Children(1,l).Attributes(1,2).Value);
                         matchCounter = matchCounter + 1;
-                        continue
+                        continue 
                     end
                     greatgrandMatch2 = strmatch('upperRight', ...
                         str.Children(1,i).Children(1,j).Children...
@@ -149,20 +148,20 @@ for i = 1 : childSize
                 end
             end
         end
-
+        
         % and quadrangle object
-        if matchCounter == 4
+        if matchCounter == 4 
             point1 = struct('x',x1_quad,'y',y1_quad);
             point2 = struct('x',x2_quad,'y',y2_quad);
             point3 = struct('x',x3_quad,'y',y3_quad);
             point4 = struct('x',x4_quad,'y',y4_quad);
             quadrangle = struct('upperLeft',point1,'upperRight',point2,...
-                'lowerLeft',point3,'lowerRight',point4);
+                'lowerLeft',point3,'lowerRight',point4);  
         else
             disp(['Warning: not enough coordinates for quadrangle',...
-                ' object found!']);
+                    ' object found!']);
         end
-
+        
         %there should be only 1 StreetLuminance Object
         break;
     end
@@ -179,10 +178,10 @@ for i = 1 : childSize
         clear evaluatedData
     end
     matSource = '';
-    % create new object
+    % create new object 
     evaluatedData = LMK_Image_Metadata();
     evaluatedData.dirPath = dirPath;
-
+    
     % browse the children
     childMatch = strmatch('LMKData', str.Children(1,i).Name);
     if childMatch == 1
@@ -191,7 +190,7 @@ for i = 1 : childSize
         % browse the children of 'LMKData'
         rectMatch = 0;
         photMatch = 0;
-        %         scotMatch = 0;
+%         scotMatch = 0;
         for j = 1 : grandchildSize
             % search for children
             grandchildMatch1 = strmatch('dataSource', str.Children...
@@ -202,12 +201,12 @@ for i = 1 : childSize
                 [dummy, grandchildAttributesSize1] = size(str.Children...
                     (1,i).Children(1,j).Attributes);
                 % browse the attributes of 'dataSource'
-                for k = 1 : grandchildAttributesSize1
+                for k = 1 : grandchildAttributesSize1 
                     grandchildAttributeMatch1 = strmatch('src', ...
                         str.Children(1,i).Children(1,j).Attributes...
-                        (1,k).Name);
-                    if grandchildAttributeMatch1 == 1
-                        dataSRC = str.Children(1,i).Children(1,j).Attributes(1,k).Value;
+                        (1,k).Name);                      
+                    if grandchildAttributeMatch1 == 1   
+                        dataSRC = str.Children(1,i).Children(1,j).Attributes(1,k).Value;                                                
                         continue
                     end
                     grandchildAttributeMatch2 = strmatch('type', ...
@@ -228,10 +227,10 @@ for i = 1 : childSize
                             evaluatedData.dataSRCMat = dataSRC;
                             evaluatedData.dataTypeMat = dataType;
                             matSource = dataSRC;
-                        end
+                        end                                
                         disp(dataSRC)
                     end
-                end
+                end                 
                 continue
             end
             grandchildMatch2 = strmatch('RectObject', str.Children...
@@ -281,7 +280,7 @@ for i = 1 : childSize
                 end
             end
             % new read out for veiling Luminances
-            %% DEBUG veiling Lum
+            %% DEBUG
             grandchildMatch3 = strmatch('veilingLuminances', str.Children...
                 (1,i).Children(1,j).Name);
             if grandchildMatch3 == 1
@@ -289,138 +288,98 @@ for i = 1 : childSize
                 % get the number of children of 'veilingLuminances'
                 [dummy, greatgrandSize] = size(str.Children(1,i).Children...
                     (1,j).Children);
-                % init veiling lum array 
-                veilingLumObject = cell(1, greatgrandSize );
-                
                 for l = 1 : greatgrandSize
                     greatgrandMatch1 = strmatch('veilingLuminance', str.Children...
                         (1,i).Children(1,j).Children(1,l).Name);
                     if greatgrandMatch1 == 1
-                        % get the number of attributes of 'veilingLuminances'
-                        [dummy, grandchildAttributesSize1] = size(str.Children...
-                            (1,i).Children(1,j).Children(1,l).Attributes);
-                        % browse the attributes of 'dataSource'
-                        for k = 1 : grandchildAttributesSize1
-                            grandchildAttributeMatch1 = strmatch('Lv', ...
-                                str.Children(1,i).Children(1,j).Children(1,l)...
-                                .Attributes(1,k).Name);
-                            if grandchildAttributeMatch1 == 1
-                                veilLumValue = str.Children(1,i).Children(1,j).Children(1,l).Attributes(1,k).Value;
-                            end
-                            grandchildAttributeMatch2 = strmatch('type', ...
-                                str.Children(1,i).Children(1,j).Children(1,l)...
-                                .Attributes(1,k).Name);
-                            if grandchildAttributeMatch2 == 1
-                                 typeValue = str.Children(1,i).Children(1,j).Children(1,l).Attributes(1,k).Value;
-                            end
-                            grandchildAttributeMatch3 = strmatch('position', ...
-                                str.Children(1,i).Children(1,j).Children(1,l)...
-                                .Attributes(1,k).Name);
-                            if grandchildAttributeMatch3 == 1
-                                 positionValue = str.Children(1,i).Children(1,j).Children(1,l).Attributes(1,k).Value;
-                            end
-                        end
                         if greatgrandSize > 1
-                            if grandchildAttributeMatch3 == 1
-                                % create obj for veiling luminance 
-                                veilingLumObject{1,l} =  VeilingLuminanceData( veilLumValue, typeValue, positionValue );
-                                 
-                            else
-                                % create obj for veiling luminance 
-                                veilingLumObject{1,l} = VeilingLuminanceData( veilLumValue, typeValue );
-                            end
+                            evaluatedData.veilingLum = [ evaluatedData.veilingLum str2double(str.Children...
+                                (1,i).Children(1,j).Children...
+                                (1,l).Attributes.Value) ];
                         else
-                            if grandchildAttributeMatch3 == 1
-                                % create obj for veiling luminance 
-                                veilingLumObject = VeilingLuminanceData( veilLumValue, typeValue, positionValue );
-                                 
-                            else
-                                % create obj for veiling luminance 
-                                veilingLumObject = VeilingLuminanceData( veilLumValue, typeValue );
-                            end
+                            evaluatedData.veilingLum = str2double(str.Children...
+                                (1,i).Children(1,j).Children...
+                                (1,l).Attributes.Value);
                         end
+                        continue
                     end
                 end
             end
-            
-        end
-        % clean zero cells
-        evaluatedData.veilingLuminance = cleanEmptyCells( veilingLumObject );
-        
-        % end of browsing children
-
+        end % end of browsing children  
+               
         % error handling:
-        %          if (photMatch == 1) && (isempty(evaluatedData.dataSRCPhotopic) && ...
-        %                  (isempty(evaluatedData.dataSRCMat)))
-        %             disp(['Warning: no src attributes for photopic data found!',...
-        %                 'Picture cannot be loaded!']);
-        %          end
-        %          if (photMatch == 1) && (isempty(evaluatedData.dataTypePhotopic) && ...
-        %                  (isempty(evaluatedData.dataSRCMat)))
-        %             disp(['Warning: no type attributes for photopic data found!',...
-        %                 'Picture cannot be loaded!']);
-        %          end
-        %          if (photMatch == 1) && (isempty(evaluatedData.dataSRCScotopic) && ...
-        %                  (isempty(evaluatedData.dataSRCMat)))
-        %             disp(['Warning: no src attributes for scotopic data found!',...
-        %                 'Picture cannot be loaded!']);
-        %          end
-        %          if (photMatch) == 1 && (isempty(evaluatedData.dataTypeScotopic) && ...
-        %                  (isempty(evaluatedData.dataSRCMat)))
-        %             disp(['Warning: no type attributes for scotopic data found!',...
-        %                 'Picture cannot be loaded!']);
-        %          end
-        %          if rectMatch == 0
-        %              disp('Warning: no rectangle object found!');
-        %          elseif ~(exist('x1', 'var')) || ~(exist('y1', 'var'))
-        %              disp('Warning: no upper left coordinates for rectangle object found!');
-        %          elseif ~(exist('x2', 'var')) || ~(exist('y2', 'var'))
-        %              disp('Warning: no lower right coordinates for rectangle object found!');
-        %          elseif (isempty(evaluatedData.border))
-        %              disp('Warning: no border for rectangle object found!');
-        %          elseif (isempty(evaluatedData.rectPosition))
-        %              disp('Warning: no position for rectangle object found!');
-        %          end
-        %          if ~(isempty(evaluatedData.dataSRCPhotopic)) ...
-        %                  && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCPhotopic],'file'))
-        %              disp(['Warning: File ', evaluatedData.dataSRCPhotopic, ' not found!']);
-        %          end
-        %          if ~(isempty(evaluatedData.dataSRCScotopic)) ...
-        %                  && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCScotopic],'file'))
-        %              disp(['Warning: File ', evaluatedData.dataSRCScotopic, ' not found!']);
-        %          end
-        %          if ~(isempty(evaluatedData.dataSRCMat)) ...
-        %                  && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCMat],'file'))
-        %              disp(['Warning: File ', evaluatedData.dataSRCMat, ' not found!']);
-        %          end
-
+%          if (photMatch == 1) && (isempty(evaluatedData.dataSRCPhotopic) && ...
+%                  (isempty(evaluatedData.dataSRCMat)))
+%             disp(['Warning: no src attributes for photopic data found!',...
+%                 'Picture cannot be loaded!']);
+%          end
+%          if (photMatch == 1) && (isempty(evaluatedData.dataTypePhotopic) && ...
+%                  (isempty(evaluatedData.dataSRCMat)))
+%             disp(['Warning: no type attributes for photopic data found!',...
+%                 'Picture cannot be loaded!']);           
+%          end 
+%          if (photMatch == 1) && (isempty(evaluatedData.dataSRCScotopic) && ...
+%                  (isempty(evaluatedData.dataSRCMat)))
+%             disp(['Warning: no src attributes for scotopic data found!',...
+%                 'Picture cannot be loaded!']);           
+%          end
+%          if (photMatch) == 1 && (isempty(evaluatedData.dataTypeScotopic) && ...
+%                  (isempty(evaluatedData.dataSRCMat)))
+%             disp(['Warning: no type attributes for scotopic data found!',...
+%                 'Picture cannot be loaded!']);
+%          end 
+%          if rectMatch == 0
+%              disp('Warning: no rectangle object found!');
+%          elseif ~(exist('x1', 'var')) || ~(exist('y1', 'var'))
+%              disp('Warning: no upper left coordinates for rectangle object found!');
+%          elseif ~(exist('x2', 'var')) || ~(exist('y2', 'var'))
+%              disp('Warning: no lower right coordinates for rectangle object found!');
+%          elseif (isempty(evaluatedData.border))
+%              disp('Warning: no border for rectangle object found!');
+%          elseif (isempty(evaluatedData.rectPosition))
+%              disp('Warning: no position for rectangle object found!');
+%          end 
+%          if ~(isempty(evaluatedData.dataSRCPhotopic)) ...
+%                  && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCPhotopic],'file'))
+%              disp(['Warning: File ', evaluatedData.dataSRCPhotopic, ' not found!']);
+%          end
+%          if ~(isempty(evaluatedData.dataSRCScotopic)) ...
+%                  && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCScotopic],'file'))
+%              disp(['Warning: File ', evaluatedData.dataSRCScotopic, ' not found!']);
+%          end
+%          if ~(isempty(evaluatedData.dataSRCMat)) ...
+%                  && ~(exist([dirPath, DELIMITER, evaluatedData.dataSRCMat],'file'))
+%              disp(['Warning: File ', evaluatedData.dataSRCMat, ' not found!']);
+%          end
+                 
+        
         % create struct for rect object
         point1 = struct('x',x1,'y',y1);
         point2 = struct('x',x2,'y',y2);
         evaluatedData.rect = struct('upperLeft',point1,'lowerRight',point2);
-
-        %         % read .pf-images
-        %         if isempty(matSource)
-        %             if ~(isempty(evaluatedData.dataSRCPhotopic)) && (exist([evaluatedData.dataSRCPhotopic],'file'))
-        %                     evaluatedData.dataImagePhotopic= LMK_readPfImage...
-        %                         (evaluatedData.dataSRCPhotopic);
-        %             end
-        %             if ~(isempty(evaluatedData.dataSRCScotopic)) && (exist([evaluatedData.dataSRCScotopic],'file'))
-        %                     evaluatedData.dataImageScotopic= LMK_readPfImage...
-        %                         (evaluatedData.dataSRCScotopic);
-        %             end
-        %         end
-        %         % load .mat-image data
-        %         if (isempty(matSource)== 0) && (exist([matSource],'file')==2)
-        %                 matImage = load([matSource]);
-        %                 evaluatedData.dataImagePhotopic = ....
-        %                     matImage.LMK_measurements.dataImage.YL;
-        %                 evaluatedData.dataImageScotopic = ...
-        %                     matImage.LMK_measurements.dataImage.LS;
-        %         end
-
-
-
+        
+%         % read .pf-images   
+%         if isempty(matSource)
+%             if ~(isempty(evaluatedData.dataSRCPhotopic)) && (exist([evaluatedData.dataSRCPhotopic],'file'))
+%                     evaluatedData.dataImagePhotopic= LMK_readPfImage...
+%                         (evaluatedData.dataSRCPhotopic);
+%             end
+%             if ~(isempty(evaluatedData.dataSRCScotopic)) && (exist([evaluatedData.dataSRCScotopic],'file'))
+%                     evaluatedData.dataImageScotopic= LMK_readPfImage...
+%                         (evaluatedData.dataSRCScotopic);
+%             end
+%         end
+%         % load .mat-image data
+%         if (isempty(matSource)== 0) && (exist([matSource],'file')==2)
+%                 matImage = load([matSource]);
+%                 evaluatedData.dataImagePhotopic = ....
+%                     matImage.LMK_measurements.dataImage.YL;
+%                 evaluatedData.dataImageScotopic = ...
+%                     matImage.LMK_measurements.dataImage.LS;
+%         end
+        
+        
+        
         % put descriptions into obj
         distanceToObject = distanceToMeasField + evaluatedData.rectPosition;
         evaluatedData.viewPointDistance = distanceToMeasField;
@@ -430,33 +389,33 @@ for i = 1 : childSize
         evaluatedData.targetSize = targetSize;
         evaluatedData.SPRatio = SPRatio;
         %evaluatedData.calcAlpha();
-
+        
         %set scotopic image if needed and possible
         if( evaluatedData.SPRatio && ~strcmp( evaluatedData.dataSRCScotopic, '' ) )
             evaluatedData.dataImageScotopic = evaluatedData.SPRatio * evaluatedData.dataImagePhotopic;
         end
-
+        
         % put quadrangle into obj
         if(exist('quadrangle','var'))
             evaluatedData.quadrangle = quadrangle;
-        end
+        end        
         evaluatedData.comments = COMMENTS;
-
+        
         % evaluate mesopic luminance image if photopic & scotopic image
         % data exists
-        %         if ~(isempty(evaluatedData.dataImagePhotopic)) ...
-        %                 && ~(isempty(evaluatedData.dataImageScotopic))
-        %             [evaluatedData.dataImageMesopic, ~] = ...
-        %                 mesopicLuminance_recommended(evaluatedData.dataImagePhotopic,...
-        %                 evaluatedData.dataImageScotopic);
-        %         end
-
+%         if ~(isempty(evaluatedData.dataImagePhotopic)) ...
+%                 && ~(isempty(evaluatedData.dataImageScotopic))
+%             [evaluatedData.dataImageMesopic, ~] = ...
+%                 mesopicLuminance_recommended(evaluatedData.dataImagePhotopic,...
+%                 evaluatedData.dataImageScotopic);   
+%         end
+        
         % save obj in output struct
         elements{currentElementPointer} = evaluatedData;
         currentElementPointer = currentElementPointer + 1;
-
-    end % end of browsing for 'LMKData'
-
+        
+    end % end of browsing for 'LMKData'  
+    
 end % end of parse the Children of struct
 
 % remove potential empty cells

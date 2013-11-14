@@ -44,14 +44,14 @@ classdef LMK_Image_Metadata < handle
         targetSize
         SPRatio
         numPoleFields
-        veilingLum
+        veilingLuminance
         
     end % properties
     methods
         %constructor
         function obj = LMK_Image_Metadata( dataSRCPhotopic, dataTypePhotopic, ...
                 dataSRCScotopic, dataTypeScotopic, rect, ...
-                rectPosition, border, dataImagePhotopic, dataImageScotopic, distanceToObject, targetSize, veilingLum )
+                rectPosition, border, dataImagePhotopic, dataImageScotopic, distanceToObject, targetSize, veilingLuminance )
             if nargin > 0 % Support calling with 0 arguments
                 obj.dataSRCPhotopic = dataSRCPhotopic;
                 obj.dataTypePhotopic = dataTypePhotopic;
@@ -64,7 +64,7 @@ classdef LMK_Image_Metadata < handle
                 obj.dataImagePhotopic = dataImagePhotopic;
                 obj.distanceToObject = distanceToObject;
                 obj.targetSize = targetSize;
-                obj.veilingLum = veilingLum;
+                obj.veilingLuminance = veilingLuminance;
             end
         end% constructor
         

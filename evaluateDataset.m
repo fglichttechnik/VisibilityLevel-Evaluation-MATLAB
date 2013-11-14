@@ -116,6 +116,7 @@ photopicLMK_Image_Set_Statistics.plotThresholdDeltaL( PATH );
 photopicLMK_Image_Set_Statistics.plotContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotAbsContrast( PATH );
 photopicLMK_Image_Set_Statistics.plotLtLB( PATH );
+photopicLMK_Image_Set_Statistics.plotFixedVeilingLuminance( PATH );
 figHandleCth = figure();
 photopicLMK_Image_Set_Statistics.plotCthArrayContrastThresholds( figHandleCth );
 photopicLMK_Image_Set_Statistics.plotCthArrayCurrentData( figHandleCth );
