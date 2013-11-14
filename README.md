@@ -1,4 +1,4 @@
-Evaluating Luminance Image Series with Radiance
+Evaluating Luminance Image Series with MATLAB
 =========
 
 ## Measurement / Simulation + Evaluation Framework for Road Lighting
