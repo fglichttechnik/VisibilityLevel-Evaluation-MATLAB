@@ -18,6 +18,7 @@ We assume that you have either measured or simulated a luminance image series wi
 - [Radiance-RoadLighting-Simulation-Framework](https://github.com/fglichttechnik/Radiance-RoadLighting-Simulation-Framework)
 
 ![simulation](Documentation/Images/compareSimulationMeasurement.png)
+![simulation2](Documentation/Images/scene50.gif)
 
 ## Evaluation
 
