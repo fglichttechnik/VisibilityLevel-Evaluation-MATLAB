@@ -1,3 +1,7 @@
+%AUTHOR: Jan Winter, Sandy Buschmann, Robert Franke TU Berlin, FG Lichttechnik,
+%	j.winter@tu-berlin.de, www.li.tu-berlin.de
+%LICENSE: free to use at your own risk. Kudos appreciated.
+
 weberPathArray = {
 %       'd:/cygwin/home/Robert/GitUmgebung/LMK/LMK_Data_evaluation/database/dataset/Treskowstr_R3_H_T100/Treskowstr_R3_H_T100/plots_RP800/Photopic_weberContrastPlot_Treskowstr_R3_H_T100.fig';
 %       'd:/cygwin/home/Robert/GitUmgebung/LMK/LMK_Data_evaluation/database/dataset/Treskowstr_R3_H_T070/Treskowstr_R3_H_T070/plots_RP800/Photopic_weberContrastPlot_Treskowstr_R3_H_T070.fig';

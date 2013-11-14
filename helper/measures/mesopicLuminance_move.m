@@ -1,7 +1,8 @@
 % function [Lmes, imgVisualization] = mesopicLuminance_move(Lp,Ls)
 function Lmes = mesopicLuminance_move(Lp,Ls)
-%author Jan Winter, Sandy Buschmann TU Berlin
-%email j.winter@tu-berlin.de
+%AUTHOR: Jan Winter, Sandy Buschmann, Robert Franke TU Berlin, FG Lichttechnik,
+%	j.winter@tu-berlin.de, www.li.tu-berlin.de
+%LICENSE: free to use at your own risk. Kudos appreciated.
 %calculates the mesopic luminance according to the MOVE MODEL
 %Lp, Ls might be single values or matrices
 %Lp = photopic luminance

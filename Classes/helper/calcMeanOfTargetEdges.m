@@ -1,4 +1,7 @@
 function calcMeanOfTargetEdges( image, LMK_Image_Statistics )
+%AUTHOR: Jan Winter, Sandy Buschmann, Robert Franke TU Berlin, FG Lichttechnik,
+%	j.winter@tu-berlin.de, www.li.tu-berlin.de
+%LICENSE: free to use at your own risk. Kudos appreciated.
 %calculates the mean of the edge region of a target
 %function calcMeanOfTargetEdges( image, imageMetadata )
 %   image                  imageData (photopic, scotopic, mesopic)

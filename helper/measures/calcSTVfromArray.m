@@ -1,6 +1,7 @@
 function [ stv ] = calcSTVfromArray( visibilityLevelArray )
-%author Jan Winter, Sandy Buschmann TU Berlin
-%email j.winter@tu-berlin.de
+%AUTHOR: Jan Winter, Sandy Buschmann, Robert Franke TU Berlin, FG Lichttechnik,
+%	j.winter@tu-berlin.de, www.li.tu-berlin.de
+%LICENSE: free to use at your own risk. Kudos appreciated.
 % function stv = calcSTVfromArray( visibilityLevelArray )
 %	This function calculates the small target visibility as published in .
 %	visibilityLevelArray: array with target Visibility Levels for every image

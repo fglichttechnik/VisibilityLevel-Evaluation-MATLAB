@@ -1,6 +1,7 @@
 function evaluateDataset( PATH, CONTRAST_CALCULATION_METHOD )
-%author Jan Winter, Sandy Buschmann TU Berlin
-%email j.winter@tu-berlin.de
+%AUTHOR: Jan Winter, Sandy Buschmann, Robert Franke TU Berlin, FG Lichttechnik,
+%	j.winter@tu-berlin.de, www.li.tu-berlin.de
+%LICENSE: free to use at your own risk. Kudos appreciated.
 %this script evaluates a set of images with a graycard corresponding to Adrians 1989
 %model of contrast threshold
 %this shall be called by evaluateDataset_batch()

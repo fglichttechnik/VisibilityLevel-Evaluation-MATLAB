@@ -1,6 +1,7 @@
 function deltaL_RP800 = calcDeltaL_RP800(Lb, Lt, alpha, age, T, k)
-%author Jan Winter, Sandy Buschmann TU Berlin
-%email j.winter@tu-berlin.de
+%AUTHOR: Jan Winter, Sandy Buschmann, Robert Franke TU Berlin, FG Lichttechnik,
+%	j.winter@tu-berlin.de, www.li.tu-berlin.de
+%LICENSE: free to use at your own risk. Kudos appreciated.
 % function deltaL_RP800 = calcDeltaL_RP800(Lb, Lt, alpha, age, t, k)
 %	This function calculates the contrast threshold as published in ANSI IESNA RP 800.
 %	Lb: background luminance in cd/m^2
