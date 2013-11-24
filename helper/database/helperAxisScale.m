@@ -1,3 +1,6 @@
+%AUTHOR: Jan Winter, Sandy Buschmann, Robert Franke TU Berlin, FG Lichttechnik,
+%	j.winter@tu-berlin.de, www.li.tu-berlin.de
+%LICENSE: free to use at your own risk. Kudos appreciated.
 compareBatchSet = {
     
      %'/Users/robert/Desktop/Development/LMK/LMK_Data_evaluation/database/compare/Treskowstr_LED_Ori_Left';

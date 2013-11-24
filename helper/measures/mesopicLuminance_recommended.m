@@ -1,6 +1,7 @@
 function [ Lmes, mFactor ] = mesopicLuminance_recommended( Lp, Ls, Lap, Las )
-%author Jan Winter, Sandy Buschmann TU Berlin
-%email j.winter@tu-berlin.de
+%AUTHOR: Jan Winter, Sandy Buschmann, Robert Franke TU Berlin, FG Lichttechnik,
+%	j.winter@tu-berlin.de, www.li.tu-berlin.de
+%LICENSE: free to use at your own risk. Kudos appreciated.
 %calculates the mesopic luminance according to the CIE RECOMMENDED SYSTEM
 %FOR PERFORMANCE BASED MESOPIC PHOTOMETRY
 %Lp, Ls might be single values or matrices

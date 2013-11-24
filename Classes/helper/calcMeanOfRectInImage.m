@@ -1,6 +1,7 @@
 function [meanImg, rawImage] = calcMeanOfRectInImage(img, x1, x2, y1, y2, LMK_Image_Statistics, colorChannel)
-%author Jan Winter TU Berlin
-%email j.winter@tu-berlin.de
+%AUTHOR: Jan Winter, Sandy Buschmann, Robert Franke TU Berlin, FG Lichttechnik,
+%	j.winter@tu-berlin.de, www.li.tu-berlin.de
+%LICENSE: free to use at your own risk. Kudos appreciated.
 %calculates the mean of a rect region within an image
 %eventually cropping parts, which are out of the image boundaries
 
