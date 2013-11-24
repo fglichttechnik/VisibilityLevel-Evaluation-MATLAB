@@ -106,6 +106,11 @@ classdef LMK_Image_Set_Statistics < handle
                         oneValueFixedVeilingLum = currentVeilingLum.veilingLuminance ;
                         findFailure = findFailure + 1 ;
                     end
+                    %% HACK
+                    if( strcmp( currentVeilingLum.type , 'noValue') )
+                        oneValueFixedVeilingLum = currentVeilingLum.veilingLuminance ;
+                        findFailure = findFailure + 1 ;
+                    end
                     if( strcmp( currentVeilingLum.type , 'fixedHeadlight' ) )
                         fixedSize = fixedSize + 1 ;
                         veilingLumArrayFixedHelp{ fixedSize } = currentVeilingLum ;

@@ -10,7 +10,7 @@ disp( sprintf( 'evaluating %s', PATH ) );
 %clear all; %this will clear all breakpoints as well, so we don't like this
 
 %% set tasks
-CONVERT_TO_PDF = 0; %set this to 0 if you don't have epstopdf
+CONVERT_TO_PDF = 1; %set this to 0 if you don't have epstopdf
 ANALYZE_MESOPIC = 0; %set this to 0 if you don't like mesopic shit
 ANALYZE_SCOTOPIC = 0; %set this to 0 if you don't like scotopic shit
 
